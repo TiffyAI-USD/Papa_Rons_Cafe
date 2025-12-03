@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Papa Ron's Café | Food, Smoke & Good Music</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f9f5f0;
+      color: #333;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* HERO */
+    header {
+      background: url('https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza.jpg') no-repeat center center/cover;
+      height: 100vh;
+      color: white;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(2px);
+      z-index: 1;
+    }
+    header > * { position: relative; z-index: 2; }
+
+    .logo {
+      max-width: 180px;
+      height: auto;
+      margin-bottom: 1rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 3.8rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+    }
+    .tagline {
+      font-size: 1.3rem;
+      margin-bottom: 2.5rem;
+      opacity: 0.95;
+      font-weight: 400;
+    }
+
+    /* FLOATING ACTION MENU */
+    .fab-container {
+      position: relative;
+      display: inline-block;
+    }
+    .fab-toggle {
+      width: 60px;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    .fab-toggle:hover {
+      transform: scale(1.08);
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .fab-toggle.active {
+      transform: rotate(45deg);
+    }
+
+    .fab-menu {
+      position: absolute;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      transform: translateX(-50%) translateY(20px);
+    }
+    .fab-menu.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .fab-item {
+      background: rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 0.9rem 1.6rem;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      min-width: 180px;
+      text-align: center;
+    }
+    .fab-item:hover {
+      background: rgba(255, 255, 255, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    /* Special Colors */
+    .fab-order { background: rgba(212, 163, 115, 0.9); }
+    .fab-order:hover { background: rgba(181, 137, 95, 0.9); }
+
+    .fab-view { background: rgba(107, 78, 49, 0.9); }
+    .fab-view:hover { background: rgba(84, 62, 40, 0.9); }
+
+    .fab-pdf { background: rgba(230, 57, 70, 0.9); }
+    .fab-pdf:hover { background: rgba(208, 0, 0, 0.9); }
+
+    .fab-wa { background: rgba(37, 211, 102, 0.9); }
+    .fab-wa:hover { background: rgba(18, 140, 126, 0.9); }
+
+    /* LIGHTBOX */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.92);
+      overflow: auto;
+      backdrop-filter: blur(5px);
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 90%;
+      margin: 5% auto;
+      text-align: center;
+    }
+    .lightbox-img {
+      width: 100%;
+      max-width: 800px;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+    .close-btn {
+      position: absolute;
+      top: -12px;
+      right: -12px;
+      background: rgba(255,255,255,0.25);
+      backdrop-filter: blur(10px);
+      color: white;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .close-btn:hover { background: rgba(255,255,255,0.4); }
+
+    /* MENU SECTION */
+    section { padding: 4rem 10%; max-width: 1200px; margin: auto; }
+    h2 { 
+      font-family: 'Pacifico', cursive; 
+      font-size: 2.5rem; 
+      text-align: center; 
+      margin-bottom: 2rem; 
+      color: #6b4e31; 
+    }
+    .menu-grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+      gap: 2rem; 
+    }
+    .menu-item { 
+      background: white; 
+      border-radius: 15px; 
+      overflow: hidden; 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+      transition: 0.3s; 
+    }
+    .menu-item:hover { 
+      transform: translateY(-8px); 
+      box-shadow: 0 12px 20px rgba(0,0,0,0.15); 
+    }
+    .menu-item img { 
+      width: 100%; 
+      height: 180px; 
+      object-fit: cover; 
+    }
+    .menu-item h3 { 
+      padding: 1rem 1rem 0.5rem; 
+      font-size: 1.4rem; 
+      color: #6b4e31; 
+    }
+    .menu-item p { 
+      padding: 0 1rem 1rem; 
+      font-size: 0.95rem; 
+      color: #555; 
+    }
+    .price { 
+      font-weight: bold; 
+      color: #d4a373; 
+      font-size: 1.2rem; 
+      padding: 0 1rem 1rem; 
+    }
+
+    footer { 
+      text-align: center; 
+      padding: 2rem; 
+      background: #6b4e31; 
+      color: white; 
+      font-size: 0.9rem; 
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      h1 { font-size: 2.8rem; }
+      .tagline { font-size: 1.1rem; }
+      header { height: 85vh; }
+      .logo { max-width: 140px; }
+      .fab-item { font-size: 0.9rem; padding: 0.8rem 1.4rem; min-width: 160px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header>
+    <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/logo.jpeg" alt="Papa Ron's Café Logo" class="logo">
+    <h1>Papa Ron's Café</h1>
+    <p class="tagline">Food, Smoke, and Good Music.</p>
+
+    <!-- Floating Action Menu -->
+    <div class="fab-container">
+      <div class="fab-toggle" id="fabToggle">+</div>
+      <div class="fab-menu" id="fabMenu">
+        <a href="https://wa.me/+27660660088?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20place%20an%20order..." 
+           class="fab-item fab-wa" target="_blank">Order via WhatsApp</a>
+        <a href="#" class="fab-item fab-view" id="openMenu">View Full Menu</a>
+        <a href="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu1.pdf" class="fab-item fab-pdf" download>Download Menu (PDF)</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Lightbox -->
+  <div id="menuLightbox" class="lightbox">
+    <div class="lightbox-content">
+      <span class="close-btn" id="closeMenu">×</span>
+      <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu1.jpeg" alt="Full Menu" class="lightbox-img">
+      <div style="margin-top:1rem; color:white; font-size:1rem;">
+        Scroll to explore • Then <a href="https://wa.me/+27660660088" style="color:#25D366; font-weight:bold;">WhatsApp your order</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MENU GRID -->
+  <section id="menu">
+    <h2>Our Menu</h2>
+    <div class="menu-grid">
+
+      <!-- PIZZA -->
+      <div class="menu-item">
+        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza.jpg" alt="Something Meaty Pizza">
+        <h3>Something Meaty</h3>
+        <p>Creamy chicken, bacon, mushrooms, and cheese.</p>
+        <div class="price">R135.00</div>
+      </div>
+
+      <div class="menu-item">
+        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza.jpg" alt="Hawaiian Pizza">
+        <h3>Hawaiian</h3>
+        <p>Ham, pineapple, and cheese.</p>
+        <div class="price">R135.00</div>
+      </div>
+
+      <div class="menu-item">
+        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza.jpg" alt="Chicken Peri Nacho Pizza">
+        <h3>Chicken Peri Nacho</h3>
+        <p>Peri-peri chicken, nachos, and cheese.</p>
+        <div class="price">R160.00</div>
+      </div>
+
+      <!-- BURGERS & PLATTERS -->
+      <div class="menu-item">
+        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/burger.jpg" alt="Cheese Burger">
+        <h3>Cheese Burger</h3>
+        <p>With side chips.</p>
+        <div class="price">R120.00</div>
+      </div>
+
+      <div class="menu-item">
+        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/platters.jpg" alt="Boerie Roll">
+        <h3>Boerie Roll</h3>
+        <p>With chips or salad.</p>
+        <div class="price">R60.00</div>
+      </div>
+
+      <div class="menu-item">
+        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/platters.jpg" alt="Munchie Platter">
+        <h3>Munchie Platter</h3>
+        <p>(Served from 8 to 11 AM)</p>
+        <div class="price">R150.00</div>
+      </div>
+
+      <div class="menu-item">
+        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/ribs.jpg" alt="Rib Rack">
+        <h3>Rib Rack</h3>
+        <p>Full rack with chips.</p>
+        <div class="price">R200.00</div>
+      </div>
+
+      <div class="menu-item">
+        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/nantcho.jpg" alt="Chicken Peri Nacho">
+        <h3>Chicken Peri Nacho</h3>
+        <p>Loaded with cheese and sauce.</p>
+        <div class="price">R160.00</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Papa Ron's Café • 123 Main St, Coffee Bay, Mthatha</p>
+    <p>WhatsApp: <a href="https://wa.me/+27660660088" style="color:#25D366; font-weight:bold;">+27 66 066 0088</a></p>
+    <p>Made with love for good food and good people.</p>
+    <p style="font-size:0.8rem; margin-top:1rem; opacity:0.8;">
+      We’ll call you within 5 mins to confirm & take payment.
+    </p>
+  </footer>
+
+  <!-- JS -->
+  <script>
+    const fabToggle = document.getElementById('fabToggle');
+    const fabMenu = document.getElementById('fabMenu');
+
+    fabToggle.addEventListener('click', () => {
+      fabToggle.classList.toggle('active');
+      fabMenu.classList.toggle('active');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!fabToggle.contains(e.target) && !fabMenu.contains(e.target)) {
+        fabToggle.classList.remove('active');
+        fabMenu.classList.remove('active');
+      }
+    });
+
+    // Lightbox
+    document.getElementById('openMenu').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('menuLightbox').style.display = 'block';
+    });
+    document.getElementById('closeMenu').addEventListener('click', () => {
+      document.getElementById('menuLightbox').style.display = 'none';
+    });
+    window.addEventListener('click', (e) => {
+      const lightbox = document.getElementById('menuLightbox');
+      if (e.target === lightbox) lightbox.style.display = 'none';
+    });
+  </script>
+
+</body>
+</html>
