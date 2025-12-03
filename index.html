@@ -4,15 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Papa Ron's Café | Food, Smoke & Good Music</title>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Open Sans', sans-serif;
+      font-family: 'Inter', sans-serif;
       background: #f9f5f0;
       color: #333;
       line-height: 1.6;
+      overflow-x: hidden;
     }
+
+    /* HERO */
     header {
       background: url('https://images.unsplash.com/photo-1495474472287-4d71bc168240?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
       height: 100vh;
@@ -28,143 +31,128 @@
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(2px);
       z-index: 1;
     }
     header > * { position: relative; z-index: 2; }
+
     .logo {
-      max-width: 250px;
-      max-height: 150px;
-      width: auto;
+      max-width: 180px;
       height: auto;
       margin-bottom: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     }
     h1 {
       font-family: 'Pacifico', cursive;
-      font-size: 4.5rem;
+      font-size: 3.8rem;
       margin-bottom: 0.5rem;
-      text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+      text-shadow: 0 2px 8px rgba(0,0,0,0.6);
     }
-    .tagline { font-size: 1.5rem; margin-bottom: 2rem; }
-    .btn {
-      background: #d4a373;
-      color: white;
-      padding: 1rem 2rem;
-      border: none;
-      border-radius: 50px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: 0.3s;
-      text-decoration: none;
+    .tagline {
+      font-size: 1.3rem;
+      margin-bottom: 2.5rem;
+      opacity: 0.95;
+      font-weight: 400;
+    }
+
+    /* FLOATING ACTION MENU */
+    .fab-container {
+      position: relative;
       display: inline-block;
-      margin: 0.8rem auto;
-      width: 80%;
-      max-width: 300px;
     }
-    .btn:hover { background: #b5895f; transform: scale(1.05); }
-
-    /* Special Button Styles */
-    .menu-btn {
-      background: #6b4e31;
-      margin-top: 1rem;
-    }
-    .menu-btn:hover { background: #543e28; }
-
-    .pdf-btn {
-      background: #e63946;
-      margin-top: 1rem;
-    }
-    .pdf-btn:hover { background: #d00000; }
-
-    .wa-btn {
-      background: #25D366;
-      margin-top: 1rem;
+    .fab-toggle {
+      width: 60px;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
-    }
-    .wa-btn::before {
-      content: "WhatsApp";
-      font-family: 'Open Sans', sans-serif;
-    }
-    .wa-btn:hover { background: #128C7E; }
-
-    section { padding: 4rem 10%; max-width: 1200px; margin: auto; }
-    h2 { font-family: 'Pacifico', cursive; font-size: 2.5rem; text-align: center; margin-bottom: 2rem; color: #6b4e31; }
-    .menu-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-    }
-    .menu-item {
-      background: white;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: 0.3s;
-    }
-    .menu-item:hover { transform: translateY(-8px); box-shadow: 0 12px 20px rgba(0,0,0,0.15); }
-    .menu-item img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-    }
-    .menu-item h3 { padding: 1rem 1rem 0.5rem; font-size: 1.4rem; color: #6b4e31; }
-    .menu-item p { padding: 0 1rem 1rem; font-size: 0.95rem; color: #555; }
-    .price { font-weight: bold; color: #d4a373; font-size: 1.2rem; padding: 0 1rem 1rem; }
-
-    .order-form {
-      background: #fff8f0;
-      padding: 3rem;
-      border-radius: 20px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-      max-width: 700px;
-      margin: 2rem auto;
-    }
-    .form-group { margin-bottom: 1.5rem; }
-    label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #6b4e31; }
-    input, select, textarea {
-      width: 100%;
-      padding: 0.8rem;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 1rem;
-    }
-    textarea { resize: vertical; min-height: 100px; }
-    .submit-btn {
-      background: #6b4e31;
+      font-size: 1.8rem;
       color: white;
-      padding: 1rem 2rem;
-      border: none;
-      border-radius: 50px;
-      font-size: 1.1rem;
       cursor: pointer;
-      width: 100%;
-      transition: 0.3s;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+      transition: all 0.3s ease;
+      z-index: 10;
     }
-    .submit-btn:hover { background: #543e28; }
+    .fab-toggle:hover {
+      transform: scale(1.08);
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .fab-toggle.active {
+      transform: rotate(45deg);
+    }
 
-    footer {
-      text-align: center;
-      padding: 2rem;
-      background: #6b4e31;
+    .fab-menu {
+      position: absolute;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      transform: translateX(-50%) translateY(20px);
+    }
+    .fab-menu.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .fab-item {
+      background: rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       color: white;
-      font-size: 0.9rem;
+      padding: 0.9rem 1.6rem;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      min-width: 180px;
+      text-align: center;
+    }
+    .fab-item:hover {
+      background: rgba(255, 255, 255, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     }
 
-    /* Lightbox */
+    /* Special Colors */
+    .fab-order { background: rgba(212, 163, 115, 0.9); }
+    .fab-order:hover { background: rgba(181, 137, 95, 0.9); }
+
+    .fab-view { background: rgba(107, 78, 49, 0.9); }
+    .fab-view:hover { background: rgba(84, 62, 40, 0.9); }
+
+    .fab-pdf { background: rgba(230, 57, 70, 0.9); }
+    .fab-pdf:hover { background: rgba(208, 0, 0, 0.9); }
+
+    .fab-wa { background: rgba(37, 211, 102, 0.9); }
+    .fab-wa:hover { background: rgba(18, 140, 126, 0.9); }
+
+    /* LIGHTBOX (same as before, slightly modernized) */
     .lightbox {
       display: none;
       position: fixed;
       z-index: 1000;
       left: 0; top: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.9);
+      background: rgba(0,0,0,0.92);
       overflow: auto;
-      animation: fadeIn 0.3s;
+      backdrop-filter: blur(5px);
     }
     .lightbox-content {
       position: relative;
@@ -175,99 +163,111 @@
     .lightbox-img {
       width: 100%;
       max-width: 800px;
-      border: 8px solid white;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     }
     .close-btn {
       position: absolute;
-      top: -10px;
-      right: -10px;
+      top: -12px;
+      right: -12px;
+      background: rgba(255,255,255,0.25);
+      backdrop-filter: blur(10px);
       color: white;
-      font-size: 2.5rem;
-      font-weight: bold;
-      background: #d4a373;
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
+      font-size: 1.8rem;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
-    .close-btn:hover { background: #b5895f; }
-    .lightbox-caption {
-      margin-top: 1rem;
-      color: white;
-      font-size: 1.1rem;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    .close-btn:hover { background: rgba(255,255,255,0.4); }
 
-    /* Responsive */
+    /* REST OF PAGE (unchanged, just font update) */
+    section { padding: 4rem 10%; max-width: 1200px; margin: auto; }
+    h2 { font-family: 'Pacifico', cursive; font-size: 2.5rem; text-align: center; margin-bottom: 2rem; color: #6b4e31; }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+    .menu-item { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: 0.3s; }
+    .menu-item:hover { transform: translateY(-8px); box-shadow: 0 12px 20px rgba(0,0,0,0.15); }
+    .menu-item img { width: 100%; height: 180px; object-fit: cover; }
+    .menu-item h3 { padding: 1rem 1rem 0.5rem; font-size: 1.4rem; color: #6b4e31; }
+    .menu-item p { padding: 0 1rem 1rem; font-size: 0.95rem; color: #555; }
+    .price { font-weight: bold; color: #d4a373; font-size: 1.2rem; padding: 0 1rem 1rem; }
+
+    .order-form { background: #fff8f0; padding: 3rem; border-radius: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.1); max-width: 700px; margin: 2rem auto; }
+    .form-group { margin-bottom: 1.5rem; }
+    label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #6b4e31; }
+    input, textarea { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+    textarea { resize: vertical; min-height: 100px; }
+    .submit-btn { background: #6b4e31; color: white; padding: 1rem 2rem; border: none; border-radius: 50px; font-size: 1.1rem; cursor: pointer; width: 100%; transition: 0.3s; }
+    .submit-btn:hover { background: #543e28; }
+
+    footer { text-align: center; padding: 2rem; background: #6b4e31; color: white; font-size: 0.9rem; }
+
+    /* RESPONSIVE */
     @media (max-width: 768px) {
-      h1 { font-size: 3rem; }
-      .tagline { font-size: 1.2rem; }
-      header { height: 80vh; }
-      .logo { max-width: 200px; max-height: 120px; }
-      .lightbox-img { max-width: 95%; }
-      .close-btn { font-size: 2rem; width: 35px; height: 35px; top: 5px; right: 5px; }
-      .btn { width: 85%; }
+      h1 { font-size: 2.8rem; }
+      .tagline { font-size: 1.1rem; }
+      header { height: 85vh; }
+      .logo { max-width: 140px; }
+      .fab-item { font-size: 0.9rem; padding: 0.8rem 1.4rem; min-width: 160px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Hero Header -->
+  <!-- HERO -->
   <header>
-    <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/logo.jpg" alt="Papa Ron's Café Logo" class="logo">
+    <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/logo.jpeg" alt="Papa Ron's Café Logo" class="logo">
     <h1>Papa Ron's Café</h1>
     <p class="tagline">Home-style meals, fresh coffee, and love in every bite.</p>
-    
-    <a href="#order" class="btn">Order Now</a>
-    <a href="#" class="btn menu-btn" id="openMenu">View Full Menu</a>
-    <a href="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu.pdf" class="btn pdf-btn" download>
-      Download Menu (PDF)
-    </a>
-    <a href="https://wa.me/1234567890?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20place%20an%20order..." 
-       class="btn wa-btn" target="_blank">
-      Order via WhatsApp
-    </a>
+
+    <!-- Floating Action Menu -->
+    <div class="fab-container">
+      <div class="fab-toggle" id="fabToggle">+</div>
+      <div class="fab-menu" id="fabMenu">
+        <a href="#order" class="fab-item fab-order">Order Now</a>
+        <a href="#" class="fab-item fab-view" id="openMenu">View Full Menu</a>
+        <a href="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu.pdf" class="fab-item fab-pdf" download>Download Menu (PDF)</a>
+        <a href="https://wa.me/1234567890?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20place%20an%20order..." 
+           class="fab-item fab-wa" target="_blank">WhatsApp Order</a>
+      </div>
+    </div>
   </header>
 
-  <!-- Lightbox Overlay (Menu Image) -->
+  <!-- Lightbox -->
   <div id="menuLightbox" class="lightbox">
     <div class="lightbox-content">
       <span class="close-btn" id="closeMenu">×</span>
-      <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu.jpg" alt="Papa Ron's Full Menu" class="lightbox-img">
-      <div class="lightbox-caption">
-        <p>Scroll to browse • Then <a href="#order" style="color:#d4a373; font-weight:bold;">order below</a> or 
-           <a href="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu.pdf" download style="color:#e63946;">download PDF</a>!</p>
+      <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu.jpg" alt="Full Menu" class="lightbox-img">
+      <div style="margin-top:1rem; color:white; font-size:1rem;">
+        Scroll to explore • Then order below or 
+        <a href="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu.pdf" download style="color:#e63946; font-weight:bold;">download PDF</a>
       </div>
     </div>
   </div>
 
-  <!-- Menu Section -->
+  <!-- MENU GRID (unchanged) -->
   <section id="menu">
     <h2>Our Menu</h2>
     <div class="menu-grid">
       <div class="menu-item">
-        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Papa's Breakfast Platter">
+        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Breakfast">
         <h3>Papa's Breakfast Platter</h3>
         <p>Two eggs, bacon, sausage, hashbrowns, toast & jam.</p>
         <div class="price">R80.00</div>
       </div>
+      <!-- Repeat other items... -->
       <div class="menu-item">
-        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Classic Cheeseburger">
+        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Burger">
         <h3>Classic Cheeseburger</h3>
         <p>Juicy beef patty, cheddar, lettuce, tomato, onion, pickles.</p>
         <div class="price">R80.00</div>
       </div>
       <div class="menu-item">
-        <img src="https://images.unsplash.com/photo-1563379926893-0f0db8e2a4d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Chicken Alfredo">
+        <img src="https://images.unsplash.com/photo-1563379926893-0f0db8e2a4d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Alfredo">
         <h3>Chicken Alfredo</h3>
         <p>Creamy fettuccine with grilled chicken & garlic bread.</p>
         <div class="price">R80.00</div>
@@ -279,13 +279,13 @@
         <div class="price">R30.00</div>
       </div>
       <div class="menu-item">
-        <img src="https://images.unsplash.com/photo-1606890658317-7ff420e7f6be?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Apple Pie">
+        <img src="https://images.unsplash.com/photo-1606890658317-7ff420e7f6be?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Pie">
         <h3>Mama's Apple Pie</h3>
         <p>Warm, flaky crust with cinnamon apples. À la mode +R30.</p>
         <div class="price">R50.00</div>
       </div>
       <div class="menu-item">
-        <img src="https://images.unsplash.com/photo-1603532648952-93911cd5a65f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Caesar Salad">
+        <img src="https://images.unsplash.com/photo-1603532648952-93911cd5a65f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Salad">
         <h3>Grilled Chicken Caesar</h3>
         <p>Romaine, parmesan, croutons, house Caesar dressing.</p>
         <div class="price">R130.99</div>
@@ -293,7 +293,7 @@
     </div>
   </section>
 
-  <!-- Order Form -->
+  <!-- ORDER FORM (same) -->
   <section id="order">
     <h2>Place Your Order</h2>
     <form class="order-form" action="https://formspree.io/f/your-email-here" method="POST">
@@ -320,30 +320,43 @@
     </p>
   </section>
 
-  <!-- Footer -->
+  <!-- FOOTER -->
   <footer>
     <p>© 2025 Papa Ron's Café • 123 Main St, Coffee Bay • (042) 123-4567</p>
     <p>Made with ❤️ for good food and good people.</p>
   </footer>
 
-  <!-- JavaScript for Lightbox -->
+  <!-- JS -->
   <script>
-    document.getElementById('openMenu').addEventListener('click', function(e) {
+    const fabToggle = document.getElementById('fabToggle');
+    const fabMenu = document.getElementById('fabMenu');
+
+    fabToggle.addEventListener('click', () => {
+      fabToggle.classList.toggle('active');
+      fabMenu.classList.toggle('active');
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!fabToggle.contains(e.target) && !fabMenu.contains(e.target)) {
+        fabToggle.classList.remove('active');
+        fabMenu.classList.remove('active');
+      }
+    });
+
+    // Lightbox
+    document.getElementById('openMenu').addEventListener('click', (e) => {
       e.preventDefault();
       document.getElementById('menuLightbox').style.display = 'block';
     });
-
-    document.getElementById('closeMenu').addEventListener('click', function() {
+    document.getElementById('closeMenu').addEventListener('click', () => {
       document.getElementById('menuLightbox').style.display = 'none';
     });
-
-    window.addEventListener('click', function(e) {
+    window.addEventListener('click', (e) => {
       const lightbox = document.getElementById('menuLightbox');
-      if (e.target === lightbox) {
-        lightbox.style.display = 'none';
-      }
+      if (e.target === lightbox) lightbox.style.display = 'none';
     });
   </script>
 
 </body>
-</html>
+</html>ubo
