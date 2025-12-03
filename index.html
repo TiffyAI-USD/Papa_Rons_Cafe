@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Papa Ron's Café | Home-Style Eats & Coffee</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: #f9f5f0;
+      color: #333;
+      line-height: 1.6;
+    }
+    header {
+      background: url('https://images.unsplash.com/photo-1495474472287-4d71bc168240?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+      height: 100vh;
+      color: white;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1;
+    }
+    header > * { position: relative; z-index: 2; }
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 4.5rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+    }
+    .tagline { font-size: 1.5rem; margin-bottom: 2rem; }
+    .btn {
+      background: #d4a373;
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn:hover { background: #b5895f; transform: scale(1.05); }
+
+    section { padding: 4rem 10%; max-width: 1200px; margin: auto; }
+    h2 { font-family: 'Pacifico', cursive; font-size: 2.5rem; text-align: center; margin-bottom: 2rem; color: #6b4e31; }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    .menu-item {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+    .menu-item:hover { transform: translateY(-8px); box-shadow: 0 12px 20px rgba(0,0,0,0.15); }
+    .menu-item img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .menu-item h3 { padding: 1rem 1rem 0.5rem; font-size: 1.4rem; color: #6b4e31; }
+    .menu-item p { padding: 0 1rem 1rem; font-size: 0.95rem; color: #555; }
+    .price { font-weight: bold; color: #d4a373; font-size: 1.2rem; padding: 0 1rem 1rem; }
+
+    .order-form {
+      background: #fff8f0;
+      padding: 3rem;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      max-width: 700px;
+      margin: 2rem auto;
+    }
+    .form-group { margin-bottom: 1.5rem; }
+    label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #6b4e31; }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    textarea { resize: vertical; min-height: 100px; }
+    .submit-btn {
+      background: #6b4e31;
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      width: 100%;
+      transition: 0.3s;
+    }
+    .submit-btn:hover { background: #543e28{}; }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: #6b4e31;
+      color: white;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 768px) {
+      h1 { font-size: 3rem; }
+      .tagline { font-size: 1.2rem; }
+      header { height: 80vh; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Header -->
+  <header>
+    <h1>Papa Ron's Café</h1>
+    <p class="tagline">Home-style meals, fresh coffee, and love in every bite.</p>
+    <a href="#order" class="btn">Order Now</a>
+  </header>
+
+  <!-- Menu Section -->
+  <section id="menu">
+    <h2>Our Menu</h2>
+    <div class="menu-grid">
+      <!-- Item 1 -->
+      <div class="menu-item">
+        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Papa's Breakfast Platter">
+        <h3>Papa's Breakfast Platter</h3>
+        <p>Two eggs, bacon, sausage, hashbrowns, toast & jam.</p>
+        <div class="price">$12.99</div>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="menu-item">
+        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Classic Cheeseburger">
+        <h3>Classic Cheeseburger</h3>
+        <p>Juicy beef patty, cheddar, lettuce, tomato, onion, pickles.</p>
+        <div class="price">$10.99</div>
+      </div>
+
+      <!-- Item 3 -->
+      <div class="menu-item">
+        <img src="https://images.unsplash.com/photo-1563379926893-0f0db8e2a4d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Chicken Alfredo">
+        <h3>Chicken Alfredo</h3>
+        <p>Creamy fettuccine with grilled chicken & garlic bread.</p>
+        <div class="price">$14.99</div>
+      </div>
+
+      <!-- Item 4 -->
+      <div class="menu-item">
+        <img src="https://images.unsplash.com/photo-1514320291-8f0e8a2e1854?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Latte">
+        <h3>House Latte</h3>
+        <p>Espresso with steamed milk & a touch of vanilla.</p>
+        <div class="price">R30.00</div>
+      </div>
+
+      <!-- Item 5 -->
+      <div class="menu-item">
+        <img src="https://images.unsplash.com/photo-1606890658317-7ff420e7f6be?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Apple Pie">
+        <h3>Mama's Apple Pie</h3>
+        <p>Warm, flaky crust with cinnamon apples. À la mode +$2.</p>
+        <div class="price">R50.00</div>
+      </div>
+
+      <!-- Item 6 -->
+      <div class="menu-item">
+        <img src="https://images.unsplash.com/photo-1603532648952-93911cd5a65f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Caesar Salad">
+        <h3>Grilled Chicken Caesar</h3>
+        <p>Romaine, parmesan, croutons, house Caesar dressing.</p>
+        <div class="price">R130.99</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Order Form -->
+  <section id="order">
+    <h2>Place Your Order</h2>
+    <form class="order-form" action="https://formspree.io/f/your-email-here" method="POST">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" required />
+      </div>
+      <div class="form-group">
+        <label for="pickup">Pickup Time</label>
+        <input type="text" id="pickup" name="pickup" placeholder="e.g. 11:30 AM" required />
+      </div>
+      <div class="form-group">
+        <label for="items">Your Order (list items & quantities)</label>
+        <textarea id="items" name="items" placeholder="e.g. 1x Breakfast Platter, 2x Latte" required></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Send Order → We'll Call to Confirm!</button>
+    </form>
+    <p style="text-align:center; margin-top:1rem; color:#777; font-size:0.9rem;">
+      💡 We’ll call you within 5 mins to confirm & take payment.
+    </p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Papa Ron's Café • 123 Main St, Coffee Bay• (042) 123-4567</p>
+    <p>Made with ❤️ for good food and good people.</p>
+  </footer>
+
+</body>
+</html>
