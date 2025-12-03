@@ -59,8 +59,38 @@
       transition: 0.3s;
       text-decoration: none;
       display: inline-block;
+      margin: 0.8rem auto;
+      width: 80%;
+      max-width: 300px;
     }
     .btn:hover { background: #b5895f; transform: scale(1.05); }
+
+    /* Special Button Styles */
+    .menu-btn {
+      background: #6b4e31;
+      margin-top: 1rem;
+    }
+    .menu-btn:hover { background: #543e28; }
+
+    .pdf-btn {
+      background: #e63946;
+      margin-top: 1rem;
+    }
+    .pdf-btn:hover { background: #d00000; }
+
+    .wa-btn {
+      background: #25D366;
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .wa-btn::before {
+      content: "WhatsApp";
+      font-family: 'Open Sans', sans-serif;
+    }
+    .wa-btn:hover { background: #128C7E; }
 
     section { padding: 4rem 10%; max-width: 1200px; margin: auto; }
     h2 { font-family: 'Pacifico', cursive; font-size: 2.5rem; text-align: center; margin-bottom: 2rem; color: #6b4e31; }
@@ -124,11 +154,68 @@
       color: white;
       font-size: 0.9rem;
     }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      overflow: auto;
+      animation: fadeIn 0.3s;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 90%;
+      margin: 5% auto;
+      text-align: center;
+    }
+    .lightbox-img {
+      width: 100%;
+      max-width: 800px;
+      border: 8px solid white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .close-btn {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      color: white;
+      font-size: 2.5rem;
+      font-weight: bold;
+      background: #d4a373;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .close-btn:hover { background: #b5895f; }
+    .lightbox-caption {
+      margin-top: 1rem;
+      color: white;
+      font-size: 1.1rem;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Responsive */
     @media (max-width: 768px) {
       h1 { font-size: 3rem; }
       .tagline { font-size: 1.2rem; }
       header { height: 80vh; }
       .logo { max-width: 200px; max-height: 120px; }
+      .lightbox-img { max-width: 95%; }
+      .close-btn { font-size: 2rem; width: 35px; height: 35px; top: 5px; right: 5px; }
+      .btn { width: 85%; }
     }
   </style>
 </head>
@@ -136,57 +223,67 @@
 
   <!-- Hero Header -->
   <header>
-    <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/logo.jpeg" alt="Papa Ron's Café Logo" class="logo">
+    <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/logo.jpg" alt="Papa Ron's Café Logo" class="logo">
     <h1>Papa Ron's Café</h1>
     <p class="tagline">Home-style meals, fresh coffee, and love in every bite.</p>
+    
     <a href="#order" class="btn">Order Now</a>
+    <a href="#" class="btn menu-btn" id="openMenu">View Full Menu</a>
+    <a href="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu.pdf" class="btn pdf-btn" download>
+      Download Menu (PDF)
+    </a>
+    <a href="https://wa.me/1234567890?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20place%20an%20order..." 
+       class="btn wa-btn" target="_blank">
+      Order via WhatsApp
+    </a>
   </header>
+
+  <!-- Lightbox Overlay (Menu Image) -->
+  <div id="menuLightbox" class="lightbox">
+    <div class="lightbox-content">
+      <span class="close-btn" id="closeMenu">×</span>
+      <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu.jpg" alt="Papa Ron's Full Menu" class="lightbox-img">
+      <div class="lightbox-caption">
+        <p>Scroll to browse • Then <a href="#order" style="color:#d4a373; font-weight:bold;">order below</a> or 
+           <a href="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu.pdf" download style="color:#e63946;">download PDF</a>!</p>
+      </div>
+    </div>
+  </div>
 
   <!-- Menu Section -->
   <section id="menu">
     <h2>Our Menu</h2>
     <div class="menu-grid">
-      <!-- Item 1 -->
       <div class="menu-item">
         <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Papa's Breakfast Platter">
         <h3>Papa's Breakfast Platter</h3>
         <p>Two eggs, bacon, sausage, hashbrowns, toast & jam.</p>
         <div class="price">R80.00</div>
       </div>
-
-      <!-- Item 2 -->
       <div class="menu-item">
         <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Classic Cheeseburger">
         <h3>Classic Cheeseburger</h3>
         <p>Juicy beef patty, cheddar, lettuce, tomato, onion, pickles.</p>
         <div class="price">R80.00</div>
       </div>
-
-      <!-- Item 3 -->
       <div class="menu-item">
         <img src="https://images.unsplash.com/photo-1563379926893-0f0db8e2a4d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Chicken Alfredo">
         <h3>Chicken Alfredo</h3>
         <p>Creamy fettuccine with grilled chicken & garlic bread.</p>
         <div class="price">R80.00</div>
       </div>
-
-      <!-- Item 4 -->
       <div class="menu-item">
         <img src="https://images.unsplash.com/photo-1514320291-8f0e8a2e1854?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Latte">
         <h3>House Latte</h3>
         <p>Espresso with steamed milk & a touch of vanilla.</p>
         <div class="price">R30.00</div>
       </div>
-
-      <!-- Item 5 -->
       <div class="menu-item">
         <img src="https://images.unsplash.com/photo-1606890658317-7ff420e7f6be?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Apple Pie">
         <h3>Mama's Apple Pie</h3>
         <p>Warm, flaky crust with cinnamon apples. À la mode +R30.</p>
         <div class="price">R50.00</div>
       </div>
-
-      <!-- Item 6 -->
       <div class="menu-item">
         <img src="https://images.unsplash.com/photo-1603532648952-93911cd5a65f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Caesar Salad">
         <h3>Grilled Chicken Caesar</h3>
@@ -219,15 +316,34 @@
       <button type="submit" class="submit-btn">Send Order → We'll Call to Confirm!</button>
     </form>
     <p style="text-align:center; margin-top:1rem; color:#777; font-size:0.9rem;">
-      💡 We’ll call you within 5 mins to confirm & take payment.
+      We’ll call you within 5 mins to confirm & take payment.
     </p>
   </section>
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Papa Ron's Café • 123 Main St, Coffee Bay • (042) 123-4567</p>
+    <p>© 2025 Papa Ron's Café • 123 Main St, Coffee Bay • (042) 123-4567</p>
     <p>Made with ❤️ for good food and good people.</p>
   </footer>
+
+  <!-- JavaScript for Lightbox -->
+  <script>
+    document.getElementById('openMenu').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('menuLightbox').style.display = 'block';
+    });
+
+    document.getElementById('closeMenu').addEventListener('click', function() {
+      document.getElementById('menuLightbox').style.display = 'none';
+    });
+
+    window.addEventListener('click', function(e) {
+      const lightbox = document.getElementById('menuLightbox');
+      if (e.target === lightbox) {
+        lightbox.style.display = 'none';
+      }
+    });
+  </script>
 
 </body>
 </html>
