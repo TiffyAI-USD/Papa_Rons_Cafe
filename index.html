@@ -87,7 +87,7 @@
       opacity: 0.9;
     }
 
-    /* CART BUTTON (FLOATING) */
+    /* CART BUTTON */
     .cart-btn {
       position: fixed;
       bottom: 2rem;
@@ -101,12 +101,13 @@
       letter-spacing: 1.5px;
       box-shadow: 0 10px 30px rgba(212, 163, 115, 0.5);
       z-index: 999;
-      display: flex;
+      display: none;
       align-items: center;
       gap: 0.8rem;
       text-decoration: none;
       transition: 0.3s;
     }
+    .cart-btn.show { display: flex; }
     .cart-btn:hover {
       transform: translateY(-5px);
       box-shadow: 0 15px 40px rgba(212, 163, 115, 0.7);
@@ -298,7 +299,7 @@
       font-weight: bold;
     }
 
-    /* QUANTITY CONTROLS */
+    /* QUANTITY & SIDES */
     .quantity-controls {
       display: flex;
       align-items: center;
@@ -333,7 +334,6 @@
       text-align: center;
     }
 
-    /* SIDE OPTIONS */
     .side-options {
       display: flex;
       justify-content: center;
@@ -400,7 +400,7 @@
     </div>
   </header>
 
-  <!-- FLOATING CART BUTTON -->
+  <!-- CART BUTTON -->
   <a href="#" class="cart-btn" id="cartBtn">
     <span id="cartCount" class="cart-count">0</span>
     <span>ORDER NOW</span>
@@ -421,9 +421,7 @@
   <!-- MENU GRID -->
   <section id="menu">
     <h2>OUR MENU</h2>
-    <div class="menu-grid" id="menuGrid">
-      <!-- Items will be injected by JS -->
-    </div>
+    <div class="menu-grid" id="menuGrid"></div>
   </section>
 
   <!-- FOOTER -->
@@ -439,16 +437,16 @@
   <script>
     const cart = {};
     const menuItems = [
-      { name: "SOMETHING MEATY", price: 135, img: "pizza.jpg", desc: "Creamy chicken, bacon, mushrooms, cheese" },
-      { name: "HAWAIIAN", price: 135, img: "pizza1.jpg", desc: "Ham, pineapple, cheese" },
-      { name: "CHICKEN PERI NACHO", price: 160, img: "nantcho.jpg", desc: "Peri-peri chicken, nachos, cheese" },
-      { name: "CHEESE BURGER", price: 120, img: "burger.jpg", desc: "With side chips" },
-      { name: "BOERIE ROLL", price: 60, img: "boerie.jpeg", desc: "With chips or salad" },
-      { name: "MUNCHIE PLATTER", price: 350, img: "platters.jpg", desc: "Full Varieties of munchies" },
-      { name: "RIB RACK", price: 200, img: "ribs.jpg", desc: "Full rack with chips" },
-      { name: "RUMP STEAK", price: 160, img: "rump.jpeg", desc: "Loaded with mushroom sauce & chips" },
-      { name: "SIDE CHIPS", price: 30, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/chips.jpg", desc: "Crispy golden chips" },
-      { name: "SIDE SALAD", price: 35, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/salad.jpg", desc: "Fresh garden salad" }
+      { name: "SOMETHING MEATY", price: 135, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza.jpg", desc: "Creamy chicken, bacon, mushrooms, cheese" },
+      { name: "HAWAIIAN", price: 135, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza1.jpg", desc: "Ham, pineapple, cheese" },
+      { name: "CHICKEN PERI NACHO", price: 160, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/nantcho.jpg", desc: "Peri-peri chicken, nachos, cheese" },
+      { name: "CHEESE BURGER", price: 120, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/burger.jpg", desc: "With side chips" },
+      { name: "BOERIE ROLL", price: 60, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/boerie.jpeg", desc: "With chips or salad" },
+      { name: "MUNCHIE PLATTER", price: 350, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/platters.jpg", desc: "Full Varieties of munchies" },
+      { name: "RIB RACK", price: 200, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/ribs.jpg", desc: "Full rack with chips" },
+      { name: "RUMP STEAK", price: 160, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/rump.jpeg", desc: "Loaded with mushroom sauce & chips" },
+      { name: "SIDE CHIPS", price: 30, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/chips.jpg", desc: "Crispy golden chips", sideOnly: true },
+      { name: "SIDE SALAD", price: 35, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/salad.jpg", desc: "Fresh garden salad", sideOnly: true }
     ];
 
     const menuGrid = document.getElementById('menuGrid');
@@ -460,7 +458,7 @@
       const div = document.createElement('div');
       div.className = 'menu-item';
       div.innerHTML = `
-        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/\( {item.img}" alt=" \){item.name}">
+        <img src="\( {item.img}" alt=" \){item.name}">
         <h3>${item.name}</h3>
         <p>${item.desc}</p>
         <div class="price">R${item.price}.00</div>
@@ -469,7 +467,7 @@
           <div class="qty-display" id="qty-${index}">0</div>
           <div class="qty-btn" onclick="updateQty(${index}, 1)">+</div>
         </div>
-        ${item.name.includes('SIDE') ? '' : `
+        ${item.sideOnly ? '' : `
         <div class="side-options">
           <div class="side-btn" data-item="${index}" data-side="chips">CHIPS</div>
           <div class="side-btn" data-item="${index}" data-side="salad">SALAD</div>
@@ -484,7 +482,11 @@
       let qty = parseInt(qtyEl.textContent) + change;
       if (qty < 0) qty = 0;
       qtyEl.textContent = qty;
-      cart[index] = { ...menuItems[index], qty, side: cart[index]?.side || null };
+      if (qty > 0) {
+        cart[index] = { ...menuItems[index], qty, side: cart[index]?.side || null };
+      } else {
+        delete cart[index];
+      }
       updateCart();
     };
 
@@ -502,26 +504,26 @@
       });
     });
 
-    // Update cart count & WhatsApp link
+    // Update cart
     function updateCart() {
       let totalItems = 0;
       let message = "Hi Papa Ron's! I'd like to order:%0A%0A";
       Object.values(cart).forEach(item => {
         if (item.qty > 0) {
           totalItems += item.qty;
-          message += `\( {item.qty} x \){item.name} - R${item.price}.00`;
-          if (item.side) message += ` (with ${item.side})`;
+          message += item.qty + " x " + item.name + " - R" + item.price + ".00";
+          if (item.side) message += " (with " + item.side + ")";
           message += "%0A";
         }
       });
       message += "%0AThank you!";
-      cartBtn.href = `https://wa.me/+27660660088?text=${message}`;
+      cartBtn.href = "https://wa.me/+27660660088?text=" + message;
       cartCount.textContent = totalItems;
-      cartBtn.style.display = totalItems > 0 ? 'flex' : 'none';
+      cartBtn.classList.toggle('show', totalItems > 0);
     }
 
     // Initial hide
-    cartBtn.style.display = 'none';
+    cartBtn.classList.remove('show');
 
     // Menu button actions
     const mainBtn = document.getElementById('mainBtn');
