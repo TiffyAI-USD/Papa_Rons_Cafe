@@ -453,40 +453,45 @@
       { name: "MUNCHIE PLATTER", price: 350, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/platters.jpg", desc: "Full Varieties of munchies" },
       { name: "RIB RACK", price: 200, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/ribs.jpg", desc: "Full rack with chips" },
       { name: "RUMP STEAK", price: 160, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/rump.jpeg", desc: "Loaded with mushroom sauce & chips" },
-      { name: "SIDE CHIPS", price: 20, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/chips.jpg", desc: "Crispy golden chips", sideOnly: true },
-      { name: "SIDE SALAD", price: 20, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/salad.jpg", desc: "Fresh garden salad", sideOnly: true }
+      { name: "SIDE CHIPS", price: 20, img: "https://via.placeholder.com/300x200/333/ccc?text=Upload+chips.jpg", desc: "Crispy golden chips", sideOnly: true },
+      { name: "SIDE SALAD", price: 20, img: "https://via.placeholder.com/300x200/333/ccc?text=Upload+salad.jpg", desc: "Fresh garden salad", sideOnly: true }
     ];
 
     const menuGrid = document.getElementById('menuGrid');
     const cartBtn = document.getElementById('cartBtn');
     const cartCount = document.getElementById('cartCount');
 
-    // Render menu
+    // Render menu safely
     menuItems.forEach((item, index) => {
-      const div = document.createElement('div');
-      div.className = 'menu-item';
-      div.innerHTML = `
-        <img src="\( {item.img}" alt=" \){item.name}">
-        <h3>${item.name}</h3>
-        <p>${item.desc}</p>
-        <div class="price">R${item.price}.00</div>
-        <div class="quantity-controls">
-          <div class="qty-btn" onclick="updateQty(${index}, -1)">−</div>
-          <div class="qty-display" id="qty-${index}">0</div>
-          <div class="qty-btn" onclick="updateQty(${index}, 1)">+</div>
-        </div>
-        ${item.sideOnly ? '' : `
-        <div class="side-options">
-          <div class="side-btn" data-item="${index}" data-side="chips">CHIPS</div>
-          <div class="side-btn" data-item="${index}" data-side="salad">SALAD</div>
-        </div>`}
-      `;
-      menuGrid.appendChild(div);
+      try {
+        const div = document.createElement('div');
+        div.className = 'menu-item';
+        div.innerHTML = `
+          <img src="\( {item.img}" alt=" \){item.name}" onerror="this.src='https://via.placeholder.com/300x200/333/ccc?text=Image+Missing'">
+          <h3>${item.name}</h3>
+          <p>${item.desc}</p>
+          <div class="price">R${item.price}.00</div>
+          <div class="quantity-controls">
+            <div class="qty-btn" onclick="updateQty(${index}, -1)">−</div>
+            <div class="qty-display" id="qty-${index}">0</div>
+            <div class="qty-btn" onclick="updateQty(${index}, 1)">+</div>
+          </div>
+          ${item.sideOnly ? '' : `
+          <div class="side-options">
+            <div class="side-btn" data-item="${index}" data-side="chips">CHIPS</div>
+            <div class="side-btn" data-item="${index}" data-side="salad">SALAD</div>
+          </div>`}
+        `;
+        menuGrid.appendChild(div);
+      } catch (e) {
+        console.error("Error rendering item:", item, e);
+      }
     });
 
     // Update quantity
     window.updateQty = (index, change) => {
       const qtyEl = document.getElementById(`qty-${index}`);
+      if (!qtyEl) return;
       let qty = parseInt(qtyEl.textContent) + change;
       if (qty < 0) qty = 0;
       qtyEl.textContent = qty;
