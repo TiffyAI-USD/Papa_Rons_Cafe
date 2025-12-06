@@ -261,7 +261,7 @@
       gap: 2rem;
     }
     .menu-item {
-      background: #111;
+      background: transparent !important;
       border: 2px solid #333;
       border-radius: 18px;
       overflow: visible !important;
@@ -280,9 +280,9 @@
       height: 200px;
       object-fit: cover;
       border-bottom: 3px solid #d4a373;
-      display: block;
-      position: relative;
-      z-index: 100;
+      display: block !important;
+      position: relative !important;
+      z-index: 9999 !important;
       background: transparent !important;
     }
     .menu-item:hover img {
@@ -381,7 +381,7 @@
 
     @media (max-width: 768px) {
       h1 { font-size: 3.8rem; letter-spacing: 2px; }
-      .tagline { font-size: 1.4rem; }
+      .tagline { font-size: 1.^M
       .gold-btn { padding: 1rem 2rem; font-size: 1.3rem; }
       .gold-btn::before { font-size: 1.5rem; }
       .action-menu { width: 200px; }
