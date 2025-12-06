@@ -261,13 +261,14 @@
       gap: 2rem;
     }
     .menu-item {
-      background: transparent; /* FIX: REMOVE BLACK BG */
+      background: #111;
       border: 2px solid #333;
       border-radius: 18px;
       overflow: visible !important;
       transition: 0.4s;
       box-shadow: 0 8px 20px rgba(0,0,0,0.4);
       position: relative;
+      z-index: 1;
     }
     .menu-item:hover {
       transform: translateY(-12px);
@@ -279,8 +280,10 @@
       height: 200px;
       object-fit: cover;
       border-bottom: 3px solid #d4a373;
-      transition: 0.3s;
       display: block;
+      position: relative;
+      z-index: 100;
+      background: transparent !important;
     }
     .menu-item:hover img {
       filter: brightness(0.8);
