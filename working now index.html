@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Papa Ron's Café | Food, Smoke & Good Music</title>
 
-  <!-- SOCIAL PREVIEW IMAGE (paparon.jpeg) -->
+  <!-- SOCIAL PREVIEW -->
   <meta property="og:title" content="Papa Ron's Café">
   <meta property="og:description" content="Food • Smoke • Good Music • Order Now">
   <meta property="og:image" content="https://tiffyai-usd.github.io/Papa_Rons_Cafe/paparon.jpeg">
@@ -19,10 +19,10 @@
   <!-- MANIFEST -->
   <link rel="manifest" href="manifest.json">
 
-  <!-- SERVICE WORKER REG -->
+  <!-- SERVICE WORKER -->
   <script>
     if ("serviceWorker" in navigator) {
-      window.addEventListener("load", function() {
+      window.addEventListener("load", () => {
         navigator.serviceWorker.register("sw.js");
       });
     }
@@ -163,6 +163,44 @@
       transform: scale(1.03);
     }
 
+    /* CART BUTTON */
+    .cart-btn {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: linear-gradient(145deg, #d4a373, #b5895f);
+      color: #0a0a0a;
+      padding: 1rem 1.8rem;
+      border-radius: 50px;
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.2rem;
+      letter-spacing: 1.5px;
+      box-shadow: 0 10px 30px rgba(212, 163, 115, 0.5);
+      z-index: 999;
+      display: none;
+      align-items: center;
+      gap: 0.8rem;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .cart-btn.show { display: flex; }
+    .cart-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(212, 163, 115, 0.7);
+    }
+    .cart-count {
+      background: #0a0a0a;
+      color: #d4a373;
+      min-width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
     /* LIGHTBOX */
     .lightbox {
       display: none;
@@ -226,33 +264,10 @@
       background: #111;
       border: 2px solid #333;
       border-radius: 18px;
-      overflow: hidden;
+      overflow: visible !important;
       transition: 0.4s;
       box-shadow: 0 8px 20px rgba(0,0,0,0.4);
       position: relative;
-      cursor: pointer;
-    }
-    .menu-item::after {
-      content: "Tap to Order on WhatsApp";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(212, 163, 115, 0.95);
-      color: #0a0a0a;
-      padding: 0.8rem 1.5rem;
-      border-radius: 50px;
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1.1rem;
-      letter-spacing: 1px;
-      opacity: 0;
-      transition: 0.3s;
-      pointer-events: none;
-      white-space: nowrap;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-    }
-    .menu-item:hover::after {
-      opacity: 1;
     }
     .menu-item:hover {
       transform: translateY(-12px);
@@ -265,6 +280,7 @@
       object-fit: cover;
       border-bottom: 3px solid #d4a373;
       transition: 0.3s;
+      display: block;
     }
     .menu-item:hover img {
       filter: brightness(0.8);
@@ -289,6 +305,64 @@
       font-weight: bold;
     }
 
+    /* QUANTITY CONTROLS */
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 0.8rem 1rem;
+      background: #1a1a1a;
+      border-top: 1px solid #333;
+    }
+    .qty-btn {
+      background: #333;
+      color: #d4a373;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .qty-btn:hover {
+      background: #d4a373;
+      color: #0a0a0a;
+    }
+    .qty-display {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.4rem;
+      color: #d4a373;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    /* SIDE OPTIONS */
+    .side-options {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 0.5rem 1rem 1rem;
+      font-size: 0.9rem;
+    }
+    .side-btn {
+      background: #222;
+      color: #ccc;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .side-btn.active {
+      background: #d4a373;
+      color: #0a0a0a;
+      font-weight: bold;
+    }
+
     footer {
       text-align: center;
       padding: 3rem 1rem;
@@ -302,7 +376,6 @@
       font-weight: bold;
     }
 
-    /* RESPONSIVE */
     @media (max-width: 768px) {
       h1 { font-size: 3.8rem; letter-spacing: 2px; }
       .tagline { font-size: 1.4rem; }
@@ -323,13 +396,11 @@
     <h1>PAPA RON'S CAFÉ</h1>
     <p class="tagline">FOOD • SMOKE • GOOD MUSIC</p>
 
-    <!-- GOLD ORDER BUTTON -->
     <div style="position: relative;">
       <button class="gold-btn" id="mainBtn">
         Menu ORDER NOW
       </button>
 
-      <!-- ACTION MENU -->
       <div class="action-menu" id="actionMenu">
         <a href="#menu" class="action-item" id="scrollToMenu">Browse Menu</a>
         <a href="#" class="action-item" id="openMenu">View Full Menu</a>
@@ -337,6 +408,12 @@
       </div>
     </div>
   </header>
+
+  <!-- CART BUTTON -->
+  <a href="#" class="cart-btn" id="cartBtn">
+    <span id="cartCount" class="cart-count">0</span>
+    <span>ORDER NOW</span>
+  </a>
 
   <!-- LIGHTBOX -->
   <div id="menuLightbox" class="lightbox">
@@ -353,75 +430,7 @@
   <!-- MENU GRID -->
   <section id="menu">
     <h2>OUR MENU</h2>
-    <div class="menu-grid">
-
-      <!-- PIZZA -->
-      <a href="https://wa.me/+27660660088?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20order:%0A%0A1%20x%20SOMETHING%20MEATY%20-%20R135.00%0A%0AThank%20you!" 
-         class="menu-item" target="_blank">
-        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza.jpg" alt="Something Meaty">
-        <h3>SOMETHING MEATY</h3>
-        <p>Creamy chicken, bacon, mushrooms, cheese</p>
-        <div class="price">R135.00</div>
-      </a>
-
-      <a href="https://wa.me/+27660660088?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20order:%0A%0A1%20x%20HAWAIIAN%20-%20R135.00%0A%0AThank%20you!" 
-         class="menu-item" target="_blank">
-        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza1.jpg" alt="Hawaiian">
-        <h3>HAWAIIAN</h3>
-        <p>Ham, pineapple, cheese</p>
-        <div class="price">R135.00</div>
-      </a>
-
-      <a href="https://wa.me/+27660660088?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20order:%0A%0A1%20x%20CHICKEN%20PERI%20NACHO%20-%20R160.00%0A%0AThank%20you!" 
-         class="menu-item" target="_blank">
-        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/nantcho.jpg" alt="Chicken Peri Nacho">
-        <h3>CHICKEN PERI NACHO</h3>
-        <p>Peri-peri chicken, nachos, cheese</p>
-        <div class="price">R160.00</div>
-      </a>
-
-      <!-- BURGERS & PLATTERS -->
-      <a href="https://wa.me/+27660660088?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20order:%0A%0A1%20x%20CHEESE%20BURGER%20-%20R120.00%0A%0AThank%20you!" 
-         class="menu-item" target="_blank">
-        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/burger.jpg" alt="Cheese Burger">
-        <h3>CHEESE BURGER</h3>
-        <p>With side chips</p>
-        <div class="price">R120.00</div>
-      </a>
-
-      <a href="https://wa.me/+27660660088?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20order:%0A%0A1%20x%20BOERIE%20ROLL%20-%20R60.00%0A%0AThank%20you!" 
-         class="menu-item" target="_blank">
-        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/boerie.jpeg" alt="Boerie Roll">
-        <h3>BOERIE ROLL</h3>
-        <p>With chips or salad</p>
-        <div class="price">R60.00</div>
-      </a>
-
-      <a href="https://wa.me/+27660660088?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20order:%0A%0A1%20x%20MUNCHIE%20PLATTER%20-%20R350.00%0A%0AThank%20you!" 
-         class="menu-item" target="_blank">
-        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/platters.jpg" alt="Munchie Platter">
-        <h3>MUNCHIE PLATTER</h3>
-        <p>Full Varieties of munchies</p>
-        <div class="price">R350.00</div>
-      </a>
-
-      <a href="https://wa.me/+27660660088?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20order:%0A%0A1%20x%20RIB%20RACK%20-%20R200.00%0A%0AThank%20you!" 
-         class="menu-item" target="_blank">
-        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/ribs.jpg" alt="Rib Rack">
-        <h3>RIB RACK</h3>
-        <p>Full rack with chips</p>
-        <div class="price">R200.00</div>
-      </a>
-
-      <a href="https://wa.me/+27660660088?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20order:%0A%0A1%20x%20RUMP%20STEAK%20-%20R160.00%0A%0AThank%20you!" 
-         class="menu-item" target="_blank">
-        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/rump.jpeg" alt="Rump Steak">
-        <h3>RUMP STEAK</h3>
-        <p>Loaded with mushroom sauce & chips</p>
-        <div class="price">R160.00</div>
-      </a>
-
-    </div>
+    <div class="menu-grid" id="menuGrid"></div>
   </section>
 
   <!-- FOOTER -->
@@ -429,27 +438,114 @@
     <p>© 2025 PAPA RON'S CAFÉ • COFFEE BAY, MTHATHA</p>
     <p>WHATSAPP: <a href="https://wa.me/+27660660088">+27 66 066 0088</a></p>
     <p style="margin-top:1rem; font-size:0.8rem; opacity:0.7;">
-      We’ll call you within 5 mins to confirm & take payment. Breakfast Served 8–11 AM @ R80.00 - MORE AVAILABLE ON THE FULL MENU BUTTON READY TO ORDER
+      We’ll call you within 5 mins to confirm & take payment.
     </p>
   </footer>
 
   <!-- JS -->
   <script>
+    const cart = {};
+    const menuItems = [
+      { name: "SOMETHING MEATY", price: 135, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza.jpg", desc: "Creamy chicken, bacon, mushrooms, cheese" },
+      { name: "HAWAIIAN", price: 135, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza1.jpg", desc: "Ham, pineapple, cheese" },
+      { name: "CHICKEN PERI NACHO", price: 160, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/nantcho.jpg", desc: "Peri-peri chicken, nachos, cheese" },
+      { name: "CHEESE BURGER", price: 120, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/burger.jpg", desc: "With side chips" },
+      { name: "BOERIE ROLL", price: 50, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/boerie.jpeg", desc: "With chips or salad" },
+      { name: "MUNCHIE PLATTER", price: 350, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/platters.jpg", desc: "Full Varieties of munchies" },
+      { name: "RIB RACK", price: 200, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/ribs.jpg", desc: "Full rack with chips" },
+      { name: "RUMP STEAK", price: 160, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/rump.jpeg", desc: "Loaded with mushroom sauce & chips" },
+      { name: "SIDE CHIPS", price: 20, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/chips.jpg", desc: "Crispy golden chips", sideOnly: true },
+      { name: "SIDE SALAD", price: 20, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/salad.jpg", desc: "Fresh garden salad", sideOnly: true }
+    ];
+
+    const menuGrid = document.getElementById('menuGrid');
+    const cartBtn = document.getElementById('cartBtn');
+    const cartCount = document.getElementById('cartCount');
+
+    // Render menu
+    menuItems.forEach((item, index) => {
+      const div = document.createElement('div');
+      div.className = 'menu-item';
+      div.innerHTML = `
+        <img src="\( {item.img}" alt=" \){item.name}">
+        <h3>${item.name}</h3>
+        <p>${item.desc}</p>
+        <div class="price">R${item.price}.00</div>
+        <div class="quantity-controls">
+          <div class="qty-btn" onclick="updateQty(${index}, -1)">−</div>
+          <div class="qty-display" id="qty-${index}">0</div>
+          <div class="qty-btn" onclick="updateQty(${index}, 1)">+</div>
+        </div>
+        ${item.sideOnly ? '' : `
+        <div class="side-options">
+          <div class="side-btn" data-item="${index}" data-side="chips">CHIPS</div>
+          <div class="side-btn" data-item="${index}" data-side="salad">SALAD</div>
+        </div>`}
+      `;
+      menuGrid.appendChild(div);
+    });
+
+    // Update quantity
+    window.updateQty = (index, change) => {
+      const qtyEl = document.getElementById(`qty-${index}`);
+      let qty = parseInt(qtyEl.textContent) + change;
+      if (qty < 0) qty = 0;
+      qtyEl.textContent = qty;
+      if (qty > 0) {
+        cart[index] = { ...menuItems[index], qty, side: cart[index]?.side || null };
+      } else {
+        delete cart[index];
+      }
+      updateCart();
+    };
+
+    // Side selection
+    document.querySelectorAll('.side-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const itemIndex = btn.dataset.item;
+        const side = btn.dataset.side;
+        const siblings = btn.parentElement.querySelectorAll('.side-btn');
+        siblings.forEach(s => s.classList.remove('active'));
+        btn.classList.add('active');
+        if (cart[itemIndex]) {
+          cart[itemIndex].side = side;
+        }
+      });
+    });
+
+    // Update cart
+    function updateCart() {
+      let totalItems = 0;
+      let message = "Hi Papa Ron's! I'd like to order:%0A%0A";
+      Object.values(cart).forEach(item => {
+        if (item.qty > 0) {
+          totalItems += item.qty;
+          message += item.qty + " x " + item.name + " - R" + item.price + ".00";
+          if (item.side) message += " (with " + item.side + ")";
+          message += "%0A";
+        }
+      });
+      message += "%0AThank you!";
+      cartBtn.href = "https://wa.me/+27660660088?text=" + message;
+      cartCount.textContent = totalItems;
+      cartBtn.classList.toggle('show', totalItems > 0);
+    }
+
+    // Initial hide
+    cartBtn.classList.remove('show');
+
+    // Menu button actions
     const mainBtn = document.getElementById('mainBtn');
     const actionMenu = document.getElementById('actionMenu');
     const scrollToMenu = document.getElementById('scrollToMenu');
 
-    mainBtn.addEventListener('click', () => {
-      actionMenu.classList.toggle('show');
-    });
-
+    mainBtn.addEventListener('click', () => actionMenu.classList.toggle('show'));
     scrollToMenu.addEventListener('click', (e) => {
       e.preventDefault();
       document.querySelector('#menu').scrollIntoView({ behavior: 'smooth' });
       actionMenu.classList.remove('show');
     });
 
-    // Close menu if clicked outside
     document.addEventListener('click', (e) => {
       if (!mainBtn.contains(e.target) && !actionMenu.contains(e.target)) {
         actionMenu.classList.remove('show');
