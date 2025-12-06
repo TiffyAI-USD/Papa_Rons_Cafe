@@ -261,14 +261,13 @@
       gap: 2rem;
     }
     .menu-item {
-      background: transparent !important;
+      background: #111;
       border: 2px solid #333;
       border-radius: 18px;
       overflow: visible !important;
       transition: 0.4s;
       box-shadow: 0 8px 20px rgba(0,0,0,0.4);
       position: relative;
-      z-index: 1;
     }
     .menu-item:hover {
       transform: translateY(-12px);
@@ -280,10 +279,9 @@
       height: 200px;
       object-fit: cover;
       border-bottom: 3px solid #d4a373;
-      display: block !important;
-      position: relative !important;
-      z-index: 9999 !important;
-      background: transparent !important;
+      display: block;
+      position: relative;
+      z-index: 10;
     }
     .menu-item:hover img {
       filter: brightness(0.8);
@@ -381,7 +379,7 @@
 
     @media (max-width: 768px) {
       h1 { font-size: 3.8rem; letter-spacing: 2px; }
-      .tagline { font-size: 1.^M
+      .tagline { font-size: 1.4rem; }
       .gold-btn { padding: 1rem 2rem; font-size: 1.3rem; }
       .gold-btn::before { font-size: 1.5rem; }
       .action-menu { width: 200px; }
@@ -464,27 +462,31 @@
     const cartBtn = document.getElementById('cartBtn');
     const cartCount = document.getElementById('cartCount');
 
-    // Render menu
+    // Render menu with error handling
     menuItems.forEach((item, index) => {
-      const div = document.createElement('div');
-      div.className = 'menu-item';
-      div.innerHTML = `
-        <img src="\( {item.img}" alt=" \){item.name}" onerror="this.src='https://via.placeholder.com/300x200/333/ccc?text=Image+Missing'">
-        <h3>${item.name}</h3>
-        <p>${item.desc}</p>
-        <div class="price">R${item.price}.00</div>
-        <div class="quantity-controls">
-          <div class="qty-btn" onclick="updateQty(${index}, -1)">−</div>
-          <div class="qty-display" id="qty-${index}">0</div>
-          <div class="qty-btn" onclick="updateQty(${index}, 1)">+</div>
-        </div>
-        ${item.sideOnly ? '' : `
-        <div class="side-options">
-          <div class="side-btn" data-item="${index}" data-side="chips">CHIPS</div>
-          <div class="side-btn" data-item="${index}" data-side="salad">SALAD</div>
-        </div>`}
-      `;
-      menuGrid.appendChild(div);
+      try {
+        const div = document.createElement('div');
+        div.className = 'menu-item';
+        div.innerHTML = `
+          <img src="\( {item.img}" alt=" \){item.name}" onerror="this.src='https://via.placeholder.com/300x200/333/ccc?text=Image+Missing'">
+          <h3>${item.name}</h3>
+          <p>${item.desc}</p>
+          <div class="price">R${item.price}.00</div>
+          <div class="quantity-controls">
+            <div class="qty-btn" onclick="updateQty(${index}, -1)">−</div>
+            <div class="qty-display" id="qty-${index}">0</div>
+            <div class="qty-btn" onclick="updateQty(${index}, 1)">+</div>
+          </div>
+          ${item.sideOnly ? '' : `
+          <div class="side-options">
+            <div class="side-btn" data-item="${index}" data-side="chips">CHIPS</div>
+            <div class="side-btn" data-item="${index}" data-side="salad">SALAD</div>
+          </div>`}
+        `;
+        menuGrid.appendChild(div);
+      } catch (e) {
+        console.error("Failed to render:", item.name, e);
+      }
     });
 
     // Update quantity
