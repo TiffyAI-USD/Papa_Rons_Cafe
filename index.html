@@ -4,42 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Papa Ron's Café | Food, Smoke & Good Music</title>
-
-  <!-- SOCIAL PREVIEW -->
-  <meta property="og:title" content="Papa Ron's Café">
-  <meta property="og:description" content="Food • Smoke • Good Music • Order Now">
-  <meta property="og:image" content="https://tiffyai-usd.github.io/Papa_Rons_Cafe/paparon.jpeg">
-  <meta property="og:image:type" content="image/jpeg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="1800">
-  <meta property="og:url" content="https://tiffyai-usd.github.io/Papa_Rons_Cafe/">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://tiffyai-usd.github.io/Papa_Rons_Cafe/paparon.jpeg">
-
-  <!-- MANIFEST -->
-  <link rel="manifest" href="manifest.json">
-
-  <!-- SERVICE WORKER -->
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("sw.js");
-      });
-    }
-  </script>
-
-  <link href="https://fonts.googleapis.com/css2?family=Bebas++Neue&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Inter', sans-serif;
-      background: #0a0a0a;
-      color: #e0e0e0;
+      font-family: 'Open Sans', sans-serif;
+      background: #f9f5f0;
+      color: #333;
       line-height: 1.6;
-      overflow-x: hidden;
     }
-
-    /* HERO */
     header {
       background: url('https://tiffyai-usd.github.io/Papa_Rons_Cafe/banner.jpg') no-repeat center center/cover;
       height: 100vh;
@@ -50,352 +23,82 @@
       justify-content: center;
       align-items: center;
       position: relative;
-      overflow: hidden;
     }
     header::after {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(10, 10, 10, 0.75);
-      backdrop-filter: blur(3px);
+      background: rgba(0,0,0,0.5);
       z-index: 1;
-      pointer-events: none;
-      height: 100vh;
-      width: 100%;
     }
     header > * { position: relative; z-index: 2; }
-
     .logo {
-      max-width: 200px;
+      max-width: 250px;
       height: auto;
       margin-bottom: 1rem;
-      border-radius: 18px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      border: 3px solid #d4a373;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
     h1 {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 5.5rem;
-      letter-spacing: 4px;
-      color: #d4a373;
+      font-family: 'Pacifico', cursive;
+      font-size: 4.5rem;
       margin-bottom: 0.5rem;
-      text-shadow: 0 4px 12px rgba(0,0,0,0.8);
-      text-transform: uppercase;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
     }
-    .tagline {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1.8rem;
-      letter-spacing: 3px;
-      color: #d4a373;
-      margin-bottom: 1.5rem;
-      opacity: 0.9;
-    }
-
-    /* CART BUTTON */
-    .cart-btn {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      background: linear-gradient(145deg, #d4a373, #b5895f);
-      color: #0a0a0a;
-      padding: 1rem 1.8rem;
-      border-radius: 50px;
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1.2rem;
-      letter-spacing: 1.5px;
-      box-shadow: 0 10px 30px rgba(212, 163, 115, 0.5);
-      z-index: 999;
-      display: none;
-      align-items: center;
-      gap: 0.8rem;
-      text-decoration: none;
-      transition: 0.3s;
-    }
-    .cart-btn.show { display: flex; }
-    .cart-btn:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(212, 163, 115, 0.7);
-    }
-    .cart-count {
-      background: #0a0a0a;
-      color: #d4a373;
-      min-width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      font-weight: bold;
-    }
-
-    /* GOLD ORDER BUTTON */
-    .gold-btn {
-      background: linear-gradient(145deg, #d4a373, #b5895f);
-      color: #0a0a0a;
-      padding: 1.2rem 3rem;
+    .tagline { font-size: 1.5rem; margin-bottom: 2rem; }
+    .btn {
+      background: #d4a373;
+      color: white;
+      padding: 1rem 2rem;
       border: none;
       border-radius: 50px;
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1.5rem;
-      letter-spacing: 2px;
-      cursor: pointer;
-      box-shadow: 0 8px 25px rgba(212, 163, 115, 0.4);
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      font-weight: bold;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.8rem;
-      text-decoration: none;
-    }
-    .gold-btn:hover {
-      transform: translateY(-4px) scale(1.05);
-      box-shadow: 0 15px 35px rgba(212, 163, 115, 0.6);
-    }
-    .gold-btn::before {
-      content: "Menu";
-      font-size: 1.8rem;
-    }
-
-    /* MENU ACTION DROPDOWN */
-    .action-menu {
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      margin-top: 1rem;
-      background: #1a1a1a;
-      border: 2px solid #d4a373;
-      border-radius: 16px;
-      padding: 1rem;
-      display: none;
-      flex-direction: column;
-      gap: 0.8rem;
-      width: 220px;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.7);
-      z-index: 100;
-    }
-    .action-menu.show {
-      display: flex;
-      animation: popDown 0.4s ease;
-    }
-    @keyframes popDown {
-      from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
-      to { opacity: 1; transform: translateX(-50%) translateY(0); }
-    }
-
-    .action-item {
-      background: #0f0f0f;
-      color: #d4a373;
-      padding: 0.9rem 1.2rem;
-      border-radius: 12px;
-      font-family: 'Bebas Neue', cursive;
       font-size: 1.1rem;
-      letter-spacing: 1.5px;
-      text-align: center;
-      text-decoration: none;
-      transition: 0.3s;
-      border: 1px solid #333;
-    }
-    .action-item:hover {
-      background: #d4a373;
-      color: #0a0a0a;
-      transform: scale(1.03);
-    }
-
-    /* LIGHTBOX */
-    .lightbox {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.95);
-      overflow: auto;
-      backdrop-filter: blur(8px);
-    }
-    .lightbox-content {
-      position: relative;
-      max-width: 90%;
-      margin: 5% auto;
-      text-align: center;
-    }
-    .lightbox-img {
-      width: 100%;
-      max-width: 900px;
-      border: 6px solid #d4a373;
-      border-radius: 18px;
-      box-shadow: 0 20px 60px rgba(212, 163, 115, 0.3);
-    }
-    .close-btn {
-      position: absolute;
-      top: -15px;
-      right: -15px;
-      background: #d4a373;
-      color: #0a0a0a;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      font-size: 2rem;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       cursor: pointer;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+      transition: 0.3s;
+      text-decoration: none;
+      display: inline-block;
+      margin: 0.5rem;
     }
-    .close-btn:hover { background: #e6b880; }
+    .btn:hover { background: #b5895f; transform: scale(1.05); }
 
-    /* MENU SECTION */
-    section { 
-      padding: 5rem 8%; 
-      max-width: 1400px; 
-      margin: auto; 
-      position: relative;
-      z-index: 100;
-      background: #0a0a0a;
-    }
-    h2 {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 3.5rem;
-      text-align: center;
-      margin-bottom: 3rem;
-      color: #d4a373;
-      letter-spacing: 3px;
-      text-shadow: 0 3px 10px rgba(0,0,0,0.6);
-    }
+    section { padding: 4rem 10%; max-width: 1200px; margin: auto; }
+    h2 { font-family: 'Pacifico', cursive; font-size: 2.5rem; text-align: center; margin-bottom: 2rem; color: #6b4e31; }
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 2rem;
-      position: relative;
-      z-index: 10;
     }
-
     .menu-item {
-      background: #111;
-      border: 2px solid #333;
-      border-radius: 18px;
-      overflow: visible !important; /* FINAL FIX: LET IMAGES SHOW */
-      transition: 0.4s;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-      position: relative;
-      z-index: 10;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: 0.3s;
     }
-    .menu-item:hover {
-      transform: translateY(-12px);
-      border-color: #d4a373;
-      box-shadow: 0 20px 40px rgba(212, 163, 115, 0.2);
-    }
+    .menu-item:hover { transform: translateY(-8px); box-shadow: 0 12px 20px rgba(0,0,0,0.15); }
     .menu-item img {
       width: 100%;
       height: 200px;
       object-fit: cover;
-      border-bottom: 3px solid #d4a373;
-      display: block;
-      position: relative;
-      z-index: 10;
-      min-height: 200px;
-      background: transparent;
+      border-radius: 15px 15px 0 0;
+      display: block !important;
+      visibility: visible !important;
     }
-    .menu-item h3 {
-      padding: 1.2rem 1rem 0.5rem;
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1.6rem;
-      color: #d4a373;
-      letter-spacing: 1.5px;
-    }
-    .menu-item p {
-      padding: 0 1rem 0.8rem;
-      font-size: 0.95rem;
-      color: #ccc;
-    }
-    .price {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1.5rem;
-      color: #d4a373;
-      padding: 0 1rem 0.5rem;
-      font-weight: bold;
-    }
-
-    /* QUANTITY & SIDES */
-    .quantity-controls {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      padding: 0.8rem 1rem;
-      background: #1a1a1a;
-      border-top: 1px solid #333;
-    }
-    .qty-btn {
-      background: #333;
-      color: #d4a373;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .qty-btn:hover {
-      background: #d4a373;
-      color: #0a0a0a;
-    }
-    .qty-display {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1.4rem;
-      color: #d4a373;
-      min-width: 40px;
-      text-align: center;
-    }
-
-    .side-options {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      padding: 0.5rem 1rem 1rem;
-      font-size: 0.9rem;
-    }
-    .side-btn {
-      background: #222;
-      color: #ccc;
-      padding: 0.4rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .side-btn.active {
-      background: #d4a373;
-      color: #0a0a0a;
-      font-weight: bold;
-    }
+    .menu-item h3 { padding: 1rem 1rem 0.5rem; font-size: 1.4rem; color: #6b4e31; }
+    .menu-item p { padding: 0 1rem 1rem; font-size: 0.95rem; color: #555; }
+    .price { font-weight: bold; color: #d4a373; font-size: 1.2rem; padding: 0 1rem 1rem; }
 
     footer {
       text-align: center;
-      padding: 3rem 1rem;
-      background: #000;
-      color: #999;
+      padding: 2rem;
+      background: #6b4e31;
+      color: white;
       font-size: 0.9rem;
-      border-top: 1px solid #333;
     }
-    footer a {
-      color: #25D366;
-      font-weight: bold;
-    }
-
     @media (max-width: 768px) {
-      h1 { font-size: 3.8rem; }
-      .tagline { font-size: 1.4rem; }
-      .gold-btn { padding: 1rem 2rem; font-size: 1.3rem; }
-      .menu-item img { height: 160px; }
-      h2 { font-size: 2.8rem; }
-      .cart-btn { bottom: 1rem; right: 1rem; padding: 0.8rem 1.2rem; font-size: 1rem; }
+      h1 { font-size: 3rem; }
+      .tagline { font-size: 1.2rem; }
+      header { height: 80vh; }
+      .logo { max-width: 200px; }
     }
   </style>
 </head>
@@ -403,167 +106,93 @@
 
   <!-- HERO -->
   <header>
-    <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/logo.jpeg" alt="Papa Ron's Logo" class="logo">
-    <h1>PAPA RON'S CAFÉ</h1>
-    <p class="tagline">FOOD • SMOKE • GOOD MUSIC</p>
-
-    <div style="position: relative;">
-      <button class="gold-btn" id="mainBtn">
-        Menu ORDER NOW
-      </button>
-
-      <div class="action-menu" id="actionMenu">
-        <a href="#menu" class="action-item" id="scrollToMenu">Browse Menu</a>
-        <a href="#" class="action-item" id="openMenu">View Full Menu</a>
-        <a href="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu1.pdf" class="action-item" download>Download Menu PDF</a>
-      </div>
-    </div>
+    <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/logo.jpeg" alt="Papa Ron's Café Logo" class="logo">
+    <h1>Papa Ron's Café</h1>
+    <p class="tagline">Food, Smoke, and Good Music.</p>
+    <a href="https://wa.me/+27660660088?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20place%20an%20order..." class="btn">Order via WhatsApp</a>
+    <a href="#" class="btn" id="openMenu">View Full Menu</a>
+    <a href="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu1.pdf" class="btn" download>Download Menu (PDF)</a>
   </header>
 
-  <!-- CART BUTTON -->
-  <a href="#" class="cart-btn" id="cartBtn">
-    <span id="cartCount" class="cart-count">0</span>
-    <span>ORDER NOW</span>
-  </a>
-
   <!-- LIGHTBOX -->
-  <div id="menuLightbox" class="lightbox">
-    <div class="lightbox-content">
-      <span class="close-btn" id="closeMenu">X</span>
-      <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu1.jpeg" alt="Full Menu" class="lightbox-img">
-      <div style="margin-top:1.5rem; color:#d4a373; font-family:'Bebas Neue',cursive; font-size:1.3rem;">
-        WhatsApp your order: 
-        <a href="https://wa.me/+27660660088" style="color:#25D366;">+27 66 066 0088</a>
-      </div>
+  <div id="menuLightbox" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.9); overflow:auto;">
+    <div style="position:relative; max-width:90%; margin:5% auto; text-align:center;">
+      <span style="position:absolute; top:-10px; right:-10px; background:#d4a373; color:white; width:40px; height:40px; border-radius:50%; font-size:2rem; display:flex; align-items:center; justify-content:center; cursor:pointer;" id="closeMenu">×</span>
+      <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu1.jpeg" alt="Full Menu" style="width:100%; max-width:800px; border-radius:16px;">
     </div>
   </div>
 
   <!-- MENU GRID -->
   <section id="menu">
-    <h2>OUR MENU</h2>
-    <div class="menu-grid" id="menuGrid"></div>
+    <h2>Our Menu</h2>
+    <div class="menu-grid">
+      <a href="https://wa.me/+27660660088?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20order:%0A%0A1%20x%20SOMETHING%20MEATY%20-%20R135.00%0A%0AThank%20you!" class="menu-item">
+        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza.jpg" alt="Something Meaty">
+        <h3>SOMETHING MEATY</h3>
+        <p>Creamy chicken, bacon, mushrooms, cheese</p>
+        <div class="price">R135.00</div>
+      </a>
+
+      <a href="https://wa.me/+27660660088?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20order:%0A%0A1%20x%20HAWAIIAN%20-%20R135.00%0A%0AThank%20you!" class="menu-item">
+        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza1.jpg" alt="Hawaiian">
+        <h3>HAWAIIAN</h3>
+        <p>Ham, pineapple, cheese</p>
+        <div class="price">R135.00</div>
+      </a>
+
+      <a href="https://wa.me/+27660660088?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20order:%0A%0A1%20x%20CHICKEN%20PERI%20NACHO%20-%20R160.00%0A%0AThank%20you!" class="menu-item">
+        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/nantcho.jpg" alt="Chicken Peri Nacho">
+        <h3>CHICKEN PERI NACHO</h3>
+        <p>Peri-peri chicken, nachos, cheese</p>
+        <div class="price">R160.00</div>
+      </a>
+
+      <a href="https://wa.me/+27660660088?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20order:%0A%0A1%20x%20CHEESE%20BURGER%20-%20R120.00%0A%0AThank%20you!" class="menu-item">
+        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/burger.jpg" alt="Cheese Burger">
+        <h3>CHEESE BURGER</h3>
+        <p>With side chips</p>
+        <div class="price">R120.00</div>
+      </a>
+
+      <a href="https://wa.me/+27660660088?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20order:%0A%0A1%20x%20BOERIE%20ROLL%20-%20R50.00%0A%0AThank%20you!" class="menu-item">
+        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/boerie.jpeg" alt="Boerie Roll">
+        <h3>BOERIE ROLL</h3>
+        <p>With chips or salad</p>
+        <div class="price">R50.00</div>
+      </a>
+
+      <a href="https://wa.me/+27660660088?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20order:%0A%0A1%20x%20MUNCHIE%20PLATTER%20-%20R350.00%0A%0AThank%20you!" class="menu-item">
+        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/platters.jpg" alt="Munchie Platter">
+        <h3>MUNCHIE PLATTER</h3>
+        <p>Full Varieties of munchies</p>
+        <div class="price">R350.00</div>
+      </a>
+
+      <a href="https://wa.me/+27660660088?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20order:%0A%0A1%20x%20RIB%20RACK%20-%20R200.00%0A%0AThank%20you!" class="menu-item">
+        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/ribs.jpg" alt="Rib Rack">
+        <h3>RIB RACK</h3>
+        <p>Full rack with chips</p>
+        <div class="price">R200.00</div>
+      </a>
+
+      <a href="https://wa.me/+27660660088?text=Hi%20Papa%20Ron's!%20I'd%20like%20to%20order:%0A%0A1%20x%20RUMP%20STEAK%20-%20R160.00%0A%0AThank%20you!" class="menu-item">
+        <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/rump.jpeg" alt="Rump Steak">
+        <h3>RUMP STEAK</h3>
+        <p>Loaded with mushroom sauce & chips</p>
+        <div class="price">R160.00</div>
+      </a>
+    </div>
   </section>
 
   <!-- FOOTER -->
   <footer>
-    <p>© 2025 PAPA RON'S CAFÉ • COFFEE BAY, MTHATHA</p>
-    <p>WHATSAPP: <a href="https://wa.me/+27660660088">+27 66 066 0088</a></p>
-    <p style="margin-top:1rem; font-size:0.8rem; opacity:0.7;">
-      We’ll call you within 5 mins to confirm & take payment.
-    </p>
+    <p>© 2025 Papa Ron's Café • 123 Main St, Coffee Bay, Mthatha</p>
+    <p>WhatsApp: <a href="https://wa.me/+27660660088" style="color:#25D366; font-weight:bold;">+27 66 066 0088</a></p>
+    <p>Made with love for good food and good people.</p>
   </footer>
 
   <!-- JS -->
   <script>
-    const cart = {};
-    const menuItems = [
-      { name: "SOMETHING MEATY", price: 135, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza.jpg", desc: "Creamy chicken, bacon, mushrooms, cheese" },
-      { name: "HAWAIIAN", price: 135, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza1.jpg", desc: "Ham, pineapple, cheese" },
-      { name: "CHICKEN PERI NACHO", price: 160, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/nantcho.jpg", desc: "Peri-peri chicken, nachos, cheese" },
-      { name: "CHEESE BURGER", price: 120, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/burger.jpg", desc: "With side chips" },
-      { name: "BOERIE ROLL", price: 50, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/boerie.jpeg", desc: "With chips or salad" },
-      { name: "MUNCHIE PLATTER", price: 350, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/platters.jpg", desc: "Full Varieties of munchies" },
-      { name: "RIB RACK", price: 200, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/ribs.jpg", desc: "Full rack with chips" },
-      { name: "RUMP STEAK", price: 160, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/rump.jpeg", desc: "Loaded with mushroom sauce & chips" },
-      { name: "SIDE CHIPS", price: 20, img: "https://via.placeholder.com/300x200/333/ccc?text=Upload+chips.jpg", desc: "Crispy golden chips", sideOnly: true },
-      { name: "SIDE SALAD", price: 20, img: "https://via.placeholder.com/300x200/333/ccc?text=Upload+salad.jpg", desc: "Fresh garden salad", sideOnly: true }
-    ];
-
-    const menuGrid = document.getElementById('menuGrid');
-    const cartBtn = document.getElementById('cartBtn');
-    const cartCount = document.getElementById('cartCount');
-
-    // Render menu
-    menuItems.forEach((item, index) => {
-      const div = document.createElement('div');
-      div.className = 'menu-item';
-      div.innerHTML = `
-        <img src="\( {item.img}" alt=" \){item.name}" onerror="this.src='https://via.placeholder.com/300x200/333/ccc?text=Image+Missing'">
-        <h3>${item.name}</h3>
-        <p>${item.desc}</p>
-        <div class="price">R${item.price}.00</div>
-        <div class="quantity-controls">
-          <div class="qty-btn" onclick="updateQty(${index}, -1)">−</div>
-          <div class="qty-display" id="qty-${index}">0</div>
-          <div class="qty-btn" onclick="updateQty(${index}, 1)">+</div>
-        </div>
-        ${item.sideOnly ? '' : `
-        <div class="side-options">
-          <div class="side-btn" data-item="${index}" data-side="chips">CHIPS</div>
-          <div class="side-btn" data-item="${index}" data-side="salad">SALAD</div>
-        </div>`}
-      `;
-      menuGrid.appendChild(div);
-    });
-
-    // Update quantity
-    window.updateQty = (index, change) => {
-      const qtyEl = document.getElementById(`qty-${index}`);
-      let qty = parseInt(qtyEl.textContent) + change;
-      if (qty < 0) qty = 0;
-      qtyEl.textContent = qty;
-      if (qty > 0) {
-        cart[index] = { ...menuItems[index], qty, side: cart[index]?.side || null };
-      } else {
-        delete cart[index];
-      }
-      updateCart();
-    };
-
-    // Side selection
-    document.querySelectorAll('.side-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const itemIndex = btn.dataset.item;
-        const side = btn.dataset.side;
-        const siblings = btn.parentElement.querySelectorAll('.side-btn');
-        siblings.forEach(s => s.classList.remove('active'));
-        btn.classList.add('active');
-        if (cart[itemIndex]) {
-          cart[itemIndex].side = side;
-        }
-      });
-    });
-
-    // Update cart
-    function updateCart() {
-      let totalItems = 0;
-      let message = "Hi Papa Ron's! I'd like to order:%0A%0A";
-      Object.values(cart).forEach(item => {
-        if (item.qty > 0) {
-          totalItems += item.qty;
-          message += item.qty + " x " + item.name + " - R" + item.price + ".00";
-          if (item.side) message += " (with " + item.side + ")";
-          message += "%0A";
-        }
-      });
-      message += "%0AThank you!";
-      cartBtn.href = "https://wa.me/+27660660088?text=" + message;
-      cartCount.textContent = totalItems;
-      cartBtn.classList.toggle('show', totalItems > 0);
-    }
-
-    // Initial hide
-    cartBtn.classList.remove('show');
-
-    // Menu button actions
-    const mainBtn = document.getElementById('mainBtn');
-    const actionMenu = document.getElementById('actionMenu');
-    const scrollToMenu = document.getElementById('scrollToMenu');
-
-    mainBtn.addEventListener('click', () => actionMenu.classList.toggle('show'));
-    scrollToMenu.addEventListener('click', (e) => {
-      e.preventDefault();
-      document.querySelector('#menu').scrollIntoView({ behavior: 'smooth' });
-      actionMenu.classList.remove('show');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!mainBtn.contains(e.target) && !actionMenu.contains(e.target)) {
-        actionMenu.classList.remove('show');
-      }
-    });
-
-    // Lightbox
     document.getElementById('openMenu').addEventListener('click', (e) => {
       e.preventDefault();
       document.getElementById('menuLightbox').style.display = 'block';
