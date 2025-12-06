@@ -58,6 +58,7 @@
       background: rgba(10, 10, 10, 0.75);
       backdrop-filter: blur(3px);
       z-index: 1;
+      pointer-events: none; /* FIX: Allows clicks through */
     }
     header > * { position: relative; z-index: 2; }
 
@@ -278,6 +279,8 @@
       height: 200px;
       object-fit: cover;
       border-bottom: 3px solid #d4a373;
+      position: relative;
+      z-index: 2; /* FIX: Images above any overlay */
     }
     .menu-item h3 {
       padding: 1.2rem 1rem 0.5rem;
@@ -447,8 +450,6 @@
       { name: "RUMP STEAK", price: 160, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/rump.jpeg", desc: "Loaded with mushroom sauce & chips" },
       { name: "SIDE CHIPS", price: 20, img: "https://via.placeholder.com/300x200/333/ccc?text=Upload+chips.jpg", desc: "Crispy golden chips", sideOnly: true },
       { name: "SIDE SALAD", price: 20, img: "https://via.placeholder.com/300x200/333/ccc?text=Upload+salad.jpg", desc: "Fresh garden salad", sideOnly: true }
-      // ADD NEW ITEMS BELOW LIKE THIS:
-      // { name: "NEW ITEM", price: 99, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/newphoto.jpg", desc: "Description here" },
     ];
 
     const menuGrid = document.getElementById('menuGrid');
