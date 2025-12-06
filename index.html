@@ -58,7 +58,7 @@
       background: rgba(10, 10, 10, 0.75);
       backdrop-filter: blur(3px);
       z-index: 1;
-      pointer-events: none; /* FIX: Allows clicks through */
+      pointer-events: none;
     }
     header > * { position: relative; z-index: 2; }
 
@@ -245,7 +245,13 @@
     .close-btn:hover { background: #e6b880; }
 
     /* MENU SECTION */
-    section { padding: 5rem 8%; max-width: 1400px; margin: auto; }
+    section { 
+      padding: 5rem 8%; 
+      max-width: 1400px; 
+      margin: auto; 
+      position: relative;
+      z-index: 5; /* ABOVE HERO OVERLAY */
+    }
     h2 {
       font-family: 'Bebas Neue', cursive;
       font-size: 3.5rem;
@@ -259,7 +265,11 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 2rem;
+      position: relative;
+      z-index: 10;
     }
+    .menu-grid::before { content: none !important; } /* KILL ANY PSEUDO OVERLAY */
+
     .menu-item {
       background: #111;
       border: 2px solid #333;
@@ -268,6 +278,7 @@
       transition: 0.4s;
       box-shadow: 0 8px 20px rgba(0,0,0,0.4);
       position: relative;
+      z-index: 10;
     }
     .menu-item:hover {
       transform: translateY(-12px);
@@ -280,7 +291,8 @@
       object-fit: cover;
       border-bottom: 3px solid #d4a373;
       position: relative;
-      z-index: 2; /* FIX: Images above any overlay */
+      z-index: 10;
+      display: block;
     }
     .menu-item h3 {
       padding: 1.2rem 1rem 0.5rem;
@@ -441,7 +453,7 @@
     const cart = {};
     const menuItems = [
       { name: "SOMETHING MEATY", price: 135, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza.jpg", desc: "Creamy chicken, bacon, mushrooms, cheese" },
-      { name: "HAWAIIAN", price: 135, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza1.jpg", desc: "Ham, pineapple, cheese" },
+      { name: "HAWAIIAN", price: 135, img: "https://tiffyai-usd.github.io.io/Papa_Rons_Cafe/pizza1.jpg", desc: "Ham, pineapple, cheese" },
       { name: "CHICKEN PERI NACHO", price: 160, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/nantcho.jpg", desc: "Peri-peri chicken, nachos, cheese" },
       { name: "CHEESE BURGER", price: 120, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/burger.jpg", desc: "With side chips" },
       { name: "BOERIE ROLL", price: 50, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/boerie.jpeg", desc: "With chips or salad" },
