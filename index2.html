@@ -139,7 +139,7 @@
       display: flex;
       animation: popDown 0.4s ease;
     }
-    @keyframes popDown {
+    @keyframes poplama {
       from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
       to { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
@@ -223,8 +223,7 @@
       max-width: 900px;
       border: 6px solid #d4a373;
       border-radius: 18px;
-      box-shadow: 0 20px 
-60px rgba(212, 163, 115, 0.3);
+      box-shadow: 0 20px 60px rgba(212, 163, 115, 0.3);
     }
     .close-btn {
       position: absolute;
@@ -300,7 +299,7 @@
       color: #ccc;
     }
     .price {
-      font-family: 'Bebas Neue', cursive;
+      font-family: 'Bebas Neue', cursor;
       font-size: 1.5rem;
       color: #d4a373;
       padding: 0 1rem 1.2rem;
@@ -455,15 +454,23 @@
       { name: "MUNCHIE PLATTER", price: 350, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/platters.jpg", desc: "Full Varieties of munchies" },
       { name: "RIB RACK", price: 200, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/ribs.jpg", desc: "Full rack with chips" },
       { name: "RUMP STEAK", price: 160, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/rump.jpeg", desc: "Loaded with mushroom sauce & chips" },
-      { name: "SIDE CHIPS", price: 20, img: "https://via.placeholder.com/300x200/333/ccc?text=Upload+chips.jpg", desc: "Crispy golden chips", sideOnly: true },
-      { name: "SIDE SALAD", price: 20, img: "https://via.placeholder.com/300x200/333/ccc?text=Upload+salad.jpg", desc: "Fresh garden salad", sideOnly: true }
+      { name: "SIDE CHIPS", price: 20, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu.jpg", desc: "Crispy golden chips", sideOnly: true },
+      { name: "SIDE SALAD", price: 20, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu1.jpeg", desc: "Fresh garden salad", sideOnly: true },
+      { name: "BACON BURGER", price: 120, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/baconburger.jpg", desc: "Beef patty, bacon, cheese, chips" },
+      { name: "BREAKFAST", price: 80, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/breakfast.jpg", desc: "Eggs, bacon, toast, coffee" },
+      { name: "BUFFALO WINGS", price: 90, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/buffelowings.jpg", desc: "Spicy wings with dips" },
+      { name: "GREEK SALAD", price: 35, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/greeksalad.jpg", desc: "Feta, olives, tomatoes, dressing" },
+      { name: "PLATTER", price: 250, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/platter.jpg", desc: "Mixed meat platter for 2" },
+      { name: "POPS", price: 70, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/pops.jpg", desc: "Chicken pops with dips" },
+      { name: "PREGO ROLL", price: 110, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/prego.jpg", desc: "Peri-peri steak roll with chips" },
+      { name: "RIB PIZZA", price: 180, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/ribpizza.jpg", desc: "Ribs on pizza base with cheese" },
+      { name: "SCHNITZEL", price: 130, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/snitsel.jpg", desc: "Chicken schnitzel with chips & sauce" }
     ];
 
     const menuGrid = document.getElementById('menuGrid');
     const cartBtn = document.getElementById('cartBtn');
     const cartCount = document.getElementById('cartCount');
 
-    // Render menu
     menuItems.forEach((item, index) => {
       const div = document.createElement('div');
       div.className = 'menu-item';
@@ -488,6 +495,7 @@
 
     window.updateQty = (index, change) => {
       const qtyEl = document.getElementById(`qty-${index}`);
+      if (!qtyEl) return;
       let qty = parseInt(qtyEl.textContent) + change;
       if (qty < 0) qty = 0;
       qtyEl.textContent = qty;
