@@ -34,7 +34,7 @@
     body {
       font-family: 'Inter', sans-serif;
       background: #0a0a0a;
-      color: #e0e00e;
+      color: #e0e0e0;
       line-height: 1.6;
       overflow-x: hidden;
     }
@@ -435,7 +435,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <p>© 2025 PAPA RON'S CAFÉ • COFFEE BAY, MTHATHA</p>
+    </footer><p>© 2025 PAPA RON'S CAFÉ • COFFEE BAY, MTHATHA</p>
     <p>WHATSAPP: <a href="https://wa.me/+27660660088">+27 66 066 0088</a></p>
     <p style="margin-top:1rem; font-size:0.8rem; opacity:0.7;">
       We’ll call you within 5 mins to confirm & take payment.
@@ -475,7 +475,7 @@
       const div = document.createElement('div');
       div.className = 'menu-item';
       div.innerHTML = `
-        <img src="\( {item.img}" alt=" \){item.name}" onerror="this.src='https://via.placeholder.com/300x200/333/ccc?text=Image+Missing'">
+        <img src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/300x200/333/ccc?text=Image+Missing'">
         <h3>${item.name}</h3>
         <p>${item.desc}</p>
         <div class="price">R${item.price}.00</div>
