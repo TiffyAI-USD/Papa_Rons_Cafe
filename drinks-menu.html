@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Papa Ron's Café | Food, Smoke & Good Music</title>
+
+  <!-- Social preview -->
+  <meta property="og:title" content="Papa Ron's Café">
+  <meta property="og:description" content="Food • Smoke • Good Music • Order Now">
+  <meta property="og:image" content="https://tiffyai-usd.github.io/Papa_Rons_Cafe/paparon.jpeg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="1800">
+  <meta property="og:url" content="https://tiffyai-usd.github.io/Papa_Rons_Cafe/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://tiffyai-usd.github.io/Papa_Rons_Cafe/paparon.jpeg">
+
+  <!-- PWA manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Service worker register -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(()=>{/*sw fail silently*/});
+      });
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* RESET & BASE */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html,body{height:100%}
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0a;
+      color: #e6e6e6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    /* HERO */
+    header {
+      background: url('https://tiffyai-usd.github.io/Papa_Rons_Cafe/banner.jpg') center/cover no-repeat;
+      height: 100vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      position:relative;
+    }
+    header::after {
+      content:'';
+      position:absolute; inset:0;
+      background: rgba(10,10,10,0.6);
+      backdrop-filter: blur(2px);
+      z-index:1;
+    }
+    header > * { position:relative; z-index:2; }
+    .logo { max-width:200px; border-radius:18px; border:3px solid #d4a373; box-shadow:0 10px 30px rgba(0,0,0,0.6); margin-bottom:1rem; }
+    h1 {
+      font-family: 'Bebas Neue', cursive;
+      font-size:5.5rem;
+      color:#d4a373;
+      letter-spacing:4px;
+      text-shadow:0 6px 18px rgba(0,0,0,0.7);
+      text-transform:uppercase;
+      margin-bottom:0.4rem;
+    }
+    .tagline {
+      font-family:'Bebas Neue', cursive;
+      color:#d4a373;
+      letter-spacing:3px;
+      font-size:1.6rem;
+      margin-bottom:1.6rem;
+      opacity:0.95;
+    }
+
+    /* FLAME MENU BUTTON (Style B - REAL FIRE) */
+    .menu-wrap { position:relative; }
+    .gold-flame-btn {
+      --gold1:#d4a373;
+      --gold2:#f1b86b;
+      background: linear-gradient(180deg,var(--gold1),var(--gold2));
+      color:#071010;
+      font-family:'Bebas Neue',cursive;
+      padding:1.1rem 2.4rem;
+      border-radius:50px;
+      border:none;
+      cursor:pointer;
+      font-size:1.4rem;
+      letter-spacing:1.5px;
+      display:inline-flex;
+      gap:0.8rem;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 10px 30px rgba(212,163,115,0.25), 0 0 40px rgba(212,120,20,0.06);
+      transform-origin:center;
+      transition: transform .2s ease;
+      position:relative;
+      overflow:visible;
+    }
+    .gold-flame-btn:hover{ transform: translateY(-4px) scale(1.03); }
+
+    /* Flame visual: pseudo elements behind button */
+    .gold-flame-btn::before,
+    .gold-flame-btn::after {
+      content:'';
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      pointer-events:none;
+      z-index:-1;
+    }
+    /* rising main flame glow */
+    .gold-flame-btn::before {
+      bottom:-28px;
+      width:260px;
+      height:70px;
+      background: radial-gradient(closest-side, rgba(255,140,45,0.22), rgba(0,0,0,0));
+      filter: blur(18px);
+      opacity:0.95;
+      animation: emberFloat 2.8s infinite ease-in-out;
+    }
+    /* animated flame sprites */
+    .gold-flame-btn::after {
+      bottom:-6px;
+      width:160px;
+      height:80px;
+      background-image:
+        radial-gradient(circle at 25% 20%, rgba(255,210,120,0.95) 0 6px, rgba(255,120,30,0.85) 10%, rgba(255,60,10,0.6) 18%, rgba(0,0,0,0) 40%),
+        radial-gradient(circle at 70% 30%, rgba(255,200,90,0.95) 0 5px, rgba(255,110,30,0.8) 12%, rgba(255,50,10,0.55) 20%, rgba(0,0,0,0) 40%);
+      filter: blur(6px);
+      mix-blend-mode:screen;
+      animation: flameRise 1.6s infinite linear;
+      opacity:0.9;
+    }
+
+    @keyframes emberFloat {
+      0% { transform: translateX(-50%) translateY(0) scaleX(1); opacity:0.9; }
+      50% { transform: translateX(-50%) translateY(-6px) scaleX(1.05); opacity:1; }
+      100% { transform: translateX(-50%) translateY(0) scaleX(1); opacity:0.9; }
+    }
+    @keyframes flameRise {
+      0% { transform: translateX(-50%) translateY(0) scale(1); opacity:0.95; }
+      50% { transform: translateX(-50%) translateY(-10px) scale(1.02); opacity:1; }
+      100% { transform: translateX(-50%) translateY(0) scale(0.98); opacity:0.9; }
+    }
+
+    /* Menu icon morphing */
+    .menu-icon { display:inline-block; width:20px; height:16px; position:relative; }
+    .menu-icon span { position:absolute; left:0; right:0; height:2px; background:#071010; display:block; transition: all .25s ease; border-radius:2px; }
+    .menu-icon .a { top:2px; }
+    .menu-icon .b { top:7px; }
+    .menu-icon .c { top:12px; }
+    .gold-flame-btn.open .a { transform: translateY(5px) rotate(45deg); background:#0a0a0a; }
+    .gold-flame-btn.open .b { opacity:0; transform:scaleX(0.2); }
+    .gold-flame-btn.open .c { transform: translateY(-5px) rotate(-45deg); background:#0a0a0a; }
+
+    /* Dropdown (action-menu) */
+    .action-menu {
+      position:absolute;
+      top:calc(100% + 16px);
+      left:50%;
+      transform:translateX(-50%);
+      min-width:240px;
+      background:#111;
+      border-radius:12px;
+      border:2px solid rgba(212,163,115,0.18);
+      padding:0.8rem;
+      display:none;
+      gap:0.6rem;
+      box-shadow:0 12px 40px rgba(0,0,0,0.6), 0 0 40px rgba(255,140,35,0.035);
+      animation: popDown .28s ease forwards;
+    }
+    .action-menu.show { display:flex; flex-direction:column; }
+    .action-item {
+      padding:0.8rem 1rem;
+      border-radius:10px;
+      text-decoration:none;
+      font-family:'Bebas Neue', cursive;
+      color:#d4a373;
+      background:linear-gradient(180deg, rgba(0,0,0,0.2), rgba(0,0,0,0.0));
+      text-align:center;
+      border:1px solid rgba(0,0,0,0.25);
+    }
+    .action-item:hover { background:#d4a373; color:#071010; transform: scale(1.02); }
+
+    @keyframes popDown {
+      from { opacity:0; transform: translateX(-50%) translateY(-6px) scale(0.98); }
+      to { opacity:1; transform: translateX(-50%) translateY(0) scale(1); }
+    }
+
+    /* MENU LAYOUT */
+    section#menu { padding:4rem 6%; max-width:1200px; margin:auto; }
+    h2.section-title {
+      font-family:'Bebas Neue', cursive; color:#d4a373; font-size:2.4rem; margin:1.8rem 0 .8rem;
+      letter-spacing:2px;
+    }
+    .menu-grid {
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap:1.2rem;
+    }
+    .menu-item {
+      background:#0f0f0f;
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid #222;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .menu-item:hover { transform: translateY(-8px); box-shadow: 0 18px 40px rgba(212,163,115,0.12); border-color:#d4a373; }
+    .menu-item img { width:100%; height:200px; object-fit:cover; display:block; border-bottom:3px solid #d4a373; }
+    .menu-item .card {
+      padding:0.9rem 1rem;
+    }
+    .menu-item h3 { font-family:'Bebas Neue', cursive; color:#d4a373; font-size:1.2rem; margin-bottom:6px; }
+    .menu-item p.desc { color:#d0d0d0; font-size:0.95rem; margin-bottom:6px; }
+    .menu-item .price { font-family:'Bebas Neue'; color:#e6b880; font-size:1.05rem; margin-bottom:10px; }
+    .menu-item .row { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+
+    .drinks-link {
+      display:inline-block;
+      background:#d4a373;
+      color:#071010;
+      padding:0.45rem 0.8rem;
+      border-radius:40px;
+      font-family:'Bebas Neue', cursive;
+      text-decoration:none;
+      font-size:0.95rem;
+    }
+    .qty-controls { display:flex; align-items:center; gap:8px; }
+    .qty-btn {
+      width:36px; height:36px; background:#222; color:#d4a373; display:flex; align-items:center; justify-content:center; border-radius:50%;
+      cursor:pointer; font-weight:bold; border:1px solid #2b2b2b;
+    }
+    .qty-num { min-width:36px; text-align:center; font-family:'Bebas Neue'; color:#d4a373; }
+
+    /* Lightbox for full menu */
+    .lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:9999; align-items:center; justify-content:center; padding:2rem; }
+    .lightbox .box { max-width:900px; width:100%; text-align:center; position:relative; }
+    .lightbox img { width:100%; height:auto; border-radius:12px; border:6px solid #d4a373; box-shadow:0 20px 60px rgba(212,163,115,0.2); }
+    .lightbox .close { position:absolute; top:-22px; right:-22px; background:#d4a373; color:#071010; width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-weight:bold; }
+
+    footer { padding:3rem 1rem; text-align:center; color:#999; background:#000; border-top:1px solid #222; margin-top:2rem; }
+    footer a { color:#25D366; font-weight:bold; }
+
+    @media (max-width:768px) {
+      h1 { font-size:3.6rem; }
+      .gold-flame-btn { padding:0.9rem 1.6rem; font-size:1.1rem; }
+      .menu-item img { height:160px; }
+      .action-menu { left:50%; width:90%; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header>
+    <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/logo.jpeg" alt="Papa Ron's Logo" class="logo">
+    <h1>PAPA RON'S CAFÉ</h1>
+    <p class="tagline">FOOD • SMOKE • GOOD MUSIC</p>
+
+    <div class="menu-wrap" style="margin-top:18px;">
+      <!-- Flame Menu Button -->
+      <button id="mainBtn" class="gold-flame-btn" aria-haspopup="true" aria-expanded="false" title="Menu ORDER NOW">
+        <span class="menu-icon" aria-hidden="true">
+          <span class="a"></span><span class="b"></span><span class="c"></span>
+        </span>
+        <span style="margin-left:8px;">MENU ORDER NOW</span>
+      </button>
+
+      <!-- Dropdown -->
+      <div id="actionMenu" class="action-menu" role="menu" aria-hidden="true">
+        <a href="#menu" id="scrollToMenu" class="action-item" role="menuitem">Browse Menu</a>
+        <a href="#" id="openMenu" class="action-item" role="menuitem">View Full Menu</a>
+        <a href="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu1.pdf" class="action-item" download role="menuitem">Download Menu PDF</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Lightbox for "View Full Menu" -->
+  <div id="menuLightbox" class="lightbox" aria-hidden="true">
+    <div class="box">
+      <div class="close" id="closeMenu" title="Close">X</div>
+      <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu1.jpeg" alt="Full Menu">
+      <div style="margin-top:1rem; color:#d4a373; font-family:'Bebas Neue',cursive; font-size:1.05rem;">
+        WhatsApp your order: <a href="https://wa.me/+27660660088" style="color:#25D366;">+27 66 066 0088</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- DRINKS MENU SECTION -->
+  <section id="menu">
+
+    <!-- BEERS -->
+    <h2 class="section-title">BEERS</h2>
+    <div class="menu-grid" id="beersGrid"></div>
+
+    <!-- CIDERS & COOLERS -->
+    <h2 class="section-title">CIDERS & COOLERS</h2>
+    <div class="menu-grid" id="cidersGrid"></div>
+
+    <!-- WINES (BY THE GLASS) -->
+    <h2 class="section-title">WINES (BY THE GLASS)</h2>
+    <div class="menu-grid" id="winesGrid"></div>
+
+    <!-- SOFT DRINKS -->
+    <h2 class="section-title">SOFT DRINKS</h2>
+    <div class="menu-grid" id="softDrinksGrid"></div>
+
+  </section>
+
+  <footer>
+    <p>© 2025 PAPA RON'S CAFÉ • COFFEE BAY, MTHATHA</p>
+    <p>WHATSAPP: <a href="https://wa.me/+27660660088">+27 66 066 0088</a></p>
+    <p style="margin-top:1rem; font-size:0.8rem; opacity:0.8;">We’ll call you within 5 mins to confirm & take payment.</p>
+  </footer>
+
+  <script>
+    // ---------- DRINKS DATA ----------
+    const beers = [
+      { name: "Black Label", size: "500ml", price: 30, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/beer-blacklabel-500.jpg", desc: "Classic South African lager" },
+      { name: "Black Label", size: "330ml", price: 30, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/beer-blacklabel-330.jpg", desc: "Classic South African lager" },
+      { name: "Castle Lager", size: "330ml", price: 30, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/beer-castle.jpg", desc: "South Africa’s favorite" },
+      { name: "Castle Light", size: "330ml", price: 30, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/beer-castlelight.jpg", desc: "Lighter lager option" },
+      { name: "Windhoek", size: "500ml", price: 30, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/beer-windhoek.jpg", desc: "Namibian premium lager" }
+    ];
+
+    const ciders = [
+      { name: "Hunters Dry", size: "330ml", price: 35, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/cider-huntersdry.jpg", desc: "Crisp dry cider" },
+      { name: "Hunters Gold", size: "330ml", price: 35, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/cider-huntersgold.jpg", desc: "Sweet apple cider" },
+      { name: "Smirnoff Ice", size: "440ml", price: 35, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/cider-smirnoffice.jpg", desc: "Vodka cooler" },
+      { name: "Ruby Apple", size: "275ml", price: 35, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/cider-rubyapple.jpg", desc: "Fruity apple blend" },
+      { name: "Flying Fish", size: "500ml", price: 35, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/cider-flyingfish.jpg", desc: "Flavored beer" },
+      { name: "Savanna", size: "330ml", price: 35, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/cider-savanna.jpg", desc: "Dry cider classic" },
+      { name: "Corona Extra", size: "355ml", price: 35, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/beer-corona.jpg", desc: "Mexican lager" },
+      { name: "Extreme", size: "330ml", price: 35, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/cider-extreme.jpg", desc: "Bold cider" },
+      { name: "Sodaze", size: "250ml", price: 60, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/cooler-sodaze.jpg", desc: "Premium cooler" },
+      { name: "Lucky Club", size: "250ml", price: 70, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/cooler-luckyclub.jpg", desc: "Luxury cooler" }
+    ];
+
+    const wines = [
+      { name: "Nederburg White Wine", size: "750ml", price: "R40/glass", img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/wine-nederburg.jpg", desc: "Crisp white, served by the glass" },
+      { name: "Drostdy Hof White Wine", size: "5L", price: "R30/glass", img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/wine-drostdyhof.jpg", desc: "Smooth white, served by the glass" }
+    ];
+
+    const softDrinks = [
+      { name: "Coke", size: "500ml", price: 15, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/soft-coke.jpg", desc: "Classic cola" },
+      { name: "Fanta", size: "500ml", price: 15, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/soft-fanta.jpg", desc: "Orange soda" },
+      { name: "Sprite", size: "500ml", price: 15, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/soft-sprite.jpg", desc: "Lemon-lime" },
+      { name: "Powerade", size: "500ml", price: 15, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/soft-powerade.jpg", desc: "Sports drink" },
+      { name: "Liquifruit", size: "300ml", price: 15, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/soft-liquifruit.jpg", desc: "Fruit juice" },
+      { name: "Appletizer", size: "300ml", price: 15, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/soft-appletizer.jpg", desc: "Sparkling apple" },
+      { name: "Mr Orange", size: "300ml", price: 10, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/soft-mrorange.jpg", desc: "Orange soft drink" },
+      { name: "Stoney", size: "500ml", price: 15, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/soft-stoney.jpg", desc: "Ginger beer" },
+      { name: "Tonic Water", size: "200ml", price: 15, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/soft-tonic.jpg", desc: "Mixer" },
+      { name: "Dry Lemon", size: "200ml", price: 15, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/soft-drylemon.jpg", desc: "Lemon mixer" },
+      { name: "Mineral Water", size: "500ml", price: 10, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/soft-water500.jpg", desc: "Still" },
+      { name: "Sparkling Water", size: "500ml", price: 15, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/soft-sparkling.jpg", desc: "Bubbly" },
+      { name: "Mineral Water", size: "1L", price: 15, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/soft-water1l.jpg", desc: "Large still" },
+      { name: "Red Bull", size: "", price: 25, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks/soft-redbull.jpg", desc: "Energy drink" }
+    ];
+
+    // ---------- Render helpers ----------
+    function createMenuCard(item, key) {
+      const div = document.createElement('div');
+      div.className = 'menu-item';
+      const priceDisplay = typeof item.price === 'string' ? `<div class="price">\( {item.price}</div>` : `<div class="price">R \){item.price}.00</div>`;
+      div.innerHTML = `
+        <img src="\( {item.img}" alt=" \){item.name} \( {item.size}" onerror="this.src='https://via.placeholder.com/600x400/333/ccc?text= \){encodeURIComponent(item.name + ' ' + item.size)}'">
+        <div class="card">
+          <h3>\( {item.name} <small style="font-size:0.8em;opacity:0.8;"> \){item.size}</small></h3>
+          <p class="desc">${item.desc}</p>
+          ${priceDisplay}
+          <div class="row">
+            <div></div>
+            <div class="qty-controls">
+              <div class="qty-btn" data-key="${key}" data-change="-1">−</div>
+              <div class="qty-num" id="qty-${key}">0</div>
+              <div class="qty-btn" data-key="${key}" data-change="1">+</div>
+            </div>
+          </div>
+        </div>
+      `;
+      return div;
+    }
+
+    function renderGroup(items, containerId) {
+      const grid = document.getElementById(containerId);
+      grid.innerHTML = '';
+      items.forEach((it, i) => {
+        const key = `\( {containerId}- \){i}`;
+        const card = createMenuCard(it, key);
+        grid.appendChild(card);
+      });
+    }
+
+    // Render all drink groups
+    renderGroup(beers, 'beersGrid');
+    renderGroup(ciders, 'cidersGrid');
+    renderGroup(wines, 'winesGrid');
+    renderGroup(softDrinks, 'softDrinksGrid');
+
+    // ---------- Quantity and cart message ----------
+    const qtyState = {};
+
+    document.addEventListener('click', (e) => {
+      const el = e.target.closest('.qty-btn');
+      if (!el) return;
+      const key = el.dataset.key;
+      const change = parseInt(el.dataset.change, 10);
+      updateQty(key, change);
+    });
+
+    function updateQty(key, change) {
+      const el = document.getElementById(`qty-${key}`);
+      if (!el) return;
+      let val = parseInt(el.textContent, 10) || 0;
+      val += change;
+      if (val < 0) val = 0;
+      el.textContent = val;
+      qtyState[key] = val;
+      updateOrderButton(); 
+    }
+
+    function updateOrderButton() {
+      const all = document.querySelectorAll('[id^="qty-"]');
+      let total = 0;
+      all.forEach(n => {
+        const v = parseInt(n.textContent, 10);
+        if (!isNaN(v)) total += v;
+      });
+
+      let btn = document.getElementById('bottomOrderBtn');
+      if (!btn) {
+        btn = document.createElement('a');
+        btn.id = 'bottomOrderBtn';
+        btn.className = 'gold-flame-btn';
+        btn.style.position = 'fixed';
+        btn.style.right = '16px';
+        btn.style.bottom = '22px';
+        btn.style.zIndex = '999';
+        btn.style.padding = '12px 18px';
+        btn.textContent = 'ORDER NOW';
+        document.body.appendChild(btn);
+      }
+      btn.style.display = total > 0 ? 'inline-flex' : 'none';
+
+      let message = "Hi Papa Ron's! I'd like to order:\n\n";
+      const groups = [
+        {items: beers, id: 'beersGrid'},
+        {items: ciders, id: 'cidersGrid'},
+        {items: wines, id: 'winesGrid'},
+        {items: softDrinks, id: 'softDrinksGrid'}
+      ];
+      groups.forEach(g => {
+        g.items.forEach((it, i) => {
+          const key = `\( {g.id}- \){i}`;
+          const qEl = document.getElementById(`qty-${key}`);
+          if (qEl) {
+            const q = parseInt(qEl.textContent, 10) || 0;
+            if (q > 0) {
+              const priceStr = typeof it.price === 'string' ? it.price : `R${it.price}.00`;
+              message += `\( {q} x \){it.name} \( {it.size} - \){priceStr}\n`;
+            }
+          }
+        });
+      });
+      message += `\nThank you!`;
+      const encoded = encodeURIComponent(message);
+      btn.href = "https://wa.me/+27660660088?text=" + encoded;
+    }
+
+    updateOrderButton();
+
+    // ---------- Action menu (top) behavior ----------
+    const mainBtn = document.getElementById('mainBtn');
+    const actionMenu = document.getElementById('actionMenu');
+    const scrollToMenu = document.getElementById('scrollToMenu');
+
+    mainBtn.addEventListener('click', (e) => {
+      const open = actionMenu.classList.toggle('show');
+      mainBtn.classList.toggle('open', open);
+      mainBtn.setAttribute('aria-expanded', String(open));
+      actionMenu.setAttribute('aria-hidden', String(!open));
+      e.stopPropagation();
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!mainBtn.contains(e.target) && !actionMenu.contains(e.target)) {
+        actionMenu.classList.remove('show');
+        mainBtn.classList.remove('open');
+        mainBtn.setAttribute('aria-expanded','false');
+        actionMenu.setAttribute('aria-hidden','true');
+      }
+    });
+
+    scrollToMenu.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('menu').scrollIntoView({ behavior:'smooth' });
+      actionMenu.classList.remove('show');
+      mainBtn.classList.remove('open');
+    });
+
+    // Lightbox open/close
+    const openMenu = document.getElementById('openMenu');
+    const menuLightbox = document.getElementById('menuLightbox');
+    const closeMenu = document.getElementById('closeMenu');
+
+    openMenu.addEventListener('click', (e) => {
+      e.preventDefault();
+      menuLightbox.style.display = 'flex';
+      menuLightbox.setAttribute('aria-hidden','false');
+      actionMenu.classList.remove('show');
+      mainBtn.classList.remove('open');
+    });
+    closeMenu.addEventListener('click', () => {
+      menuLightbox.style.display = 'none';
+      menuLightbox.setAttribute('aria-hidden','true');
+    });
+    window.addEventListener('click', (e) => {
+      if (e.target === menuLightbox) {
+        menuLightbox.style.display = 'none';
+        menuLightbox.setAttribute('aria-hidden','true');
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        menuLightbox.style.display = 'none';
+        menuLightbox.setAttribute('aria-hidden','true');
+        actionMenu.classList.remove('show');
+        mainBtn.classList.remove('open');
+      }
+    });
+
+    // Fallback images
+    document.addEventListener('error', function(e){
+      const el = e.target;
+      if (el.tagName && el.tagName.toLowerCase() === 'img') {
+        el.src = 'https://via.placeholder.com/600x400/333/ccc?text=Image+Missing';
+      }
+    }, true);
+
+  </script>
+</body>
+</html>
