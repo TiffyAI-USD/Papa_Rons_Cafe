@@ -54,7 +54,7 @@
     header::after {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      inset: 0;
       background: rgba(10, 10, 10, 0.75);
       backdrop-filter: blur(3px);
       z-index: 1;
@@ -74,7 +74,7 @@
       font-size: 5.5rem;
       letter-spacing: 4px;
       color: #d4a373;
-      margin-bottom: 0.5rem;
+      margin-bottom: .5rem;
       text-shadow: 0 4px 12px rgba(0,0,0,0.8);
       text-transform: uppercase;
     }
@@ -84,7 +84,7 @@
       letter-spacing: 3px;
       color: #d4a373;
       margin-bottom: 2.5rem;
-      opacity: 0.9;
+      opacity: .9;
     }
 
     /* GOLD ORDER BUTTON */
@@ -98,18 +98,18 @@
       font-size: 1.5rem;
       letter-spacing: 2px;
       cursor: pointer;
-      box-shadow: 0 8px 25px rgba(212, 163, 115, 0.4);
-      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(212, 163, 115, .4);
+      transition: all .3s ease;
       text-transform: uppercase;
       font-weight: bold;
       display: inline-flex;
       align-items: center;
-      gap: 0.8rem;
+      gap: .8rem;
       text-decoration: none;
     }
     .gold-btn:hover {
       transform: translateY(-4px) scale(1.05);
-      box-shadow: 0 15px 35px rgba(212, 163, 115, 0.6);
+      box-shadow: 0 15px 35px rgba(212, 163, 115, .6);
       background: linear-gradient(145deg, #e6b880, #c79a70);
     }
     .gold-btn::before {
@@ -130,31 +130,28 @@
       padding: 1rem;
       display: none;
       flex-direction: column;
-      gap: 0.8rem;
+      gap: .8rem;
       width: 220px;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+      box-shadow: 0 15px 40px rgba(0,0,0,.7);
       z-index: 100;
     }
-    .action-menu.show {
-      display: flex;
-      animation: popDown 0.4s ease;
-    }
+    .action-menu.show { display: flex; animation: popDown .4s ease; }
     @keyframes popDown {
       from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
-      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
 
     .action-item {
       background: #0f0f0f;
       color: #d4a373;
-      padding: 0.9rem 1.2rem;
+      padding: .9rem 1.2rem;
       border-radius: 12px;
       font-family: 'Bebas Neue', cursive;
       font-size: 1.1rem;
       letter-spacing: 1.5px;
       text-align: center;
       text-decoration: none;
-      transition: 0.3s;
+      transition: .3s;
       border: 1px solid #333;
     }
     .action-item:hover {
@@ -175,18 +172,18 @@
       font-family: 'Bebas Neue', cursive;
       font-size: 1.2rem;
       letter-spacing: 1.5px;
-      box-shadow: 0 10px 30px rgba(212, 163, 115, 0.5);
+      box-shadow: 0 10px 30px rgba(212, 163, 115, .5);
       z-index: 999;
       display: none;
       align-items: center;
-      gap: 0.8rem;
+      gap: .8rem;
       text-decoration: none;
-      transition: 0.3s;
+      transition: .3s;
     }
     .cart-btn.show { display: flex; }
     .cart-btn:hover {
       transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(212, 163, 115, 0.7);
+      box-shadow: 0 15px 40px rgba(212, 163, 115, .7);
     }
     .cart-count {
       background: #0a0a0a;
@@ -205,12 +202,11 @@
     .lightbox {
       display: none;
       position: fixed;
-      z-index: 1000;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.95);
+      inset: 0;
+      background: rgba(0,0,0,.95);
       overflow: auto;
       backdrop-filter: blur(8px);
+      z-index: 1000;
     }
     .lightbox-content {
       position: relative;
@@ -223,7 +219,7 @@
       max-width: 900px;
       border: 6px solid #d4a373;
       border-radius: 18px;
-      box-shadow: 0 20px 60px rgba(212, 163, 115, 0.3);
+      box-shadow: 0 20px 60px rgba(212, 163, 115, .3);
     }
     .close-btn {
       position: absolute;
@@ -240,7 +236,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+      box-shadow: 0 6px 20px rgba(0,0,0,.5);
     }
     .close-btn:hover { background: #e6b880; }
 
@@ -253,7 +249,7 @@
       margin-bottom: 3rem;
       color: #d4a373;
       letter-spacing: 3px;
-      text-shadow: 0 3px 10px rgba(0,0,0,0.6);
+      text-shadow: 0 3px 10px rgba(0,0,0,.6);
     }
     .menu-grid {
       display: grid;
@@ -264,15 +260,15 @@
       background: #111;
       border: 2px solid #333;
       border-radius: 18px;
-      overflow: visible !important;
-      transition: 0.4s;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      overflow: visible;
+      transition: .4s;
+      box-shadow: 0 8px 20px rgba(0,0,0,.4);
       position: relative;
     }
     .menu-item:hover {
       transform: translateY(-12px);
       border-color: #d4a373;
-      box-shadow: 0 20px 40px rgba(212, 163, 115, 0.2);
+      box-shadow: 0 20px 40px rgba(212, 163, 115, .2);
     }
     .menu-item img {
       width: 100%;
@@ -280,22 +276,19 @@
       object-fit: cover;
       border-bottom: 3px solid #d4a373;
       display: block;
-      position: relative;
       z-index: 10;
     }
-    .menu-item:hover img {
-      filter: brightness(0.8);
-    }
+    .menu-item:hover img { filter: brightness(.8); }
     .menu-item h3 {
-      padding: 1.2rem 1rem 0.5rem;
+      padding: 1.2rem 1rem .5rem;
       font-family: 'Bebas Neue', cursive;
       font-size: 1.6rem;
       color: #d4a373;
       letter-spacing: 1.5px;
     }
     .menu-item p {
-      padding: 0 1rem 0.8rem;
-      font-size: 0.95rem;
+      padding: 0 1rem .8rem;
+      font-size: .95rem;
       color: #ccc;
     }
     .price {
@@ -312,7 +305,7 @@
       align-items: center;
       justify-content: center;
       gap: 1rem;
-      padding: 0.8rem 1rem;
+      padding: .8rem 1rem;
       background: #1a1a1a;
       border-top: 1px solid #333;
     }
@@ -327,7 +320,7 @@
       justify-content: center;
       font-size: 1.3rem;
       cursor: pointer;
-      transition: 0.3s;
+      transition: .3s;
     }
     .qty-btn:hover {
       background: #d4a373;
@@ -346,17 +339,17 @@
       display: flex;
       justify-content: center;
       gap: 1rem;
-      padding: 0.5rem 1rem 1rem;
-      font-size: 0.9rem;
+      padding: .5rem 1rem 1rem;
+      font-size: .9rem;
     }
     .side-btn {
       background: #222;
       color: #ccc;
-      padding: 0.4rem 0.8rem;
+      padding: .4rem .8rem;
       border-radius: 20px;
-      font-size: 0.85rem;
+      font-size: .85rem;
       cursor: pointer;
-      transition: 0.3s;
+      transition: .3s;
     }
     .side-btn.active {
       background: #d4a373;
@@ -369,13 +362,10 @@
       padding: 3rem 1rem;
       background: #000;
       color: #999;
-      font-size: 0.9rem;
+      font-size: .9rem;
       border-top: 1px solid #333;
     }
-    footer a {
-      color: #25D366;
-      font-weight: bold;
-    }
+    footer a { color: #25D366; font-weight: bold; }
 
     @media (max-width: 768px) {
       h1 { font-size: 3.8rem; letter-spacing: 2px; }
@@ -396,55 +386,56 @@
     <h1>PAPA RON'S CAFÉ</h1>
     <p class="tagline">FOOD • SMOKE • GOOD MUSIC</p>
 
-    <div style="position: relative;">
-      <button class="gold-btn" id="mainBtn">
+    <div style="position:relative;">
+      <button class="gold-btn" id="mainBtn" aria-haspopup="true" aria-expanded="false">
         Menu ORDER NOW
       </button>
 
-      <div class="action-menu" id="actionMenu">
-        <a href="#menu" class="action-item" id="scrollToMenu">Browse Menu</a>
-        <a href="#" class="action-item" id="openMenu">View Full Menu</a>
-        <a href="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu1.pdf" class="action-item" download>Download Menu PDF</a>
+      <div class="action-menu" id="actionMenu" role="menu">
+        <a href="#menu" class="action-item" id="scrollToMenu" role="menuitem">Browse Menu</a>
+        <a href="#" class="action-item" id="openMenu" role="menuitem">View Full Menu</a>
+        <a href="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu1.pdf"
+           class="action-item" download role="menuitem">Download Menu PDF</a>
       </div>
     </div>
   </header>
 
   <!-- CART BUTTON -->
-  <a href="#" class="cart-btn" id="cartBtn">
+  <a href="#" class="cart-btn" id="cartBtn" aria-label="Cart">
     <span id="cartCount" class="cart-count">0</span>
     <span>ORDER NOW</span>
   </a>
 
   <!-- LIGHTBOX -->
-  <div id="menuLightbox" class="lightbox">
+  <div id="menuLightbox" class="lightbox" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
     <div class="lightbox-content">
-      <span class="close-btn" id="closeMenu">X</span>
+      <span class="close-btn" id="closeMenu" aria-label="Close">X</span>
       <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu1.jpeg" alt="Full Menu" class="lightbox-img">
-      <div style="margin-top:1.5rem; color:#d4a373; font-family:'Bebas Neue',cursive; font-size:1.3rem;">
-        WhatsApp your order: 
-        <a href="https://wa.me/+27660660088" style="color:#25D366;">+27 66 066 0088</a>
+      <div style="margin-top:1.5rem;color:#d4a373;font-family:'Bebas Neue',cursive;font-size:1.3rem;">
+        WhatsApp your order:
+        <a href="https://wa.me/+27660660088" style="color:#25D366;" rel="noopener">+27 66 066 0088</a>
       </div>
     </div>
   </div>
 
   <!-- MENU GRID -->
-  <section id="menu">
-    <h2>OUR MENU</h2>
+  <section id="menu" aria-labelledby="menuHeading">
+    <h2 id="menuHeading">OUR MENU</h2>
     <div class="menu-grid" id="menuGrid"></div>
   </section>
 
   <!-- FOOTER -->
   <footer>
     <p>© 2025 PAPA RON'S CAFÉ • COFFEE BAY, MTHATHA</p>
-    <p>WHATSAPP: <a href="https://wa.me/+27660660088">+27 66 066 0088</a></p>
-    <p style="margin-top:1rem; font-size:0.8rem; opacity:0.7;">
-      We’ll call you within 5 mins to confirm & take payment.
+    <p>WHATSAPP: <a href="https://wa.me/+27660660088" rel="noopener">+27 66 066 0088</a></p>
+    <p style="margin-top:1rem;font-size:.8rem;opacity:.7;">
+      We’ll call you within 5 mins to confirm &amp; take payment.
     </p>
   </footer>
 
   <!-- JS -->
   <script>
-    const cart = {};
+    /* ---------- DATA ---------- */
     const menuItems = [
       { name: "SOMETHING MEATY", price: 135, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza.jpg", desc: "Creamy chicken, bacon, mushrooms, cheese" },
       { name: "HAWAIIAN", price: 135, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza1.jpg", desc: "Ham, pineapple, cheese" },
@@ -467,11 +458,13 @@
       { name: "SCHNITZEL", price: 130, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/snitsel.jpg", desc: "Chicken schnitzel with chips & sauce" }
     ];
 
+    const cart = {};                     // index → {item, qty, side}
     const menuGrid = document.getElementById('menuGrid');
-    const cartBtn = document.getElementById('cartBtn');
+    const cartBtn   = document.getElementById('cartBtn');
     const cartCount = document.getElementById('cartCount');
 
-    menuItems.forEach((item, index) => {
+    /* ---------- RENDER MENU ---------- */
+    menuItems.forEach((item, idx) => {
       const div = document.createElement('div');
       div.className = 'menu-item';
       div.innerHTML = `
@@ -480,94 +473,110 @@
         <p>${item.desc}</p>
         <div class="price">R${item.price}.00</div>
         <div class="quantity-controls">
-          <div class="qty-btn" onclick="updateQty(${index}, -1)">−</div>
-          <div class="qty-display" id="qty-${index}">0</div>
-          <div class="qty-btn" onclick="updateQty(${index}, 1)">+</div>
+          <div class="qty-btn" onclick="updateQty(${idx}, -1)">−</div>
+          <div class="qty-display" id="qty-${idx}">0</div>
+          <div class="qty-btn" onclick="updateQty(${idx}, 1)">+</div>
         </div>
         ${item.sideOnly ? '' : `
         <div class="side-options">
-          <div class="side-btn" data-item="${index}" data-side="chips">CHIPS</div>
-          <div class="side-btn" data-item="${index}" data-side="salad">SALAD</div>
+          <div class="side-btn" data-item="${idx}" data-side="chips">CHIPS</div>
+          <div class="side-btn" data-item="${idx}" data-side="salad">SALAD</div>
         </div>`}
       `;
       menuGrid.appendChild(div);
     });
 
-    window.updateQty = (index, change) => {
-      const qtyEl = document.getElementById(`qty-${index}`);
-      if (!qtyEl) return;
-      let qty = parseInt(qtyEl.textContent) + change;
+    /* ---------- QUANTITY ---------- */
+    window.updateQty = (idx, delta) => {
+      const el = document.getElementById(`qty-${idx}`);
+      let qty = parseInt(el.textContent, 10) + delta;
       if (qty < 0) qty = 0;
-      qtyEl.textContent = qty;
+      el.textContent = qty;
+
       if (qty > 0) {
-        cart[index] = { ...menuItems[index], qty, side: cart[index]?.side || null };
+        cart[idx] = { ...menuItems[idx], qty, side: cart[idx]?.side || null };
       } else {
-        delete cart[index];
+        delete cart[idx];
       }
       updateCart();
     };
 
+    /* ---------- SIDE SELECTION ---------- */
     document.querySelectorAll('.side-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const itemIndex = btn.dataset.item;
-        const side = btn.dataset.side;
-        const siblings = btn.parentElement.querySelectorAll('.side-btn');
-        siblings.forEach(s => s.classList.remove('active'));
+        const itemIdx = btn.dataset.item;
+        const side    = btn.dataset.side;
+
+        // toggle active class
+        btn.parentElement.querySelectorAll('.side-btn').forEach(s => s.classList.remove('active'));
         btn.classList.add('active');
-        if (cart[itemIndex]) {
-          cart[itemIndex].side = side;
-        }
+
+        if (cart[itemIdx]) cart[itemIdx].side = side;
       });
     });
 
+    /* ---------- CART LOGIC ---------- */
     function updateCart() {
-      let totalItems = 0;
-      let message = "Hi Papa Ron's! I'd like to order:%0A%0A";
-      Object.values(cart).forEach(item => {
-        if (item.qty > 0) {
-          totalItems += item.qty;
-          message += item.qty + " x " + item.name + " - R" + item.price + ".00";
-          if (item.side) message += " (with " + item.side + ")";
-          message += "%0A";
+      let total = 0;
+      let msg   = "Hi Papa Ron's! I'd like to order:%0A%0A";
+
+      Object.values(cart).forEach(it => {
+        if (it.qty > 0) {
+          total += it.qty;
+          msg += `\( {it.qty} x \){it.name} - R${it.price}.00`;
+          if (it.side) msg += ` (with ${it.side})`;
+          msg += "%0A";
         }
       });
-      message += "%0AThank you!";
-      cartBtn.href = "https://wa.me/+27660660088?text=" + message;
-      cartCount.textContent = totalItems;
-      cartBtn.classList.toggle('show', totalItems > 0);
+
+      msg += "%0AThank you!";
+      cartBtn.href = `https://wa.me/+27660660088?text=${msg}`;
+      cartCount.textContent = total;
+      cartBtn.classList.toggle('show', total > 0);
     }
 
+    /* hide cart on load */
     cartBtn.classList.remove('show');
 
-    const mainBtn = document.getElementById('mainBtn');
+    /* ---------- ACTION MENU (dropdown) ---------- */
+    const mainBtn    = document.getElementById('mainBtn');
     const actionMenu = document.getElementById('actionMenu');
-    const scrollToMenu = document.getElementById('scrollToMenu');
 
-    mainBtn.addEventListener('click', () => actionMenu.classList.toggle('show'));
-    scrollToMenu.addEventListener('click', (e) => {
+    mainBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      const expanded = actionMenu.classList.toggle('show');
+      mainBtn.setAttribute('aria-expanded', expanded);
+    });
+
+    document.getElementById('scrollToMenu').addEventListener('click', e => {
       e.preventDefault();
       document.querySelector('#menu').scrollIntoView({ behavior: 'smooth' });
       actionMenu.classList.remove('show');
+      mainBtn.setAttribute('aria-expanded', false);
     });
 
-    document.addEventListener('click', (e) => {
+    // close when clicking outside
+    document.addEventListener('click', e => {
       if (!mainBtn.contains(e.target) && !actionMenu.contains(e.target)) {
         actionMenu.classList.remove('show');
+        mainBtn.setAttribute('aria-expanded', false);
       }
     });
 
-    document.getElementById('openMenu').addEventListener('click', (e) => {
+    /* ---------- LIGHTBOX (full menu image) ---------- */
+    document.getElementById('openMenu').addEventListener('click', e => {
       e.preventDefault();
       document.getElementById('menuLightbox').style.display = 'block';
     });
+
     document.getElementById('closeMenu').addEventListener('click', () => {
       document.getElementById('menuLightbox').style.display = 'none';
     });
-    window.addEventListener('click', (e) => {
-      const lightbox = document.getElementById('menuLightbox');
-      if (e.target === lightbox) lightbox.style.display = 'none';
+
+    window.addEventListener('click', e => {
+      const lb = document.getElementById('menuLightbox');
+      if (e.target === lb) lb.style.display = 'none';
     });
   </script>
-
 </body>
 </html>
