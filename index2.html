@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Papa Ron's Café | Food, Smoke & Good Music</title>
+
+  <!-- SOCIAL PREVIEW -->
+  <meta property="og:title" content="Papa Ron's Café">
+  <meta property="og:description" content="Food • Smoke • Good Music • Order Now">
+  <meta property="og:image" content="https://tiffyai-usd.github.io/Papa_Rons_Cafe/paparon.jpeg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="1800">
+  <meta property="og:url" content="https://tiffyai-usd.github.io/Papa_Rons_Cafe/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://tiffyai-usd.github.io/Papa_Rons_Cafe/paparon.jpeg">
+
+  <!-- MANIFEST -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- SERVICE WORKER -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js");
+      });
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* HERO */
+    header {
+      background: url('https://tiffyai-usd.github.io/Papa_Rons_Cafe/banner.jpg') no-repeat center center/cover;
+      height: 100vh;
+      color: white;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(10, 10, 10, 0.75);
+      backdrop-filter: blur(3px);
+      z-index: 1;
+    }
+    header > * { position: relative; z-index: 2; }
+
+    .logo {
+      max-width: 200px;
+      height: auto;
+      margin-bottom: 1rem;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      border: 3px solid #d4a373;
+    }
+    h1 {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 5.5rem;
+      letter-spacing: 4px;
+      color: #d4a373;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.8);
+      text-transform: uppercase;
+    }
+    .tagline {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.8rem;
+      letter-spacing: 3px;
+      color: #d4a373;
+      margin-bottom: 2.5rem;
+      opacity: 0.9;
+    }
+
+    /* GOLD ORDER BUTTON */
+    .gold-btn {
+      background: linear-gradient(145deg, #d4a373, #b5895f);
+      color: #0a0a0a;
+      padding: 1.2rem 3rem;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(212, 163, 115, 0.4);
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      text-decoration: none;
+    }
+    .gold-btn:hover {
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 15px 35px rgba(212, 163, 115, 0.6);
+      background: linear-gradient(145deg, #e6b880, #c79a70);
+    }
+
+    /* MENU SECTION */
+    section { padding: 4rem 6%; max-width: 1200px; margin: auto; }
+    h2.section-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 2.6rem;
+      margin: 2rem 0 1rem;
+      color: #d4a373;
+      letter-spacing: 3px;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.6rem;
+    }
+
+    .menu-item {
+      background: #111;
+      border: 2px solid #333;
+      border-radius: 14px;
+      overflow: hidden;
+      transition: 0.3s;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      position: relative;
+      padding-bottom: 0.8rem;
+    }
+    .menu-item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      border-bottom: 3px solid #d4a373;
+    }
+    .menu-item .inner {
+      padding: 0.9rem 1rem;
+    }
+    .menu-item h3 {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.5rem;
+      color: #d4a373;
+      margin-bottom: 0.25rem;
+    }
+    .menu-item p.desc {
+      color: #cfcfcf;
+      font-size: 0.95rem;
+      margin-bottom: 0.6rem;
+    }
+    .menu-item .price {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.2rem;
+      color: #e6b880;
+      font-weight: bold;
+      margin-bottom: 0.6rem;
+    }
+    .menu-item .actions {
+      display: flex;
+      gap: 0.6rem;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.2rem;
+    }
+    .drinks-link {
+      background: #d4a373;
+      color: #0a0a0a;
+      padding: 0.55rem 0.9rem;
+      border-radius: 40px;
+      font-family: 'Bebas Neue', cursive;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    .qty-area {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .qty-btn {
+      background: #333;
+      color: #d4a373;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .qty-display {
+      min-width: 36px;
+      text-align: center;
+      font-family: 'Bebas Neue', cursive;
+      color: #d4a373;
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 1rem;
+      background: #000;
+      color: #999;
+      font-size: 0.9rem;
+      border-top: 1px solid #333;
+      margin-top: 2rem;
+    }
+    footer a { color: #25D366; font-weight: bold; }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 3.8rem; }
+      .menu-item img { height: 160px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header>
+    <img src="https://tiffyai-usd.github.io/Papa_Rons_Cafe/logo.jpeg" alt="Papa Ron's Logo" class="logo">
+    <h1>PAPA RON'S CAFÉ</h1>
+    <p class="tagline">FOOD • SMOKE • GOOD MUSIC</p>
+  </header>
+
+  <section id="menu">
+    <!-- PIZZAS -->
+    <h2 class="section-title">PIZZAS</h2>
+    <div class="menu-grid" id="pizzasGrid"></div>
+
+    <!-- BURGERS -->
+    <h2 class="section-title">BURGERS</h2>
+    <div class="menu-grid" id="burgersGrid"></div>
+
+    <!-- GRILL -->
+    <h2 class="section-title">GRILL</h2>
+    <div class="menu-grid" id="grillGrid"></div>
+
+    <!-- SNACKS & PLATTERS -->
+    <h2 class="section-title">SNACKS & PLATTERS</h2>
+    <div class="menu-grid" id="snacksGrid"></div>
+
+    <!-- BREAKFAST -->
+    <h2 class="section-title">BREAKFAST</h2>
+    <div class="menu-grid" id="breakfastGrid"></div>
+
+    <!-- SIDES -->
+    <h2 class="section-title">SIDES</h2>
+    <div class="menu-grid" id="sidesGrid"></div>
+  </section>
+
+  <footer>
+    <p>© 2025 PAPA RON'S CAFÉ • COFFEE BAY, MTHATHA</p>
+    <p>WHATSAPP: <a href="https://wa.me/+27660660088">+27 66 066 0088</a></p>
+    <p style="margin-top:1rem; font-size:0.8rem; opacity:0.7;">
+      We’ll call you within 5 mins to confirm & take payment.
+    </p>
+  </footer>
+
+  <script>
+    // Data (sorted into groups per Option A and using names/prices from your menu image)
+    const pizzas = [
+      { name: "SOMETHING MEATY", price: 135, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza.jpg", desc: "Creamy chicken, bacon, mushrooms, cheese" },
+      { name: "HAWAIIAN", price: 135, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/pizza1.jpg", desc: "Ham, pineapple, cheese" },
+      { name: "RIB PIZZA", price: 180, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/ribpizza.jpg", desc: "Ribs on pizza base with cheese" }
+    ];
+
+    const burgers = [
+      { name: "CHEESE BURGER", price: 120, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/burger.jpg", desc: "Served with side chips" },
+      { name: "BACON BURGER", price: 120, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/baconburger.jpg", desc: "Beef patty, bacon & cheese" },
+      { name: "BOERIE ROLL", price: 40, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/boerie.jpeg", desc: "Boerie and chips" }
+    ];
+
+    const grill = [
+      { name: "RUMP STEAK", price: 160, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/rump.jpeg", desc: "With mushroom sauce & chips" },
+      { name: "RIB RACK", price: 200, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/ribs.jpg", desc: "Full rack with chips" },
+      { name: "DOUBLE CHICKEN SCHNITZEL", price: 120, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/snitsel.jpg", desc: "With chips or salad, mushroom sauce & melted cheese" },
+      { name: "PREGO ROLL", price: 50, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/prego.jpg", desc: "Peri-peri steak roll with chips" }
+    ];
+
+    const snacks = [
+      { name: "MUNCHIE PLATTER", price: 350, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/platters.jpg", desc: "Full varieties of munchies" },
+      { name: "CHEESY POPS - 15", price: 50, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/pops.jpg", desc: "Served with dip" },
+      { name: "CHEESY STRIPS - 5", price: 50, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/cheesystrips.jpg", desc: "Served with dip" },
+      { name: "CHICKEN PERI NACHO", price: 160, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/nantcho.jpg", desc: "Peri-peri chicken, nachos, cheese" },
+      // Winglets as single tile with both prices
+      { name: "WINGLETS", price: null, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/buffelowings.jpg", desc: "5 for R60 • 10 for R100 (served with dip)" },
+      { name: "PLATTER", price: 250, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/platter.jpg", desc: "Mixed meat platter for 2" }
+    ];
+
+    const breakfast = [
+      { name: "BREAKFAST", price: 80, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/breakfast.jpg", desc: "Served from 8 to 11 AM" }
+    ];
+
+    const sides = [
+      { name: "SIDE CHIPS", price: 20, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu.jpg", desc: "Crispy golden chips" },
+      { name: "SIDE SALAD", price: 20, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/menu1.jpeg", desc: "Fresh garden salad" },
+      { name: "GREEK SALAD", price: 20, img: "https://tiffyai-usd.github.io/Papa_Rons_Cafe/greeksalad.jpg", desc: "Feta, olives, tomatoes, dressing" }
+    ];
+
+    // helper to render a group into a target grid
+    function renderGroup(items, targetId) {
+      const grid = document.getElementById(targetId);
+      grid.innerHTML = "";
+      items.forEach((it, idx) => {
+        const div = document.createElement('div');
+        div.className = 'menu-item';
+        // price display: if null (winglets), show custom text inside
+        const priceHtml = it.price === null ? `<div class="price">${it.desc.includes('5 for') ? '' : ''}</div>` : `<div class="price">R${it.price}.00</div>`;
+        div.innerHTML = `
+          <img src="${it.img}" alt="${it.name}" onerror="this.src='https://via.placeholder.com/600x400/333/ccc?text=Image+Missing'">
+          <div class="inner">
+            <h3>${it.name}</h3>
+            <p class="desc">${it.desc}</p>
+            ${it.price === null ? `<div class="price">5 for R60 · 10 for R100</div>` : `<div class="price">R${it.price}.00</div>`}
+            <div class="actions">
+              <a class="drinks-link" href="https://tiffyai-usd.github.io/Papa_Rons_Cafe/drinks-menu" target="_blank" rel="noopener">ADD DRINKS</a>
+              <div class="qty-area">
+                <div class="qty-btn" onclick="updateQty('${targetId}-${idx}', -1)">−</div>
+                <div class="qty-display" id="qty-${targetId}-${idx}">0</div>
+                <div class="qty-btn" onclick="updateQty('${targetId}-${idx}', 1)">+</div>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    // initial render
+    renderGroup(pizzas, 'pizzasGrid');
+    renderGroup(burgers, 'burgersGrid');
+    renderGroup(grill, 'grillGrid');
+    renderGroup(snacks, 'snacksGrid');
+    renderGroup(breakfast, 'breakfastGrid');
+    renderGroup(sides, 'sidesGrid');
+
+    // cart-like qty tracking
+    const qtyStore = {};
+
+    function updateQty(key, change) {
+      const el = document.getElementById(`qty-${key}`);
+      if (!el) return;
+      let val = parseInt(el.textContent, 10) + change;
+      if (isNaN(val)) val = 0;
+      if (val < 0) val = 0;
+      el.textContent = val;
+      qtyStore[key] = val;
+      updateCartButton();
+    }
+
+    function updateCartButton() {
+      // compute total qty across all qty displays
+      const all = document.querySelectorAll('[id^="qty-"]');
+      let total = 0;
+      all.forEach(n => {
+        const v = parseInt(n.textContent, 10);
+        if (!isNaN(v)) total += v;
+      });
+      // show cart button if > 0 (create or toggle)
+      if (!document.getElementById('bottomCartBtn')) {
+        const a = document.createElement('a');
+        a.id = 'bottomCartBtn';
+        a.className = 'gold-btn';
+        a.style.position = 'fixed';
+        a.style.bottom = '1.6rem';
+        a.style.right = '1.6rem';
+        a.style.zIndex = '999';
+        a.textContent = 'ORDER NOW';
+        a.href = '#';
+        document.body.appendChild(a);
+      }
+      const btn = document.getElementById('bottomCartBtn');
+      btn.style.display = total > 0 ? 'inline-flex' : 'none';
+      // build whatsapp message
+      let message = encodeURIComponent("Hi Papa Ron's! I'd like to order:\n\n");
+      // go through groups and items in DOM to collect non-zero qtys
+      const groups = [
+        { items: pizzas, id: 'pizzasGrid' },
+        { items: burgers, id: 'burgersGrid' },
+        { items: grill, id: 'grillGrid' },
+        { items: snacks, id: 'snacksGrid' },
+        { items: breakfast, id: 'breakfastGrid' },
+        { items: sides, id: 'sidesGrid' }
+      ];
+      groups.forEach(g => {
+        const grid = document.getElementById(g.id);
+        if (!grid) return;
+        g.items.forEach((it, i) => {
+          const key = `${g.id}-${i}`;
+          const qEl = document.getElementById(`qty-${key}`);
+          if (qEl) {
+            const q = parseInt(qEl.textContent, 10);
+            if (q > 0) {
+              message += `${q} x ${it.name} - R${it.price === null ? (it.name==='WINGLETS' ? 'See menu' : '') : it.price}.00`;
+              message += `\n`;
+            }
+          }
+        });
+      });
+      message += "\nThank you!";
+      btn.href = "https://wa.me/+27660660088?text=" + message;
+    }
+
+    // make sure any missing images fall back
+    document.addEventListener('error', function (e) {
+      const el = e.target;
+      if (el.tagName.toLowerCase() === 'img') {
+        el.src = 'https://via.placeholder.com/600x400/333/ccc?text=Image+Missing';
+      }
+    }, true);
+  </script>
+
+</body>
+</html>
