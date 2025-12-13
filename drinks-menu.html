@@ -9,52 +9,161 @@
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background:#0a0a0a; font-family:'Inter',sans-serif; color:#e0e0e0; overflow-x:hidden; }
+    body {
+      background: #0a0a0a;
+      font-family: 'Inter', sans-serif;
+      color: #e0e0e0;
+      overflow-x: hidden;
+    }
+
     header {
-      background:url('https://tiffyai-usd.github.io/Papa_Rons_Cafe/coke.jpg') center/cover no-repeat;
-      height:70vh; display:flex; flex-direction:column; justify-content:center; align-items:center;
-      position:relative; border-bottom:4px solid #d4a373;
+      background: url('./images/drinks/coke.jpeg') center/cover no-repeat;
+      height: 70vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      position: relative;
+      border-bottom: 4px solid #d4a373;
     }
-    header::after { content:''; position:absolute; inset:0; background:rgba(10,10,10,.55); z-index:1; }
-    header>*{position:relative;z-index:2}
-    .logo{max-width:180px;border-radius:20px;border:4px solid #d4a373;margin-bottom:1rem}
-    h1{font-family:'Bebas Neue';color:#d4a373;font-size:5.5rem;letter-spacing:4px}
-    .tagline{font-family:'Bebas Neue';color:#d4a373;font-size:1.8rem;letter-spacing:3px}
+    header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(10,10,10,0.55);
+      z-index: 1;
+    }
+    header > * { position: relative; z-index: 2; }
 
-    h2{font-family:'Bebas Neue';color:#d4a373;font-size:2.8rem;margin:3rem auto 1.5rem;text-align:center}
-
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.8rem;padding:0 5%;max-width:1400px;margin:auto}
-
-    .item{background:#111;border:2px solid #333;border-radius:16px;overflow:hidden;transition:.3s}
-    .item:hover{border-color:#d4a373;transform:translateY(-8px)}
-
-    .item img{width:100%;height:180px;object-fit:cover;border-bottom:3px solid #d4a373}
-
-    .card{text-align:center;padding:1rem}
-    .name{font-family:'Bebas Neue';font-size:1.5rem;color:#d4a373}
-    .details{font-size:.9rem;color:#ccc}
-    .price{font-family:'Bebas Neue';font-size:1.4rem;color:#e6b880;margin:.6rem 0}
-
-    .qty-controls{display:flex;justify-content:center;gap:10px}
-    .qty-btn{width:36px;height:36px;background:#222;color:#d4a373;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center}
-    .qty-num{min-width:40px;font-family:'Bebas Neue';color:#d4a373;text-align:center}
-
-    #orderBtn{
-      position:fixed;right:20px;bottom:20px;
-      background:linear-gradient(180deg,#d4a373,#f1b86b);
-      color:#071010;font-family:'Bebas Neue';
-      padding:14px 24px;border-radius:50px;
-      display:none;text-decoration:none;
+    .logo {
+      max-width: 180px;
+      border-radius: 20px;
+      border: 4px solid #d4a373;
+      margin-bottom: 1rem;
     }
 
-    footer{text-align:center;padding:2.5rem 1rem;color:#888;margin-top:4rem}
-    footer a{color:#25D366}
+    h1 {
+      font-family: 'Bebas Neue', cursive;
+      color: #d4a373;
+      font-size: 5rem;
+      letter-spacing: 4px;
+    }
+
+    .tagline {
+      font-family: 'Bebas Neue', cursive;
+      color: #d4a373;
+      font-size: 1.6rem;
+    }
+
+    h2 {
+      font-family: 'Bebas Neue', cursive;
+      color: #d4a373;
+      font-size: 2.8rem;
+      margin: 3rem 0 1.5rem;
+      text-align: center;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.8rem;
+      padding: 0 5%;
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .item {
+      background: #111;
+      border: 2px solid #333;
+      border-radius: 16px;
+      overflow: hidden;
+      transition: 0.3s;
+    }
+
+    .item:hover {
+      border-color: #d4a373;
+      transform: translateY(-6px);
+    }
+
+    .item img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-bottom: 3px solid #d4a373;
+    }
+
+    .card {
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .name {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.5rem;
+      color: #d4a373;
+    }
+
+    .details { color: #ccc; font-size: 0.9rem; }
+    .price {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.4rem;
+      color: #e6b880;
+    }
+
+    .qty-controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 0.5rem;
+    }
+
+    .qty-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #222;
+      color: #d4a373;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .qty-num {
+      min-width: 40px;
+      text-align: center;
+      font-family: 'Bebas Neue', cursive;
+      color: #d4a373;
+    }
+
+    #orderBtn {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: linear-gradient(180deg, #d4a373, #f1b86b);
+      color: #071010;
+      font-family: 'Bebas Neue', cursive;
+      padding: 14px 24px;
+      border-radius: 50px;
+      display: none;
+      text-decoration: none;
+      z-index: 999;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #888;
+      background: #000;
+      margin-top: 4rem;
+    }
   </style>
 </head>
 <body>
 
 <header>
-  <img src="logo.jpg" class="logo">
+  <img src="./images/drinks/logo.jpg" class="logo" alt="Papa Ron's Logo">
   <h1>DRINKS MENU</h1>
   <p class="tagline">Papa Ron's Café • Coffee Bay</p>
 </header>
@@ -68,7 +177,7 @@
 <h2>Ciders & Coolers</h2>
 <div class="grid" id="cidersGrid"></div>
 
-<a href="#" id="orderBtn">ORDER NOW</a>
+<a id="orderBtn" href="#">ORDER NOW</a>
 
 <footer>
   © 2025 Papa Ron's Café • Coffee Bay<br>
@@ -78,35 +187,52 @@
 <script>
 const drinks = {
   softDrinks: [
-    { name:"Coke", size:"500ml", price:15, img:"coke.jpeg" },
-    { name:"Fanta", size:"500ml", price:15, img:"fanta.jpg" },
-    { name:"Sprite", size:"500ml", price:15, img:"sprite.jpeg" },
-    { name:"Powerade", size:"500ml", price:15, img:"powerade.jpeg" },
-    { name:"Liquifruit", size:"300ml", price:15, img:"liquifruit.jpeg" },
-    { name:"Appletizer", size:"300ml", price:15, img:"appletizer.jpg" },
-    { name:"Mr Orange", size:"300ml", price:10, img:"Mrorange.jpeg" },
-    { name:"Stoney", size:"500ml", price:15, img:"stoney.jpeg" },
-    { name:"Tonic Water", size:"200ml", price:15, img:"tonicwater.jpg" },
-    { name:"Dry Lemon", size:"200ml", price:15, img:"drylemon.jpeg" },
-    { name:"Mineral Water", size:"500ml", price:10, img:"mineral.jpg" },
-    { name:"Sparkling Water", size:"500ml", price:15, img:"sparkling.png" },
-    { name:"Mineral Water", size:"1L", price:15, img:"1litwater.png" }
+    { name: "Coke", size: "500ml", price: 15, img: "./images/drinks/coke.jpeg" },
+    { name: "Fanta", size: "500ml", price: 15, img: "./images/drinks/fanta.jpg" },
+    { name: "Sprite", size: "500ml", price: 15, img: "./images/drinks/sprite.jpeg" },
+    { name: "Powerade", size: "500ml", price: 15, img: "./images/drinks/powerade.jpeg" },
+    { name: "Liquifruit", size: "300ml", price: 15, img: "./images/drinks/liquifruit.jpg" },
+    { name: "Appletizer", size: "300ml", price: 15, img: "./images/drinks/apple.jpg" },
+    { name: "Mr Orange", size: "300ml", price: 10, img: "./images/drinks/orange.jpg" },
+    { name: "Stoney", size: "500ml", price: 15, img: "./images/drinks/stoney.jpg" },
+    { name: "Tonic Water", size: "200ml", price: 15, img: "./images/drinks/tonic.jpg" },
+    { name: "Dry Lemon", size: "200ml", price: 15, img: "./images/drinks/drylemon.jpg" },
+    { name: "Mineral Water", size: "500ml", price: 10, img: "./images/drinks/mineral500.jpg" },
+    { name: "Sparkling Water", size: "500ml", price: 15, img: "./images/drinks/sparkling.jpg" },
+    { name: "Mineral Water", size: "1L", price: 15, img: "./images/drinks/mineral1l.jpg" }
   ],
   beers: [
-    { name:"Black Label", size:"330ml", price:30, img:"blacklabel.jpeg" },
-    { name:"Castle Lager", size:"330ml", price:30, img:"castlelager.jpeg" },
-    { name:"Castle Lite", size:"330ml", price:30, img:"castlelite.jpeg" }
+    { name: "Black Label", size: "500ml", price: 30, img: "./images/drinks/blacklabel500.jpg" },
+    { name: "Black Label", size: "330ml", price: 30, img: "./images/drinks/blacklabel330.jpg" },
+    { name: "Castle Lager", size: "330ml", price: 30, img: "./images/drinks/castlelager.jpg" },
+    { name: "Castle Light", size: "330ml", price: 30, img: "./images/drinks/castlelight.jpg" },
+    { name: "Windhoek", size: "500ml", price: 30, img: "./images/drinks/windhoek500.jpg" }
   ],
-  ciders: []
+  ciders: [
+    { name: "Hunters Dry", size: "330ml", price: 35, img: "./images/drinks/huntersdry.jpg" },
+    { name: "Hunters Gold", size: "330ml", price: 35, img: "./images/drinks/huntersgold.jpg" },
+    { name: "Smirnoff Ice", size: "440ml", price: 35, img: "./images/drinks/smirnoffice.jpg" },
+    { name: "Ruby Apple", size: "275ml", price: 35, img: "./images/drinks/rubyapple.jpg" },
+    { name: "Flying Fish", size: "500ml", price: 35, img: "./images/drinks/flyingfish.jpg" },
+    { name: "Savanna", size: "330ml", price: 35, img: "./images/drinks/savanna.jpg" },
+    { name: "Corona Extra", size: "355ml", price: 35, img: "./images/drinks/corona.jpg" },
+    { name: "Extreme", size: "330ml", price: 35, img: "./images/drinks/extreme.jpg" },
+    { name: "Sodaze", size: "250ml", price: 60, img: "./images/drinks/sodaze.jpg" },
+    { name: "Lucky Club", size: "250ml", price: 70, img: "./images/drinks/luckyclub.jpg" }
+  ]
 };
 
-function renderDrinks(category, items){
-  const grid=document.getElementById(category+"Grid");
-  items.forEach((item,i)=>{
-    const key=category+"-"+i;
-    grid.innerHTML+=`
+const order = {};
+
+function renderDrinks(category, items) {
+  const grid = document.getElementById(category + "Grid");
+  grid.innerHTML = "";
+  items.forEach((item, i) => {
+    const key = `${category}-${i}`;
+    grid.innerHTML += `
       <div class="item">
-        <img src="${item.img}" onerror="this.src='https://via.placeholder.com/600x400/1a1a1a/ffffff?text=${item.name}'">
+        <img src="${item.img}" alt="${item.name}"
+             onerror="this.src='https://via.placeholder.com/600x400/1a1a1a/ffffff?text=${item.name}'">
         <div class="card">
           <div class="name">${item.name}</div>
           <div class="details">${item.size}</div>
@@ -121,33 +247,33 @@ function renderDrinks(category, items){
   });
 }
 
-renderDrinks('softDrinks',drinks.softDrinks);
-renderDrinks('beers',drinks.beers);
-renderDrinks('ciders',drinks.ciders);
+renderDrinks("softDrinks", drinks.softDrinks);
+renderDrinks("beers", drinks.beers);
+renderDrinks("ciders", drinks.ciders);
 
-const order={};
-
-document.addEventListener('click',e=>{
-  const btn=e.target.closest('.qty-btn');
-  if(!btn)return;
-  const key=btn.dataset.key;
-  order[key]=Math.max(0,(order[key]||0)+ +btn.dataset.change);
-  document.getElementById('qty-'+key).textContent=order[key];
+document.addEventListener("click", e => {
+  const btn = e.target.closest(".qty-btn");
+  if (!btn) return;
+  const key = btn.dataset.key;
+  order[key] = Math.max(0, (order[key] || 0) + +btn.dataset.change);
+  document.getElementById("qty-" + key).textContent = order[key];
   updateOrderButton();
 });
 
-function updateOrderButton(){
-  const items=Object.keys(order).filter(k=>order[k]>0);
-  const btn=document.getElementById('orderBtn');
-  if(!items.length){btn.style.display='none';return;}
-  btn.style.display='flex';
-  let message="Hi Papa Ron's! I'd like to order:\n\n";
-  items.forEach(key=>{
-    const[cat,idx]=key.split('-');
-    const item=drinks[cat][+idx];
-    message+=`${order[key]} x ${item.name} ${item.size} - R${item.price}\n`;
+function updateOrderButton() {
+  const btn = document.getElementById("orderBtn");
+  const items = Object.keys(order).filter(k => order[k] > 0);
+  if (!items.length) return btn.style.display = "none";
+
+  let msg = "Hi Papa Ron's! I'd like to order:\n\n";
+  items.forEach(k => {
+    const [cat, i] = k.split("-");
+    const item = drinks[cat][i];
+    msg += `${order[k]} x ${item.name} ${item.size} - R${item.price}\n`;
   });
-  btn.href=`https://wa.me/+27660660088?text=${encodeURIComponent(message)}`;
+
+  btn.style.display = "block";
+  btn.href = `https://wa.me/+27660660088?text=${encodeURIComponent(msg)}`;
 }
 </script>
 
