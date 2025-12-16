@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popoparons POS</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 10px; background: #f0f0f0; }
+        h1 { text-align: center; }
+        #items { list-style: none; padding: 0; }
+        li { padding: 10px; background: white; margin: 5px 0; border-radius: 5px; }
+        input, button { font-size: 18px; padding: 10px; margin: 5px; }
+        #total { font-size: 30px; text-align: center; font-weight: bold; }
+        button { background: #007bff; color: white; border: none; border-radius: 5px; }
+        #login { text-align: center; margin-top: 50px; }
+    </style>
+</head>
+<body>
+    <h1>Popoparons Coffee Bay</h1>
+
+    <div id="login">
+        <h2>Scan Fingerprint or Enter PIN</h2>
+        <input type="password" id="pin" placeholder="Enter PIN" />
+        <button onclick="login()">Login</button>
+    </div>
+
+    <div id="pos" style="display:none;">
+        <input type="text" id="barcode" placeholder="Scan barcode or type code" autofocus />
+        <button onclick="addItem()">Add Item</button>
+        <button onclick="clearCart()">Clear</button>
+        <button onclick="printReceipt()">Print & Pay</button>
+        <ul id="items"></ul>
+        <div id="total">Total: R0.00</div>
+    </div>
+
+    <script>
+        // Simple PIN - change to whatever you want
+        const PIN = "1234";
+
+        // Inventory - add your 40 items here (code: {name, price})
+        const inventory = {
+            "1001": { name: "Burger", price: 95 },
+            "1002": { name: "Fish & Chips", price: 110 },
+            "1003": { name: "Pizza", price: 120 },
+            // Add the rest of your 20 food items here...
+            "2001": { name: "Coke", price: 20 },
+            "2002": { name: "Beer", price: 35 },
+            "2003": { name: "Coffee", price: 25 },
+            // Add the rest of your drinks here...
+        };
+
+        let cart = [];
+        let currentUser = "";
+
+        function login() {
+            const entered = document.getElementById("pin").value;
+            if (entered === PIN) {
+                document.getElementById("login").style.display = "none";
+                document.getElementById("pos").style.display = "block";
+                document.getElementById("barcode").focus();
+                currentUser = "Staff";
+            } else {
+                alert("Wrong PIN");
+            }
+        }
+
+        function addItem() {
+            const code = document.getElementById("barcode").value.trim();
+            const item = inventory[code];
+            if (item) {
+                cart.push(item);
+                updateCart();
+                document.getElementById("barcode").value = "";
+                document.getElementById("barcode").focus();
+            } else {
+                alert("Item not found");
+            }
+        }
+
+        function updateCart() {
+            const list = document.getElementById("items");
+            list.innerHTML = "";
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                const li = document.createElement("li");
+                li.textContent = `\( {item.name} - R \){item.price}`;
+                list.appendChild(li);
+            });
+            document.getElementById("total").textContent = `Total: R${total.toFixed(2)}`;
+        }
+
+        function clearCart() {
+            cart = [];
+            updateCart();
+        }
+
+        function printReceipt() {
+            if (cart.length === 0) return;
+            let receipt = "Popoparons Coffee Bay\n";
+            receipt += "========================\n";
+            receipt += new Date().toLocaleString() + "\n";
+            receipt += "Served by: " + currentUser + "\n\n";
+            let total = 0;
+            cart.forEach(item => {
+                receipt += `\( {item.name.padEnd(20)} R \){item.price.toFixed(2)}\n`;
+                total += item.price;
+            });
+            receipt += "========================\n";
+            receipt += `TOTAL:               R${total.toFixed(2)}\n`;
+            receipt += "Thank you!\n\n\n";
+
+            // Send to printer (Epson ESC/POS raw)
+            const esc = '\x1b';
+            const gs = '\x1d';
+            let printData = esc + '@' +   // Initialize
+                            gs + 'V' + '1' + '\0'; // Cut paper
+            printData = receipt + printData;
+
+            // For most thermal printers - this works via browser print
+            const printWindow = window.open('', '', 'height=500,width=800');
+            printWindow.document.write('<pre>' + receipt + '</pre>');
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();
+
+            clearCart();
+        }
+
+        // Allow Enter key to add item
+        document.getElementById("barcode").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") addItem();
+        });
+    </script>
+</body>
+  </html>
