@@ -5,56 +5,110 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Popoparons POS</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 10px; background: #f0f0f0; }
-        h1 { text-align: center; }
+        body { font-family: Arial, sans-serif; background: #000; color: #fff; margin: 0; padding: 10px; }
+        h1 { text-align: center; color: #d4a373; font-size: 2.5rem; margin: 20px 0; }
+        input, button { font-size: 1.8rem; padding: 15px; margin: 10px 0; width: 100%; border-radius: 10px; }
+        button { background: #d4a373; color: #000; border: none; }
         #items { list-style: none; padding: 0; }
-        li { padding: 10px; background: white; margin: 5px 0; border-radius: 5px; }
-        input, button { font-size: 18px; padding: 10px; margin: 5px; }
-        #total { font-size: 30px; text-align: center; font-weight: bold; }
-        button { background: #007bff; color: white; border: none; border-radius: 5px; }
-        #login { text-align: center; margin-top: 50px; }
+        li { background: #111; padding: 15px; margin: 10px 0; border-radius: 10px; font-size: 1.6rem; }
+        #total { font-size: 2.5rem; text-align: center; margin: 20px 0; color: #d4a373; }
+        #login, #stockIn { text-align: center; margin-top: 50px; }
+        #pos { display: none; }
     </style>
 </head>
 <body>
-    <h1>Popoparons Coffee Bay</h1>
+    <h1>POPOPARONS COFFEE BAY</h1>
 
     <div id="login">
-        <h2>Scan Fingerprint or Enter PIN</h2>
-        <input type="password" id="pin" placeholder="Enter PIN" />
-        <button onclick="login()">Login</button>
+        <h2>Enter PIN for Sale</h2>
+        <input type="password" id="pin" placeholder="PIN" autofocus />
+        <button onclick="login()">Login (Sale)</button>
+        <button onclick="stockInMode()">Stock In (No PIN)</button>
     </div>
 
-    <div id="pos" style="display:none;">
-        <input type="text" id="barcode" placeholder="Scan barcode or type code" autofocus />
+    <div id="pos">
+        <button onclick="logout()">Logout</button>
+        <input type="text" id="barcode" placeholder="Scan or type barcode" autofocus />
         <button onclick="addItem()">Add Item</button>
-        <button onclick="clearCart()">Clear</button>
+        <button onclick="clearCart()">Clear Cart</button>
         <button onclick="printReceipt()">Print & Pay</button>
         <ul id="items"></ul>
         <div id="total">Total: R0.00</div>
     </div>
 
-    <script>
-        // Simple PIN - change to whatever you want
-        const PIN = "1234";
+    <div id="stockIn" style="display:none;">
+        <h2>Stock In Mode</h2>
+        <button onclick="logout()">Back</button>
+        <input type="text" id="stockBarcode" placeholder="Scan incoming stock" autofocus />
+        <p>Scanned items logged as received.</p>
+    </div>
 
-        // Inventory - add your 40 items here (code: {name, price})
+    <script>
+        const PIN = "1234"; // Change this
+
         const inventory = {
-            "1001": { name: "Burger", price: 95 },
-            "1002": { name: "Fish & Chips", price: 110 },
-            "1003": { name: "Pizza", price: 120 },
-            // Add the rest of your 20 food items here...
-            "2001": { name: "Coke", price: 20 },
-            "2002": { name: "Beer", price: 35 },
-            "2003": { name: "Coffee", price: 25 },
-            // Add the rest of your drinks here...
+            // === FOOD ===
+            "1001": { name: "SOMETHING MEATY PIZZA", price: 135 },
+            "1002": { name: "HAWAIIAN PIZZA", price: 135 },
+            "1003": { name: "FLAMING SPARE RIB PIZZA", price: 150 },
+            "1004": { name: "CHEESE BURGER", price: 120 },
+            "1005": { name: "CHEESY STRIPS (5)", price: 50 },
+            "1006": { name: "BOERIE ROLL", price: 50 },
+            "1007": { name: "RUMP STEAK", price: 160 },
+            "1008": { name: "RIB RACK", price: 200 },
+            "1009": { name: "SCHNITZEL", price: 120 },
+            "1010": { name: "PREGO ROLL", price: 50 },
+            "1011": { name: "MUNCHIE PLATTER", price: 350 },
+            "1012": { name: "CHEESY POPS", price: 50 },
+            "1013": { name: "CHICKEN PERI NACHO", price: 160 },
+            "1014": { name: "WINGLETS 5", price: 60 },
+            "1015": { name: "WINGLETS 10", price: 100 },
+            "1016": { name: "PLATTER FOR 2", price: 350 },
+            "1017": { name: "BREAKFAST", price: 80 },
+            "1018": { name: "SIDE CHIPS", price: 20 },
+            "1019": { name: "SIDE SALAD", price: 20 },
+            "1020": { name: "GREEK SALAD", price: 20 },
+
+            // === SOFT DRINKS ===
+            "2001": { name: "Coke 500ml", price: 15 },
+            "2002": { name: "Fanta 500ml", price: 15 },
+            "2003": { name: "Sprite 500ml", price: 15 },
+            "2004": { name: "Powerade 500ml", price: 15 },
+            "2005": { name: "Liquifruit 300ml", price: 15 },
+            "2006": { name: "Appletizer 300ml", price: 15 },
+            "2007": { name: "Mr Orange 300ml", price: 10 },
+            "2008": { name: "Stoney 500ml", price: 15 },
+            "2009": { name: "Tonic Water 200ml", price: 15 },
+            "2010": { name: "Dry Lemon 200ml", price: 15 },
+            "2011": { name: "Mineral Water 500ml", price: 10 },
+            "2012": { name: "Sparkling Water 500ml", price: 15 },
+            "2013": { name: "Mineral Water 1L", price: 15 },
+
+            // === BEERS ===
+            "2101": { name: "Black Label 500ml", price: 30 },
+            "2102": { name: "Black Label 330ml", price: 30 },
+            "2103": { name: "Castle Lager 330ml", price: 30 },
+            "2104": { name: "Castle Light 330ml", price: 30 },
+            "2105": { name: "Windhoek 500ml", price: 30 },
+
+            // === CIDERS & COOLERS ===
+            "2201": { name: "Hunters Dry 330ml", price: 35 },
+            "2202": { name: "Hunters Gold 330ml", price: 35 },
+            "2203": { name: "Smirnoff Ice 440ml", price: 35 },
+            "2204": { name: "Ruby Apple 275ml", price: 35 },
+            "2205": { name: "Flying Fish 500ml", price: 35 },
+            "2206": { name: "Savanna 330ml", price: 35 },
+            "2207": { name: "Corona Extra 355ml", price: 35 },
+            "2208": { name: "Extreme 330ml", price: 35 },
+            "2209": { name: "Sodaze 250ml", price: 60 },
+            "2210": { name: "Lucky Club 250ml", price: 70 }
         };
 
         let cart = [];
         let currentUser = "";
 
         function login() {
-            const entered = document.getElementById("pin").value;
-            if (entered === PIN) {
+            if (document.getElementById("pin").value === PIN) {
                 document.getElementById("login").style.display = "none";
                 document.getElementById("pos").style.display = "block";
                 document.getElementById("barcode").focus();
@@ -64,30 +118,57 @@
             }
         }
 
+        function stockInMode() {
+            document.getElementById("login").style.display = "none";
+            document.getElementById("stockIn").style.display = "block";
+            document.getElementById("stockBarcode").focus();
+        }
+
+        function logout() {
+            cart = [];
+            updateCart();
+            document.getElementById("pos").style.display = "none";
+            document.getElementById("stockIn").style.display = "none";
+            document.getElementById("login").style.display = "block";
+            document.getElementById("pin").value = "";
+        }
+
         function addItem() {
             const code = document.getElementById("barcode").value.trim();
             const item = inventory[code];
             if (item) {
                 cart.push(item);
                 updateCart();
-                document.getElementById("barcode").value = "";
-                document.getElementById("barcode").focus();
             } else {
-                alert("Item not found");
+                alert("Item not found - code: " + code);
             }
+            document.getElementById("barcode").value = "";
+            document.getElementById("barcode").focus();
         }
+
+        // Stock in scanner
+        document.getElementById("stockBarcode").addEventListener("change", () => {
+            const code = document.getElementById("stockBarcode").value.trim();
+            const item = inventory[code];
+            if (item) {
+                alert("Stock in: " + item.name);
+            } else {
+                alert("Unknown code");
+            }
+            document.getElementById("stockBarcode").value = "";
+        });
 
         function updateCart() {
             const list = document.getElementById("items");
             list.innerHTML = "";
             let total = 0;
-            cart.forEach((item, index) => {
+            cart.forEach(item => {
                 total += item.price;
                 const li = document.createElement("li");
-                li.textContent = `\( {item.name} - R \){item.price}`;
+                li.textContent = item.name + " - R" + item.price.toFixed(2);
                 list.appendChild(li);
             });
-            document.getElementById("total").textContent = `Total: R${total.toFixed(2)}`;
+            document.getElementById("total").textContent = "Total: R" + total.toFixed(2);
         }
 
         function clearCart() {
@@ -96,42 +177,37 @@
         }
 
         function printReceipt() {
-            if (cart.length === 0) return;
-            let receipt = "Popoparons Coffee Bay\n";
-            receipt += "========================\n";
+            if (cart.length === 0) return alert("Cart empty");
+
+            let receipt = "POPOPARONS COFFEE BAY\n";
+            receipt += "============================\n";
             receipt += new Date().toLocaleString() + "\n";
             receipt += "Served by: " + currentUser + "\n\n";
+
             let total = 0;
             cart.forEach(item => {
-                receipt += `\( {item.name.padEnd(20)} R \){item.price.toFixed(2)}\n`;
+                receipt += item.name.padEnd(25) + "R" + item.price.toFixed(2) + "\n";
                 total += item.price;
             });
-            receipt += "========================\n";
-            receipt += `TOTAL:               R${total.toFixed(2)}\n`;
-            receipt += "Thank you!\n\n\n";
 
-            // Send to printer (Epson ESC/POS raw)
-            const esc = '\x1b';
-            const gs = '\x1d';
-            let printData = esc + '@' +   // Initialize
-                            gs + 'V' + '1' + '\0'; // Cut paper
-            printData = receipt + printData;
+            receipt += "============================\n";
+            receipt += "TOTAL: ".padEnd(25) + "R" + total.toFixed(2) + "\n";
+            receipt += "Thank you! Come again!\n\n\n";
 
-            // For most thermal printers - this works via browser print
-            const printWindow = window.open('', '', 'height=500,width=800');
-            printWindow.document.write('<pre>' + receipt + '</pre>');
-            printWindow.document.close();
-            printWindow.focus();
-            printWindow.print();
-            printWindow.close();
+            const win = window.open('', '', 'width=600,height=600');
+            win.document.write('<pre style="font-family: monospace; font-size: 14pt;">' + receipt + '</pre>');
+            win.document.close();
+            win.focus();
+            win.print();
+            win.close();
 
             clearCart();
         }
 
-        // Allow Enter key to add item
-        document.getElementById("barcode").addEventListener("keypress", function(e) {
+        // Enter key adds item
+        document.getElementById("barcode").addEventListener("keyup", e => {
             if (e.key === "Enter") addItem();
         });
     </script>
 </body>
-  </html>
+            </html>
