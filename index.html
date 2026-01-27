@@ -3,481 +3,374 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAPA RON'S POS - COMPLETE SYSTEM</title>
+    <title>PAPA RON'S POS - COFFEE BAY - FULL SYSTEM</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #000; color: #fff; margin: 0; padding: 10px; overflow-x: hidden; }
-        h1 { text-align: center; color: #d4a373; font-size: 2.2rem; margin: 10px 0; text-transform: uppercase; letter-spacing: 2px; }
         
-        /* Input & Global Buttons */
-        input { font-size: 1.5rem; padding: 15px; margin: 10px 0; width: 100%; border-radius: 10px; border: 1px solid #444; background: #111; color: #fff; box-sizing: border-box; }
-        button { font-size: 1.2rem; padding: 15px; margin: 5px 0; width: 100%; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        button:active { transform: scale(0.98); }
+        /* Banner Logic - Matching Website Proportions */
+        .banner-wrap { width: 100%; display: flex; justify-content: center; margin-bottom: 15px; }
+        #main-banner { width: 100%; max-width: 900px; height: auto; border-bottom: 3px solid #d4a373; }
+
+        h1 { text-align: center; color: #d4a373; font-size: 2.5rem; margin: 10px 0; text-transform: uppercase; }
         
-        /* Layout Containers */
-        #login, #stockIn, #inventoryView, #transactionsView { text-align: center; margin-top: 20px; }
-        #pos, #inventoryView, #multiplierPopup, #tenderPopup, #stockIn, #transactionsView { display: none; }
+        /* Navigation Controls */
+        #login, #pos, #stockIn, #inventoryView, #transactionsView { display: none; }
+        .active-view { display: block !important; }
+
+        .top-nav { display: flex; gap: 10px; margin-bottom: 15px; }
+        .nav-btn { flex: 1; padding: 15px; font-size: 1.2rem; font-weight: bold; border-radius: 10px; border: none; cursor: pointer; text-transform: uppercase; }
+        .btn-logout { background: #c62828; color: white; }
+        .btn-stock { background: #455a64; color: white; }
+        .btn-history { background: #455a64; color: white; }
+
+        /* Grid System for Products */
+        .pos-container { display: flex; gap: 15px; height: 55vh; margin-bottom: 15px; }
+        .grid-column { flex: 1; display: flex; flex-direction: column; }
+        .grid-header { text-align: center; color: #d4a373; font-weight: bold; font-size: 1.3rem; margin-bottom: 8px; padding: 5px; background: #1a1a1a; border-radius: 5px; }
         
-        .category-container { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 15px; height: 55vh; }
-        .category-section { width: 50%; display: flex; flex-direction: column; }
-        .category-title { text-align: center; color: #d4a373; margin-bottom: 8px; font-size: 1.2rem; font-weight: bold; background: #1a1a1a; padding: 5px; border-radius: 5px; }
-        
-        /* The Grid Where Buttons Live */
-        .category-grid { 
+        .product-grid { 
             display: grid; 
             grid-template-columns: repeat(2, 1fr); 
-            gap: 8px; 
+            gap: 10px; 
             overflow-y: auto; 
-            padding: 5px; 
             background: #080808; 
-            border: 1px solid #222; 
-            border-radius: 10px;
+            padding: 10px; 
+            border: 1px solid #333; 
+            border-radius: 15px;
             flex-grow: 1;
         }
-        
-        /* Product Buttons */
-        .product-btn { 
-            font-size: 0.8rem; 
-            padding: 10px 5px; 
+
+        /* Product Buttons Style */
+        .p-btn { 
+            min-height: 90px; 
             color: white; 
-            border-radius: 8px; 
-            text-align: center; 
-            min-height: 70px; 
+            border-radius: 10px; 
+            border: none; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            font-size: 0.85rem; 
+            cursor: pointer; 
+            transition: 0.2s; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            line-height: 1.2; 
-            text-transform: uppercase; 
-            box-shadow: 0 4px #000;
+            text-align: center;
+            padding: 10px;
         }
-        .food-btn { background: #5d4037; border: 1px solid #795548; }
-        .drink-btn { background: #1565c0; border: 1px solid #1e88e5; }
-        .product-btn:active { box-shadow: 0 1px #000; transform: translateY(3px); }
+        .food-item { background: #5d4037; border-bottom: 5px solid #3e2723; }
+        .drink-item { background: #1565c0; border-bottom: 5px solid #0d47a1; }
+        .p-btn:active { transform: translateY(4px); border-bottom-width: 1px; }
 
-        /* Cart & Totals */
-        #items { list-style: none; padding: 0; max-height: 20vh; overflow-y: auto; border: 1px solid #333; background: #050505; border-radius: 10px; }
-        li { padding: 12px; border-bottom: 1px solid #222; font-size: 1.1rem; display: flex; justify-content: space-between; }
-        #total { font-size: 2.8rem; text-align: center; margin: 10px 0; color: #44ff44; font-weight: bold; text-shadow: 0 0 10px rgba(68, 255, 68, 0.3); }
+        /* Checkout & Cart Area */
+        .cart-section { background: #111; border: 2px solid #222; border-radius: 15px; padding: 20px; }
+        #total-amount { font-size: 3.5rem; text-align: center; color: #44ff44; font-weight: bold; margin: 10px 0; font-family: 'Courier New', Courier, monospace; }
+        .pay-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .btn-pay { height: 80px; font-size: 1.8rem; font-weight: bold; color: white; border-radius: 12px; border: none; cursor: pointer; }
+        .btn-cash { background: #43a047; }
+        .btn-card { background: #1e88e5; }
         
-        /* Modals */
+        #order-list { list-style: none; padding: 0; margin-top: 15px; max-height: 200px; overflow-y: auto; }
+        .cart-item { display: flex; justify-content: space-between; padding: 12px; border-bottom: 1px solid #333; font-size: 1.2rem; }
+        .remove-btn { background: #ff5252; color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.9rem; }
+
+        /* Multiplier & Modal Popups */
+        .overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.85); display: none; z-index: 2000; 
+        }
         .modal { 
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            background: #1a1a1a; padding: 25px; border-radius: 20px; width: 85%; max-width: 450px; 
-            z-index: 1000; border: 2px solid #d4a373; box-shadow: 0 0 50px rgba(0,0,0,0.9);
+            background: #1a1a1a; padding: 30px; border: 3px solid #d4a373; 
+            width: 90%; max-width: 480px; z-index: 2001; border-radius: 25px;
+            display: none;
+        }
+        input[type="number"], input[type="password"], input[type="text"] { 
+            width: 100%; padding: 18px; font-size: 1.6rem; margin: 10px 0; 
+            background: #000; color: #fff; border: 1px solid #444; border-radius: 12px; 
+            box-sizing: border-box; text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <div id="login">
-        <h1>PAPA RON'S POS</h1>
-        <input type="password" id="pin" placeholder="ENTER STAFF PIN" autofocus />
-        <button onclick="login()" style="background: #d4a373;">SALE MODE</button>
-        <button onclick="stockInMode()" style="background:#2e7d32; color:white; margin-top:15px;">REPLENISH STOCK</button>
+    <div class="banner-wrap">
+        <img id="main-banner" src="https://tiffyai-usd.github.io/Papa_Ron_Point_of_Sale/banner.png" alt="PAPA RON'S">
+    </div>
+
+    <div id="login" class="active-view">
+        <h1>PAPA RON'S LOGIN</h1>
+        <div style="max-width: 400px; margin: 0 auto;">
+            <input type="password" id="staff-pin" placeholder="ENTER PIN" autofocus />
+            <button class="nav-btn" onclick="authenticate('sale')" style="background:#d4a373; color:black; width:100%; margin-top:10px;">SALE MODE</button>
+            <button class="nav-btn" onclick="authenticate('stock')" style="background:#2e7d32; color:white; width:100%; margin-top:15px;">REPLENISH STOCK</button>
+        </div>
     </div>
 
     <div id="pos">
-        <div style="display:flex; gap:10px;">
-            <button onclick="logout()" style="background:#c62828; color:white; flex:1;">LOGOUT</button>
-            <button onclick="showInventory()" style="background:#455a64; color:white; flex:1;">STOCK</button>
-            <button onclick="showTransactions()" style="background:#455a64; color:white; flex:1;">HISTORY</button>
+        <div class="top-nav">
+            <button class="nav-btn btn-logout" onclick="location.reload()">LOGOUT</button>
+            <button class="nav-btn btn-stock" onclick="showInventoryView()">VIEW STOCK</button>
+            <button class="nav-btn btn-history" onclick="showHistory()">HISTORY</button>
         </div>
 
-        <div class="category-container">
-            <div class="category-section">
-                <div class="category-title">Food Menu</div>
-                <div id="foodGrid" class="category-grid"></div>
+        <div class="pos-container">
+            <div class="grid-column">
+                <div class="grid-header">FOOD MENU</div>
+                <div id="saleFoodGrid" class="product-grid"></div>
             </div>
-            <div class="category-section">
-                <div class="category-title">Drink Menu</div>
-                <div id="drinkGrid" class="category-grid"></div>
+            <div class="grid-column">
+                <div class="grid-header">DRINK MENU</div>
+                <div id="saleDrinkGrid" class="product-grid"></div>
             </div>
         </div>
 
-        <input type="text" id="barcode" placeholder="SCAN BARCODE..." />
-        <div id="total">R0.00</div>
-        
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <button onclick="payCash()" style="background:#43a047; color:white; height:80px; font-size:1.8rem;">CASH</button>
-            <button onclick="payCard()" style="background:#1e88e5; color:white; height:80px; font-size:1.8rem;">CARD</button>
+        <div class="cart-section">
+            <div id="total-amount">R0.00</div>
+            <div class="pay-row">
+                <button class="btn-pay btn-cash" onclick="processPayment('CASH')">CASH</button>
+                <button class="btn-pay btn-card" onclick="processPayment('CARD')">CARD</button>
+            </div>
+            <ul id="order-list"></ul>
+            <input type="text" id="manual-barcode" placeholder="OR SCAN BARCODE..." style="margin-top:15px; font-size:1.1rem; padding:10px;">
         </div>
-        
-        <div style="display:flex; gap:10px; margin-top:10px;">
-            <button onclick="printPreview()" style="background:#555; color:white;">PRINT TABS</button>
-            <button onclick="showZReading()" style="background:#555; color:white;">Z-REPORT</button>
-        </div>
-        
-        <button id="printReceiptBtn" onclick="printLastReceipt()" style="display:none; background:#ef6c00; padding:20px; font-size:1.5rem; margin-top:10px;">PRINT FINAL RECEIPT</button>
-
-        <h3 style="text-align:center;">ORDER #<span id="currentTransNum">1</span></h3>
-        <ul id="items"></ul>
     </div>
 
     <div id="stockIn">
         <h1>REPLENISH STOCK</h1>
-        <button onclick="logout()" style="background:#555; color:white;">RETURN TO LOGIN</button>
-        <div class="category-container">
-            <div class="category-section">
-                <div class="category-title">Stock Food</div>
-                <div id="stockFoodGrid" class="category-grid"></div>
+        <button class="nav-btn" onclick="location.reload()" style="background:#333; color:white; margin-bottom:15px;">BACK TO LOGIN</button>
+        
+        <div class="pos-container">
+            <div class="grid-column">
+                <div class="grid-header">ADD FOOD STOCK</div>
+                <div id="stockFoodGrid" class="product-grid"></div>
             </div>
-            <div class="category-section">
-                <div class="category-title">Stock Drinks</div>
-                <div id="stockDrinkGrid" class="category-grid"></div>
+            <div class="grid-column">
+                <div class="grid-header">ADD DRINK STOCK</div>
+                <div id="stockDrinkGrid" class="product-grid"></div>
             </div>
         </div>
-        <input type="text" id="stockBarcode" placeholder="SCAN TO REPLENISH..." />
-        <div id="stockInStatus" style="font-size:1.5rem; color:#44ff44; margin:10px; height:30px;"></div>
+        <div id="replenish-status" style="text-align:center; font-size:1.5rem; color:#44ff44; font-weight:bold; margin-top:15px;"></div>
     </div>
 
-    <div id="multiplierPopup" class="modal">
-        <h2 id="popupItemName" style="color:#d4a373;"></h2>
+    <div id="modal-overlay" class="overlay"></div>
+    <div id="multiplierModal" class="modal">
+        <h2 id="modal-item-name" style="text-align:center; color:#d4a373;"></h2>
         <div style="display:flex; gap:10px;">
-            <div>
+            <div style="flex:1;">
                 <label>Packs (x6)</label>
-                <input type="number" id="packsInput" value="0" />
+                <input type="number" id="p-qty" value="0">
             </div>
-            <div>
+            <div style="flex:1;">
                 <label>Cases (x24)</label>
-                <input type="number" id="casesInput" value="0" />
+                <input type="number" id="c-qty" value="0">
             </div>
         </div>
-        <p>Or single units:</p>
-        <input type="number" id="singleInput" placeholder="Individual units" />
-        <button onclick="confirmMultiplier()" style="background:#43a047; color:white;">UPDATE INVENTORY</button>
-        <button onclick="document.getElementById('multiplierPopup').style.display='none'" style="background:#333; color:white;">CANCEL</button>
+        <label>Single Units</label>
+        <input type="number" id="s-qty" placeholder="0">
+        <button onclick="saveNewStock()" style="background:#44ff44; color:black; width:100%; padding:20px; font-size:1.5rem; font-weight:bold; border-radius:15px; margin-top:10px;">UPDATE STOCK</button>
+        <button onclick="closePopups()" style="background:#333; color:white; width:100%; padding:10px; margin-top:10px; border-radius:10px;">CANCEL</button>
     </div>
 
-    <div id="tenderPopup" class="modal">
-        <h2 style="color:#44ff44;">CASH PAYMENT</h2>
-        <p style="font-size:1.5rem;">Due: R<span id="tenderTotal">0.00</span></p>
-        <input type="number" id="tenderAmount" placeholder="Amount Tendered" step="0.01" autofocus />
-        <div id="tenderResult" style="font-size:2.2rem; color:#ffeb3b; margin:10px 0;"></div>
-        <button onclick="confirmTender()" style="background:#43a047; color:white; font-size:1.5rem;">FINALIZE SALE</button>
-        <button onclick="document.getElementById('tenderPopup').style.display='none'" style="background:#333; color:white;">CANCEL</button>
-    </div>
-
-    <div id="inventoryView">
-        <h1>STOCK LEVELS</h1>
-        <button onclick="backToPOS()" style="background:#555; color:white;">BACK TO POS</button>
-        <ul id="inventoryList" style="text-align:left; font-size:1.2rem; padding:20px;"></ul>
-    </div>
-
-    <div id="transactionsView">
-        <h1>HISTORY</h1>
-        <button onclick="backToPOS()" style="background:#555; color:white;">BACK TO POS</button>
-        <div id="transList" style="padding:10px;"></div>
-    </div>
-
-    <audio id="clickSound" src="https://tiffyai-usd.github.io/Papa_Ron_Point_of_Sale/click.wav" preload="auto"></audio>
-    <audio id="eatSound" src="https://tiffyai-usd.github.io/Papa_Ron_Point_of_Sale/eat.wav" preload="auto"></audio>
-    <audio id="sparkleSound" src="https://tiffyai-usd.github.io/Papa_Ron_Point_of_Sale/sparcle.wav" preload="auto"></audio>
+    <audio id="snd-click" src="https://tiffyai-usd.github.io/Papa_Ron_Point_of_Sale/click.wav" preload="auto"></audio>
+    <audio id="snd-sell" src="https://tiffyai-usd.github.io/Papa_Ron_Point_of_Sale/eat.wav" preload="auto"></audio>
+    <audio id="snd-stock" src="https://tiffyai-usd.github.io/Papa_Ron_Point_of_Sale/sparcle.wav" preload="auto"></audio>
 
     <script>
-        const STAFF = {"1234": "Staff 1", "5678": "Staff 2", "3456": "Manager"};
-        
-        let inventory = JSON.parse(localStorage.getItem('posInventory')) || {
-            "1001": { name: "SOMETHING MEATY PIZZA", price: 135, stock: 0, sold: 0, category: "food" },
-            "1002": { name: "HAWAIIAN PIZZA", price: 135, stock: 0, sold: 0, category: "food" },
-            "1003": { name: "FLAMING SPARE RIB PIZZA", price: 150, stock: 0, sold: 0, category: "food" },
-            "1004": { name: "CHEESE BURGER", price: 120, stock: 0, sold: 0, category: "food" },
-            "1005": { name: "CHEESY STRIPS (5)", price: 50, stock: 0, sold: 0, category: "food" },
-            "1006": { name: "BOERIE ROLL", price: 50, stock: 0, sold: 0, category: "food" },
-            "1007": { name: "RUMP STEAK", price: 160, stock: 0, sold: 0, category: "food" },
-            "1008": { name: "RIB RACK", price: 200, stock: 0, sold: 0, category: "food" },
-            "1009": { name: "SCHNITZEL", price: 120, stock: 0, sold: 0, category: "food" },
-            "1010": { name: "PREGO ROLL", price: 50, stock: 0, sold: 0, category: "food" },
-            "1011": { name: "MUNCHIE PLATTER", price: 350, stock: 0, sold: 0, category: "food" },
-            "1012": { name: "CHEESY POPS", price: 50, stock: 0, sold: 0, category: "food" },
-            "1013": { name: "CHICKEN PERI NACHO", price: 160, stock: 0, sold: 0, category: "food" },
-            "1014": { name: "WINGLETS 5", price: 60, stock: 0, sold: 0, category: "food" },
-            "1015": { name: "WINGLETS 10", price: 100, stock: 0, sold: 0, category: "food" },
-            "1016": { name: "PLATTER FOR 2", price: 350, stock: 0, sold: 0, category: "food" },
-            "1017": { name: "BREAKFAST", price: 80, stock: 0, sold: 0, category: "food" },
-            "1018": { name: "SIDE CHIPS", price: 20, stock: 0, sold: 0, category: "food" },
-            "1019": { name: "SIDE SALAD", price: 20, stock: 0, sold: 0, category: "food" },
-            "1020": { name: "GREEK SALAD", price: 20, stock: 0, sold: 0, category: "food" },
-            "5449000000453": { name: "Coke 500ml", price: 20, stock: 0, sold: 0, category: "drink" },
-            "5449000050809": { name: "Fanta 500ml", price: 20, stock: 0, sold: 0, category: "drink" },
-            "5449000332967": { name: "Sprite 500ml", price: 20, stock: 0, sold: 0, category: "drink" },
-            "2004": { name: "Powerade 500ml", price: 15, stock: 0, sold: 0, category: "drink" },
-            "6001240239490": { name: "Liquifruit 300ml", price: 15, stock: 0, sold: 0, category: "drink" },
-            "6001048003323": { name: "Appletizer 275ml", price: 20, stock: 0, sold: 0, category: "drink" },
-            "2007": { name: "Mr Orange 300ml", price: 10, stock: 0, sold: 0, category: "drink" },
-            "5449000332981": { name: "Stoney 500ml", price: 20, stock: 0, sold: 0, category: "drink" },
-            "5449000096111": { name: "Tonic Water 200ml", price: 20, stock: 0, sold: 0, category: "drink" },
-            "5449000284280": { name: "Dry Lemon 200ml", price: 20, stock: 0, sold: 0, category: "drink" },
-            "2011": { name: "Mineral Water 500ml", price: 10, stock: 0, sold: 0, category: "drink" },
-            "6001324217253": { name: "Energade 500ml", price: 20, stock: 0, sold: 0, category: "drink" },
-            "2012": { name: "Sparkling Water 500ml", price: 15, stock: 0, sold: 0, category: "drink" },
-            "6009604170014": { name: "Tsitsikamma Still Water 500ml", price: 10, stock: 0, sold: 0, category: "drink" },
-            "2013": { name: "Mineral Water 1L", price: 15, stock: 0, sold: 0, category: "drink" },
-            "6003326012041": { name: "Black Label 500ml", price: 30, stock: 0, sold: 0, category: "drink" },
-            "6003326015790": { name: "Black Label 330ml", price: 30, stock: 0, sold: 0, category: "drink" },
-            "6003326015820": { name: "Castle Lager 330ml", price: 30, stock: 0, sold: 0, category: "drink" },
-            "6003326015721": { name: "Castle Light 330ml", price: 30, stock: 0, sold: 0, category: "drink" },
-            "6001760007715": { name: "Windhoek 500ml", price: 30, stock: 0, sold: 0, category: "drink" },
-            "6001108064264": { name: "Hunters Dry 440ml", price: 35, stock: 0, sold: 0, category: "drink" },
-            "6001108055231": { name: "Hunters Gold 330ml", price: 35, stock: 0, sold: 0, category: "drink" },
-            "6001398128400": { name: "Smirnoff Ice Pine Twist 440ml", price: 35, stock: 0, sold: 0, category: "drink" },
-            "6003326013949": { name: "Brutal Fruit Spitzer Ruby Apple 275ml", price: 35, stock: 0, sold: 0, category: "drink" },
-            "5010677554398": { name: "Breezer Watermelon 275ml", price: 35, stock: 0, sold: 0, category: "drink" },
-            "6003326013918": { name: "Flying Fish 500ml", price: 35, stock: 0, sold: 0, category: "drink" },
-            "6001108028044": { name: "Savanna 330ml", price: 35, stock: 0, sold: 0, category: "drink" },
-            "5410228141266": { name: "Stella Artois 330ml", price: 35, stock: 0, sold: 0, category: "drink" },
-            "6003326015691": { name: "Black Crown 440ml", price: 35, stock: 0, sold: 0, category: "drink" },
-            "5000289938297": { name: "Gordons Pink & Tonic 440ml", price: 35, stock: 0, sold: 0, category: "drink" },
-            "5000289938280": { name: "Gordons & Tonic 440ml", price: 35, stock: 0, sold: 0, category: "drink" },
-            "6001108097217": { name: "Extreme 275ml", price: 35, stock: 0, sold: 0, category: "drink" },
-            "2211": { name: "Sodaze 250ml", price: 60, stock: 0, sold: 0, category: "drink" },
-            "6001108112064": { name: "Bernini Mimosa 500ml", price: 35, stock: 0, sold: 0, category: "drink" },
-            "9002490100070": { name: "Red Bull 250ml", price: 25, stock: 0, sold: 0, category: "drink" },
-            "2210": { name: "Lucky Club 250ml", price: 70, stock: 0, sold: 0, category: "drink" }
+        // THE FULL INVENTORY OBJECT
+        const inventory = JSON.parse(localStorage.getItem('posInventory')) || {
+            "1001": { name: "SOMETHING MEATY PIZZA", price: 135, stock: 0, cat: "food" },
+            "1002": { name: "HAWAIIAN PIZZA", price: 135, stock: 0, cat: "food" },
+            "1003": { name: "FLAMING SPARE RIB PIZZA", price: 150, stock: 0, cat: "food" },
+            "1004": { name: "CHEESE BURGER", price: 120, stock: 0, cat: "food" },
+            "1005": { name: "CHEESY STRIPS (5)", price: 50, stock: 0, cat: "food" },
+            "1006": { name: "BOERIE ROLL", price: 50, stock: 0, cat: "food" },
+            "1007": { name: "RUMP STEAK", price: 160, stock: 0, cat: "food" },
+            "1008": { name: "RIB RACK", price: 200, stock: 0, cat: "food" },
+            "1009": { name: "SCHNITZEL", price: 120, stock: 0, cat: "food" },
+            "1010": { name: "PREGO ROLL", price: 50, stock: 0, cat: "food" },
+            "1011": { name: "MUNCHIE PLATTER", price: 350, stock: 0, cat: "food" },
+            "1012": { name: "CHEESY POPS", price: 50, stock: 0, cat: "food" },
+            "1013": { name: "CHICKEN PERI NACHO", price: 160, stock: 0, cat: "food" },
+            "1014": { name: "WINGLETS 5", price: 60, stock: 0, cat: "food" },
+            "1015": { name: "WINGLETS 10", price: 100, stock: 0, cat: "food" },
+            "1016": { name: "PLATTER FOR 2", price: 350, stock: 0, cat: "food" },
+            "1017": { name: "BREAKFAST", price: 80, stock: 0, cat: "food" },
+            "1018": { name: "SIDE CHIPS", price: 20, stock: 0, cat: "food" },
+            "1019": { name: "SIDE SALAD", price: 20, stock: 0, cat: "food" },
+            "1020": { name: "GREEK SALAD", price: 20, stock: 0, cat: "food" },
+            "5449000000453": { name: "COKE 500ML", price: 20, stock: 0, cat: "drink" },
+            "5449000050809": { name: "FANTA 500ML", price: 20, stock: 0, cat: "drink" },
+            "5449000332967": { name: "SPRITE 500ML", price: 20, stock: 0, cat: "drink" },
+            "2004": { name: "POWERADE 500ML", price: 15, stock: 0, cat: "drink" },
+            "6001240239490": { name: "LIQUIFRUIT 300ML", price: 15, stock: 0, cat: "drink" },
+            "6001048003323": { name: "APPLETIZER 275ML", price: 20, stock: 0, cat: "drink" },
+            "2007": { name: "MR ORANGE 300ML", price: 10, stock: 0, cat: "drink" },
+            "5449000332981": { name: "STONEY 500ML", price: 20, stock: 0, cat: "drink" },
+            "5449000096111": { name: "TONIC WATER 200ML", price: 20, stock: 0, cat: "drink" },
+            "5449000284280": { name: "DRY LEMON 200ML", price: 20, stock: 0, cat: "drink" },
+            "2011": { name: "MINERAL WATER 500ML", price: 10, stock: 0, cat: "drink" },
+            "6001324217253": { name: "ENERGADE 500ML", price: 20, stock: 0, cat: "drink" },
+            "2012": { name: "SPARKLING WATER 500ML", price: 15, stock: 0, cat: "drink" },
+            "6009604170014": { name: "STILL WATER 500ML", price: 10, stock: 0, cat: "drink" },
+            "2013": { name: "MINERAL WATER 1L", price: 15, stock: 0, cat: "drink" },
+            "6003326012041": { name: "BLACK LABEL 500ML", price: 30, stock: 0, cat: "drink" },
+            "6003326015790": { name: "BLACK LABEL 330ML", price: 30, stock: 0, cat: "drink" },
+            "6003326015820": { name: "CASTLE LAGER 330ML", price: 30, stock: 0, cat: "drink" },
+            "6003326015721": { name: "CASTLE LIGHT 330ML", price: 30, stock: 0, cat: "drink" },
+            "6001760007715": { name: "WINDHOEK 500ML", price: 30, stock: 0, cat: "drink" },
+            "6001108064264": { name: "HUNTERS DRY 440ML", price: 35, stock: 0, cat: "drink" },
+            "6001108055231": { name: "HUNTERS GOLD 330ML", price: 35, stock: 0, cat: "drink" },
+            "6001398128400": { name: "SMIRNOFF ICE 440ML", price: 35, stock: 0, cat: "drink" },
+            "6003326013949": { name: "BRUTAL FRUIT 275ML", price: 35, stock: 0, cat: "drink" },
+            "5010677554398": { name: "BREEZER WATERMELON", price: 35, stock: 0, cat: "drink" },
+            "6003326013918": { name: "FLYING FISH 500ML", price: 35, stock: 0, cat: "drink" },
+            "6001108028044": { name: "SAVANNA 330ML", price: 35, stock: 0, cat: "drink" },
+            "5410228141266": { name: "STELLA ARTOIS 330ML", price: 35, stock: 0, cat: "drink" },
+            "6003326015691": { name: "BLACK CROWN 440ML", price: 35, stock: 0, cat: "drink" },
+            "5000289938297": { name: "GORDONS PINK 440ML", price: 35, stock: 0, cat: "drink" },
+            "5000289938280": { name: "GORDONS GIN 440ML", price: 35, stock: 0, cat: "drink" },
+            "6001108097217": { name: "EXTREME 275ML", price: 35, stock: 0, cat: "drink" },
+            "2211": { name: "SODAZE 250ML", price: 60, stock: 0, cat: "drink" },
+            "6001108112064": { name: "BERNINI 500ML", price: 35, stock: 0, cat: "drink" },
+            "9002490100070": { name: "RED BULL 250ML", price: 25, stock: 0, cat: "drink" },
+            "2210": { name: "LUCKY CLUB 250ML", price: 70, stock: 0, cat: "drink" }
         };
 
-        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
         let cart = [];
-        let currentTransIndex = -1;
-        let pendingStockCode = "";
-        let currentStaffName = "";
-        let lastReceiptContent = "";
-        let dailySales = JSON.parse(localStorage.getItem('dailySales')) || { date: new Date().toDateString(), cash: 0, card: 0 };
+        let currentStockItem = "";
 
-        // Sound Handling
-        function playClick() { document.getElementById("clickSound").play().catch(()=>{}); }
-        function playEat() { document.getElementById("eatSound").play().catch(()=>{}); }
-        function playSparkle() { document.getElementById("sparkleSound").play().catch(()=>{}); }
-
-        // Core Functions
-        function saveAll() {
-            localStorage.setItem('posInventory', JSON.stringify(inventory));
-            localStorage.setItem('transactions', JSON.stringify(transactions));
-            localStorage.setItem('dailySales', JSON.stringify(dailySales));
+        // AUTHENTICATION
+        function authenticate(mode) {
+            const pin = document.getElementById('staff-pin').value;
+            if(pin === "1234") {
+                document.getElementById('login').classList.remove('active-view');
+                if(mode === 'sale') {
+                    document.getElementById('pos').classList.add('active-view');
+                    initGrids('sale');
+                } else {
+                    document.getElementById('stockIn').classList.add('active-view');
+                    initGrids('stock');
+                }
+            } else { alert("ACCESS DENIED"); }
         }
 
-        function generateButtons() {
-            const fG = document.getElementById("foodGrid");
-            const dG = document.getElementById("drinkGrid");
-            const sfG = document.getElementById("stockFoodGrid");
-            const sdG = document.getElementById("stockDrinkGrid");
+        // GRID INITIALIZATION (FOR BOTH MODES)
+        function initGrids(mode) {
+            const foodGridId = mode === 'sale' ? 'saleFoodGrid' : 'stockFoodGrid';
+            const drinkGridId = mode === 'sale' ? 'saleDrinkGrid' : 'stockDrinkGrid';
             
-            fG.innerHTML = ""; dG.innerHTML = ""; sfG.innerHTML = ""; sdG.innerHTML = "";
+            const fGrid = document.getElementById(foodGridId);
+            const dGrid = document.getElementById(drinkGridId);
+            
+            fGrid.innerHTML = "";
+            dGrid.innerHTML = "";
 
             Object.keys(inventory).forEach(code => {
                 const item = inventory[code];
-                
-                // Sale Screen Buttons
-                const sBtn = document.createElement("button");
-                sBtn.className = `product-btn ${item.category === "food" ? "food-btn" : "drink-btn"}`;
-                sBtn.textContent = item.name;
-                sBtn.onclick = () => { playClick(); quickAddItem(code); };
+                const btn = document.createElement('button');
+                btn.className = `p-btn ${item.cat === 'food' ? 'food-item' : 'drink-item'}`;
+                btn.textContent = item.name;
 
-                // Stock Screen Buttons
-                const rBtn = document.createElement("button");
-                rBtn.className = `product-btn ${item.category === "food" ? "food-btn" : "drink-btn"}`;
-                rBtn.textContent = item.name;
-                rBtn.onclick = () => { playClick(); openStockMultiplier(code); };
-
-                if (item.category === "food") {
-                    fG.appendChild(sBtn);
-                    sfG.appendChild(rBtn);
+                if(mode === 'sale') {
+                    btn.onclick = () => { playSound('snd-click'); addToCart(code); };
                 } else {
-                    dG.appendChild(sBtn);
-                    sdG.appendChild(rBtn);
+                    btn.onclick = () => { playSound('snd-click'); triggerMultiplier(code); };
                 }
+
+                if(item.cat === 'food') fGrid.appendChild(btn);
+                else dGrid.appendChild(btn);
             });
         }
 
-        function login() {
-            const pin = document.getElementById("pin").value.trim();
-            if (STAFF[pin]) {
-                currentStaffName = STAFF[pin];
-                document.getElementById("login").style.display = "none";
-                document.getElementById("pos").style.display = "block";
-                generateButtons();
-                if (transactions.length === 0 || transactions[transactions.length-1].status === "paid") createNewTransaction();
-                else loadTransaction(transactions.length - 1);
-            } else alert("INVALID PIN");
-        }
-
-        function stockInMode() {
-            document.getElementById("login").style.display = "none";
-            document.getElementById("stockIn").style.display = "block";
-            generateButtons();
-        }
-
-        function logout() { location.reload(); }
-
-        function createNewTransaction() {
-            const t = { id: transactions.length + 1, items: [], total: 0, status: "active", staff: currentStaffName, time: new Date().toLocaleTimeString() };
-            transactions.push(t);
-            currentTransIndex = transactions.length - 1;
-            cart = t.items;
-            saveAll(); updateUI();
-        }
-
-        function loadTransaction(idx) {
-            currentTransIndex = idx;
-            cart = transactions[idx].items;
-            updateUI();
-        }
-
-        function quickAddItem(code) {
+        // CART LOGIC
+        function addToCart(code) {
             const item = inventory[code];
-            if (item.stock <= 0 && item.category === "drink") return alert("OUT OF STOCK!");
-            cart.push({ name: item.name, price: item.price, code: code });
-            if (item.category === "drink") item.stock--; 
-            item.sold++;
-            playEat(); saveAll(); updateCart();
+            if(item.cat === 'drink' && item.stock <= 0) return alert("ITEM OUT OF STOCK");
+            
+            cart.push({...item, barcode: code});
+            if(item.cat === 'drink') item.stock--;
+            playSound('snd-sell');
+            refreshCartDisplay();
         }
 
-        function updateCart() {
-            const list = document.getElementById("items"); list.innerHTML = "";
+        function refreshCartDisplay() {
+            const list = document.getElementById('order-list');
+            list.innerHTML = "";
             let total = 0;
-            cart.forEach((it, i) => {
+            
+            cart.forEach((it, idx) => {
                 total += it.price;
-                const li = document.createElement("li");
-                li.innerHTML = `<span>${it.name}</span> <span>R${it.price.toFixed(2)} <button onclick="removeItem(${i})" style="background:red; color:white; font-size:1rem; padding:5px; width:auto; margin-left:10px;">X</button></span>`;
+                const li = document.createElement('li');
+                li.className = 'cart-item';
+                li.innerHTML = `<span>${it.name}</span> <span>R${it.price.toFixed(2)} <button class="remove-btn" onclick="voidCartItem(${idx})">X</button></span>`;
                 list.appendChild(li);
             });
-            document.getElementById("total").textContent = `R${total.toFixed(2)}`;
-            transactions[currentTransIndex].items = cart;
-            transactions[currentTransIndex].total = total;
-            saveAll();
+            
+            document.getElementById('total-amount').textContent = "R" + total.toFixed(2);
+            localStorage.setItem('posInventory', JSON.stringify(inventory));
         }
 
-        function removeItem(idx) {
-            const item = cart[idx];
-            if (inventory[item.code].category === "drink") inventory[item.code].stock++;
-            inventory[item.code].sold--;
-            cart.splice(idx, 1);
-            saveAll(); updateCart();
+        function voidCartItem(index) {
+            const item = cart[index];
+            if(inventory[item.barcode].cat === 'drink') inventory[item.barcode].stock++;
+            cart.splice(index, 1);
+            refreshCartDisplay();
         }
 
-        // Stock Replenishment Logic
-        function openStockMultiplier(code) {
-            pendingStockCode = code;
-            document.getElementById("popupItemName").textContent = inventory[code].name;
-            document.getElementById("packsInput").value = 0;
-            document.getElementById("casesInput").value = 0;
-            document.getElementById("singleInput").value = "";
-            document.getElementById("multiplierPopup").style.display = "block";
+        // STOCK REPLENISHMENT
+        function triggerMultiplier(code) {
+            currentStockItem = code;
+            document.getElementById('modal-item-name').textContent = inventory[code].name;
+            document.getElementById('p-qty').value = 0;
+            document.getElementById('c-qty').value = 0;
+            document.getElementById('s-qty').value = "";
+            
+            document.getElementById('modal-overlay').style.display = 'block';
+            document.getElementById('multiplierModal').style.display = 'block';
         }
 
-        function confirmMultiplier() {
-            const p = parseInt(document.getElementById("packsInput").value) || 0;
-            const c = parseInt(document.getElementById("casesInput").value) || 0;
-            const s = parseInt(document.getElementById("singleInput").value) || 0;
-            let qty = (p * 6) + (c * 24) + s;
-            if (qty === 0) qty = 1;
-            inventory[pendingStockCode].stock += qty;
-            document.getElementById("stockInStatus").textContent = `ADDED: ${inventory[pendingStockCode].name} (+${qty})`;
-            playSparkle(); saveAll();
-            document.getElementById("multiplierPopup").style.display = "none";
+        function saveNewStock() {
+            const p = parseInt(document.getElementById('p-qty').value) || 0;
+            const c = parseInt(document.getElementById('c-qty').value) || 0;
+            const s = parseInt(document.getElementById('s-qty').value) || 0;
+            
+            let addedTotal = (p * 6) + (c * 24) + s;
+            if(addedTotal === 0) addedTotal = 1;
+
+            inventory[currentStockItem].stock += addedTotal;
+            playSound('snd-stock');
+            
+            document.getElementById('replenish-status').textContent = `ADDED ${addedTotal} TO ${inventory[currentStockItem].name}`;
+            localStorage.setItem('posInventory', JSON.stringify(inventory));
+            closePopups();
+            
+            setTimeout(() => { document.getElementById('replenish-status').textContent = ""; }, 3000);
         }
 
-        // Payment Logic
-        function payCash() {
-            if (cart.length === 0) return;
-            const total = cart.reduce((s, i) => s + i.price, 0);
-            document.getElementById("tenderTotal").textContent = total.toFixed(2);
-            document.getElementById("tenderPopup").style.display = "block";
-            document.getElementById("tenderAmount").value = "";
-            document.getElementById("tenderResult").textContent = "";
+        function closePopups() {
+            document.getElementById('modal-overlay').style.display = 'none';
+            document.getElementById('multiplierModal').style.display = 'none';
         }
 
-        document.getElementById("tenderAmount").oninput = (e) => {
-            const val = parseFloat(e.target.value) || 0;
-            const total = parseFloat(document.getElementById("tenderTotal").textContent);
-            const change = val - total;
-            document.getElementById("tenderResult").textContent = change >= 0 ? `CHANGE: R${change.toFixed(2)}` : "";
-        };
-
-        function confirmTender() {
-            const total = cart.reduce((s, i) => s + i.price, 0);
-            dailySales.cash += total;
-            finalizeSale("CASH", total);
-            document.getElementById("tenderPopup").style.display = "none";
+        function processPayment(method) {
+            if(cart.length === 0) return;
+            const total = document.getElementById('total-amount').textContent;
+            alert(`SALE FINALIZED: ${total} via ${method}`);
+            cart = [];
+            refreshCartDisplay();
         }
 
-        function payCard() {
-            if (cart.length === 0) return;
-            const total = cart.reduce((s, i) => s + i.price, 0);
-            dailySales.card += total;
-            finalizeSale("CARD", total);
-        }
+        function playSound(id) { document.getElementById(id).play().catch(()=>{}); }
 
-        function finalizeSale(method, total) {
-            transactions[currentTransIndex].status = "paid";
-            lastReceiptContent = `PAPA RON'S\n-----------------\nOrder #${transactions[currentTransIndex].id}\nStaff: ${currentStaffName}\nTotal: R${total.toFixed(2)}\nMethod: ${method}\nDate: ${new Date().toLocaleString()}`;
-            document.getElementById("printReceiptBtn").style.display = "block";
-            saveAll(); updateUI();
-        }
-
-        function printLastReceipt() {
-            const w = window.open('', '_blank');
-            w.document.write(`<pre style="font-family:monospace; font-size:20px;">${lastReceiptContent}</pre>`);
-            w.document.close();
-            w.print();
-            createNewTransaction();
-            document.getElementById("printReceiptBtn").style.display = "none";
-        }
-
-        function printPreview() {
-            let out = "KITCHEN ORDER:\n-----------------\n";
-            cart.filter(i => inventory[i.code].category === "food").forEach(f => out += `- ${f.name}\n`);
-            out += "\nBAR ORDER:\n-----------------\n";
-            cart.filter(i => inventory[i.code].category === "drink").forEach(d => out += `- ${d.name}\n`);
-            const w = window.open('', '_blank');
-            w.document.write(`<pre style="font-family:monospace; font-size:20px;">${out}</pre>`);
-            w.document.close();
-        }
-
-        function showInventory() {
-            document.getElementById("pos").style.display = "none";
-            document.getElementById("inventoryView").style.display = "block";
-            const list = document.getElementById("inventoryList"); list.innerHTML = "";
-            Object.keys(inventory).forEach(c => {
-                const li = document.createElement("li");
-                li.style.color = inventory[c].stock < 5 ? "red" : "white";
-                li.innerHTML = `<b>${inventory[c].name}</b> <span>STOCK: ${inventory[c].stock}</span>`;
-                list.appendChild(li);
-            });
-        }
-
-        function showTransactions() {
-            document.getElementById("pos").style.display = "none";
-            document.getElementById("transactionsView").style.display = "block";
-            const list = document.getElementById("transList"); list.innerHTML = "";
-            transactions.slice().reverse().forEach((t) => {
-                const div = document.createElement("div");
-                div.style.background = "#111"; div.style.padding = "15px"; div.style.margin = "10px"; div.style.borderRadius = "10px";
-                div.innerHTML = `<b>ORDER #${t.id}</b> - R${t.total.toFixed(2)} [${t.status.toUpperCase()}]<br><small>${t.time}</small>`;
-                list.appendChild(div);
-            });
-        }
-
-        function showZReading() {
-            const total = dailySales.cash + dailySales.card;
-            let report = `DAILY Z-REPORT\n-----------------\nDate: ${dailySales.date}\n\nCASH:  R${dailySales.cash.toFixed(2)}\nCARD:  R${dailySales.card.toFixed(2)}\n-----------------\nTOTAL: R${total.toFixed(2)}`;
-            const w = window.open('', '_blank');
-            w.document.write(`<pre style="font-family:monospace; font-size:20px;">${report}</pre>`);
-            w.document.close();
-        }
-
-        function backToPOS() {
-            document.getElementById("inventoryView").style.display = "none";
-            document.getElementById("transactionsView").style.display = "none";
-            document.getElementById("pos").style.display = "block";
-        }
-
-        function updateUI() {
-            document.getElementById("currentTransNum").textContent = transactions[currentTransIndex].id;
-            updateCart();
-        }
-
-        // Listeners
-        document.getElementById("barcode").onkeyup = (e) => { if(e.key === "Enter") { quickAddItem(e.target.value.trim()); e.target.value = ""; } };
-        document.getElementById("stockBarcode").onkeyup = (e) => { if(e.key === "Enter") { if(inventory[e.target.value.trim()]) openStockMultiplier(e.target.value.trim()); e.target.value = ""; } };
+        // BARCODE SCANNER EMULATION
+        document.getElementById('manual-barcode').addEventListener('keyup', (e) => {
+            if(e.key === "Enter") {
+                const code = e.target.value.trim();
+                if(inventory[code]) addToCart(code);
+                else alert("BARCODE NOT FOUND");
+                e.target.value = "";
+            }
+        });
     </script>
 </body>
 </html>
