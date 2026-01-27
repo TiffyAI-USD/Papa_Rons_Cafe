@@ -53,50 +53,11 @@
         <div class="category-container">
             <div class="category-section">
                 <div class="category-title">Food</div>
-                <div class="category-grid">
-                    <button class="product-btn food-btn" onclick="quickAddItem('1001')">SOMETHING MEATY PIZZA</button>
-                    <button class="product-btn food-btn" onclick="quickAddItem('1002')">HAWAIIAN PIZZA</button>
-                    <button class="product-btn food-btn" onclick="quickAddItem('1003')">FLAMING SPARE RIB PIZZA</button>
-                    <button class="product-btn food-btn" onclick="quickAddItem('1004')">CHEESE BURGER</button>
-                    <button class="product-btn food-btn" onclick="quickAddItem('1005')">CHEESY STRIPS (5)</button>
-                    <button class="product-btn food-btn" onclick="quickAddItem('1006')">BOERIE ROLL</button>
-                    <button class="product-btn food-btn" onclick="quickAddItem('1007')">RUMP STEAK</button>
-                    <button class="product-btn food-btn" onclick="quickAddItem('1008')">RIB RACK</button>
-                    <button class="product-btn food-btn" onclick="quickAddItem('1009')">SCHNITZEL</button>
-                    <button class="product-btn food-btn" onclick="quickAddItem('1010')">PREGO ROLL</button>
-                    <button class="product-btn food-btn" onclick="quickAddItem('1011')">MUNCHIE PLATTER</button>
-                    <button class="product-btn food-btn" onclick="quickAddItem('1012')">CHEESY POPS</button>
-                    <button class="product-btn food-btn" onclick="quickAddItem('1013')">CHICKEN PERI NACHO</button>
-                    <button class="product-btn food-btn" onclick="quickAddItem('1014')">WINGLETS 5</button>
-                    <button class="product-btn food-btn" onclick="quickAddItem('1015')">WINGLETS 10</button>
-                    <button class="product-btn food-btn" onclick="quickAddItem('1016')">PLATTER FOR 2</button>
-                    <button class="product-btn food-btn" onclick="quickAddItem('1017')">BREAKFAST</button>
-                    <button class="product-btn food-btn" onclick="quickAddItem('1018')">SIDE CHIPS</button>
-                    <button class="product-btn food-btn" onclick="quickAddItem('1019')">SIDE SALAD</button>
-                    <button class="product-btn food-btn" onclick="quickAddItem('1020')">GREEK SALAD</button>
-                </div>
+                <div id="foodGrid" class="category-grid"></div>
             </div>
             <div class="category-section">
                 <div class="category-title">Drinks</div>
-                <div class="category-grid">
-                    <button class="product-btn drink-btn" onclick="quickAddItem('5449000000453')">Coke 500ml</button>
-                    <button class="product-btn drink-btn" onclick="quickAddItem('5449000050809')">Fanta 500ml</button>
-                    <button class="product-btn drink-btn" onclick="quickAddItem('5449000332967')">Sprite 500ml</button>
-                    <button class="product-btn drink-btn" onclick="quickAddItem('2004')">Powerade 500ml</button>
-                    <button class="product-btn drink-btn" onclick="quickAddItem('6001240239490')">Liquifruit 300ml</button>
-                    <button class="product-btn drink-btn" onclick="quickAddItem('6001048003323')">Appletizer 275ml</button>
-                    <button class="product-btn drink-btn" onclick="quickAddItem('2007')">Mr Orange 300ml</button>
-                    <button class="product-btn drink-btn" onclick="quickAddItem('5449000332981')">Stoney 500ml</button>
-                    <button class="product-btn drink-btn" onclick="quickAddItem('5449000096111')">Tonic 200ml</button>
-                    <button class="product-btn drink-btn" onclick="quickAddItem('5449000284280')">Dry Lemon 200ml</button>
-                    <button class="product-btn drink-btn" onclick="quickAddItem('2011')">Still Water 500ml</button>
-                    <button class="product-btn drink-btn" onclick="quickAddItem('6001324217253')">Energade 500ml</button>
-                    <button class="product-btn drink-btn" onclick="quickAddItem('2012')">Sparkling 500ml</button>
-                    <button class="product-btn drink-btn" onclick="quickAddItem('6003326012041')">Black Label 500ml</button>
-                    <button class="product-btn drink-btn" onclick="quickAddItem('6003326015820')">Castle Lager 330ml</button>
-                    <button class="product-btn drink-btn" onclick="quickAddItem('6001108028044')">Savanna 330ml</button>
-                    <button class="product-btn drink-btn" onclick="quickAddItem('9002490100070')">Red Bull 250ml</button>
-                </div>
+                <div id="drinkGrid" class="category-grid"></div>
             </div>
         </div>
 
@@ -112,6 +73,7 @@
 
         <h3>ORDER #<span id="currentTransNum">1</span></h3>
         <ul id="items"></ul>
+        <button onclick="showZReading()" style="background:#222; font-size:1.2rem; border:1px solid #444; margin-top:10px;">Z-READING</button>
     </div>
 
     <div id="stockIn">
@@ -120,21 +82,11 @@
         <div class="category-container">
             <div class="category-section">
                 <div class="category-title">Add Food</div>
-                <div class="category-grid">
-                    <button class="product-btn food-btn" onclick="openStockMultiplier('1001')">SOMETHING MEATY</button>
-                    <button class="product-btn food-btn" onclick="openStockMultiplier('1002')">HAWAIIAN PIZZA</button>
-                    <button class="product-btn food-btn" onclick="openStockMultiplier('1003')">FLAMING RIB</button>
-                    <button class="product-btn food-btn" onclick="openStockMultiplier('1004')">CHEESE BURGER</button>
-                </div>
+                <div id="stockFoodGrid" class="category-grid"></div>
             </div>
             <div class="category-section">
                 <div class="category-title">Add Drinks</div>
-                <div class="category-grid">
-                    <button class="product-btn drink-btn" onclick="openStockMultiplier('5449000000453')">Coke 500ml</button>
-                    <button class="product-btn drink-btn" onclick="openStockMultiplier('5449000050809')">Fanta 500ml</button>
-                    <button class="product-btn drink-btn" onclick="openStockMultiplier('5449000332967')">Sprite 500ml</button>
-                    <button class="product-btn drink-btn" onclick="openStockMultiplier('5449000332981')">Stoney 500ml</button>
-                </div>
+                <div id="stockDrinkGrid" class="category-grid"></div>
             </div>
         </div>
         <input type="text" id="stockBarcode" placeholder="SCAN TO ADD..." />
@@ -145,7 +97,7 @@
         <h2 id="popupItemName"></h2>
         <input type="number" id="packsInput" placeholder="Packs (x6)" />
         <input type="number" id="casesInput" placeholder="Cases (x24)" />
-        <button onclick="confirmMultiplier()" style="background:#43a047;">UPDATE STOCK</button>
+        <button onclick="confirmMultiplier()" style="background:#43a047; color:white;">UPDATE STOCK</button>
         <button onclick="document.getElementById('multiplierPopup').style.display='none'">CANCEL</button>
     </div>
 
@@ -154,14 +106,14 @@
         <p>Total: R<span id="tenderTotal">0.00</span></p>
         <input type="number" id="tenderAmount" placeholder="Amount Given" step="0.01" />
         <div id="tenderResult" style="font-size:2rem; color:#44ff44;"></div>
-        <button onclick="confirmTender()" style="background:#43a047;">FINALIZE</button>
+        <button onclick="confirmTender()" style="background:#43a047; color:white;">FINALIZE</button>
         <button onclick="document.getElementById('tenderPopup').style.display='none'">CANCEL</button>
     </div>
 
     <div id="inventoryView">
         <h1>STOCK LEVELS</h1>
         <button onclick="backToPOS()">BACK</button>
-        <ul id="inventoryList" style="text-align:left;"></ul>
+        <ul id="inventoryList" style="text-align:left; font-size:1.2rem;"></ul>
     </div>
 
     <div id="transactionsView">
@@ -176,6 +128,7 @@
 
     <script>
         const STAFF = {"1234": "Staff 1", "5678": "Staff 2", "3456": "Manager"};
+        
         let inventory = JSON.parse(localStorage.getItem('posInventory')) || {
             "1001": { name: "SOMETHING MEATY PIZZA", price: 135, stock: 0, sold: 0, category: "food" },
             "1002": { name: "HAWAIIAN PIZZA", price: 135, stock: 0, sold: 0, category: "food" },
@@ -253,12 +206,47 @@
             localStorage.setItem('dailySales', JSON.stringify(dailySales));
         }
 
+        // GENERATE BUTTONS FOR BOTH SALE AND REPLENISH MODES
+        function generateQuickButtons() {
+            const fG = document.getElementById("foodGrid");
+            const dG = document.getElementById("drinkGrid");
+            const sfG = document.getElementById("stockFoodGrid");
+            const sdG = document.getElementById("stockDrinkGrid");
+            
+            fG.innerHTML = ""; dG.innerHTML = ""; sfG.innerHTML = ""; sdG.innerHTML = "";
+
+            Object.keys(inventory).forEach(code => {
+                const item = inventory[code];
+                
+                // Button for Sale screen
+                const sBtn = document.createElement("button");
+                sBtn.className = `product-btn ${item.category === "food" ? "food-btn" : "drink-btn"}`;
+                sBtn.textContent = item.name;
+                sBtn.onclick = () => { playClick(); quickAddItem(code); };
+
+                // Button for Stock screen
+                const rBtn = document.createElement("button");
+                rBtn.className = `product-btn ${item.category === "food" ? "food-btn" : "drink-btn"}`;
+                rBtn.textContent = item.name;
+                rBtn.onclick = () => { playClick(); openStockMultiplier(code); };
+
+                if (item.category === "food") {
+                    fG.appendChild(sBtn);
+                    sfG.appendChild(rBtn);
+                } else {
+                    dG.appendChild(sBtn);
+                    sdG.appendChild(rBtn);
+                }
+            });
+        }
+
         function login() {
             const pin = document.getElementById("pin").value.trim();
             if (STAFF[pin]) {
                 currentStaffName = STAFF[pin];
                 document.getElementById("login").style.display = "none";
                 document.getElementById("pos").style.display = "block";
+                generateQuickButtons();
                 if (transactions.length === 0 || transactions[transactions.length-1].status === "paid") createNewTransaction();
                 else loadTransaction(transactions.length - 1);
             } else alert("INVALID PIN");
@@ -267,6 +255,7 @@
         function stockInMode() {
             document.getElementById("login").style.display = "none";
             document.getElementById("stockIn").style.display = "block";
+            generateQuickButtons(); // FORCE GENERATION
         }
 
         function logout() { location.reload(); }
@@ -294,8 +283,7 @@
         }
 
         function updateCart() {
-            const list = document.getElementById("items");
-            list.innerHTML = "";
+            const list = document.getElementById("items"); list.innerHTML = "";
             let total = 0;
             cart.forEach((it, i) => {
                 total += it.price;
@@ -409,6 +397,14 @@
                 if (t.status === "active") div.onclick = () => { loadTransaction(transactions.length - 1 - i); backToPOS(); };
                 list.appendChild(div);
             });
+        }
+
+        function showZReading() {
+            const total = dailySales.cash + dailySales.card;
+            let report = `Z-REPORT\nCASH: R${dailySales.cash.toFixed(2)}\nCARD: R${dailySales.card.toFixed(2)}\nTOTAL: R${total.toFixed(2)}`;
+            const w = window.open('', '_blank');
+            w.document.write(`<pre>${report}</pre>`);
+            w.document.close();
         }
 
         function backToPOS() {
