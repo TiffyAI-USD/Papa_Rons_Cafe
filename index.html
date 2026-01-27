@@ -15,24 +15,32 @@
         #login, #stockIn, #inventoryView, #transactionsView { text-align: center; margin-top: 50px; }
         #pos, #inventoryView, #multiplierPopup, #tenderPopup, #stockIn { display: none; }
         .stock-info { font-size: 1.4rem; color: #aaa; margin: 15px 0; text-align: center; }
+        .low-stock { color: #ff4444; font-weight: bold; }
         #inventoryList { list-style: none; padding: 0; max-height: 70vh; overflow-y: auto; }
         #inventoryList li { background: #111; padding: 12px; margin: 8px 0; border-radius: 8px; font-size: 1.4rem; }
-        
+        .in-stock { color: #44ff44; }
+        .low-stock-item { color: #ff4444; }
         #multiplierPopup, #tenderPopup { 
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
             background: #111; padding: 20px; border-radius: 20px; width: 90%; max-width: 400px; 
             z-index: 1000; box-shadow: 0 0 20px rgba(212,163,115,0.5); 
         }
-
-        /* Quick buttons Layout */
+        #multiplierPopup input, #tenderPopup input { margin: 15px 0; text-align: center; width: 100%; }
+        #tenderResult { font-size: 2rem; color: #44ff44; text-align: center; margin: 10px 0; }
+        .active-trans { color: #44ff44; font-weight: bold; }
+        .paid-trans { color: #d4a373; font-weight: bold; }
+        .transaction-btn { margin: 5px; padding: 10px; font-size: 1.4rem; }
+        #stockInputRow { display: flex; gap: 10px; }
+        #stockInputRow input { flex: 1; }
+        #stockInputRow button { flex: 0 0 auto; width: auto; }
+        .print-btn { background: #ff9800; color: white; font-weight: bold; margin: 15px 0; padding: 18px; font-size: 1.8rem; }
+        #quickButtons, #stockQuickButtons { margin: 15px 0; }
         .category-section { width: 48%; }
         .category-title { text-align: center; color: #d4a373; margin-bottom: 8px; font-size: 1.6rem; }
-        .category-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; max-height: 45vh; overflow-y: auto; }
-        .product-btn { font-size: 1.1rem; padding: 12px; color: white; border-radius: 8px; cursor: pointer; text-align: center; border: none; min-height: 60px; }
+        .category-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; max-height: 40vh; overflow-y: auto; padding-right: 5px; }
+        .product-btn { font-size: 1.1rem; padding: 10px; color: white; border-radius: 8px; cursor: pointer; text-align: center; border: none; }
         .food-btn { background: #8b5a2b; }
         .drink-btn { background: #1e88e5; }
-        
-        .print-btn { background: #ff9800; color: white; font-weight: bold; margin: 15px 0; padding: 18px; font-size: 1.8rem; }
     </style>
 </head>
 <body>
@@ -79,24 +87,25 @@
     </div>
 
     <div id="stockIn">
-        <h2>STOCK REPLENISH MODE</h2>
+        <h2>Stock In Mode</h2>
         <button onclick="logout()">Back to Login</button>
-
-        <div id="stockQuickButtons" style="margin-top:20px;">
+        <div id="stockQuickButtons">
             <div style="display: flex; justify-content: space-between; gap: 15px;">
                 <div class="category-section">
-                    <div class="category-title">Food (Add)</div>
+                    <div class="category-title">Food (Stock)</div>
                     <div id="stockFoodGrid" class="category-grid"></div>
                 </div>
                 <div class="category-section">
-                    <div class="category-title">Drinks (Add)</div>
+                    <div class="category-title">Drinks (Stock)</div>
                     <div id="stockDrinkGrid" class="category-grid"></div>
                 </div>
             </div>
         </div>
-
-        <input type="text" id="stockBarcode" placeholder="Or Scan barcode to add" style="margin-top:20px;" />
-        <div id="stockInStatus" class="stock-info" style="color:#44ff44; font-size: 1.8rem; height: 30px;"></div>
+        <div id="stockInputRow">
+            <input type="text" id="stockBarcode" placeholder="Scan incoming stock" />
+            <button onclick="processStockInput()">Add Stock</button>
+        </div>
+        <div id="stockInStatus" class="stock-info"></div>
     </div>
 
     <div id="inventoryView">
@@ -113,18 +122,18 @@
 
     <div id="multiplierPopup">
         <h2 id="popupItemName"></h2>
-        <p>Enter quantity to ADD to stock:</p>
+        <p>Enter quantity (leave blank for 1 single)</p>
         <input type="number" id="packsInput" placeholder="Packs (×6)" min="0" />
         <input type="number" id="casesInput" placeholder="Cases (×24)" min="0" />
-        <button onclick="confirmMultiplier()">Confirm Add</button>
-        <button onclick="cancelMultiplier()">Cancel (Add 1 Only)</button>
+        <button onclick="confirmMultiplier()">Confirm</button>
+        <button onclick="cancelMultiplier()">Cancel (add 1 single)</button>
     </div>
 
     <div id="tenderPopup">
         <h2>Cash Tender</h2>
         <p>Total: R<span id="tenderTotal">0.00</span></p>
-        <input type="number" id="tenderAmount" placeholder="Amount Received" autofocus />
-        <div id="tenderResult" style="font-size: 2rem; color: #44ff44; margin: 10px 0;"></div>
+        <input type="number" id="tenderAmount" placeholder="Amount Tendered" min="0" step="0.01" />
+        <div id="tenderResult"></div>
         <button onclick="confirmTender()">Confirm Payment</button>
         <button onclick="cancelTender()">Cancel</button>
     </div>
@@ -201,11 +210,18 @@
         let pendingStockCode = "";
         let currentStaffName = "";
         let lastReceiptContent = "";
+        let currentPIN = "";
         let dailySales = JSON.parse(localStorage.getItem('dailySales')) || { date: new Date().toDateString(), cash: 0, card: 0, transactions: [] };
+
+        if (dailySales.date !== new Date().toDateString()) {
+            dailySales = { date: new Date().toDateString(), cash: 0, card: 0, transactions: [] };
+            localStorage.setItem('dailySales', JSON.stringify(dailySales));
+        }
 
         function playClick() { document.getElementById("clickSound").play().catch(()=>{}); }
         function playEat() { document.getElementById("eatSound").play().catch(()=>{}); }
         function playSparkle() { document.getElementById("sparkleSound").play().catch(()=>{}); }
+        document.querySelectorAll('button').forEach(btn => btn.addEventListener('click', playClick));
 
         function saveAll() {
             localStorage.setItem('posInventory', JSON.stringify(inventory));
@@ -213,111 +229,201 @@
             localStorage.setItem('dailySales', JSON.stringify(dailySales));
         }
 
-        // THIS IS THE CRITICAL FUNCTION FOR INCOGNITO
         function generateQuickButtons() {
             const foodGrid = document.getElementById("foodGrid");
             const drinkGrid = document.getElementById("drinkGrid");
-            const stockFoodGrid = document.getElementById("stockFoodGrid");
-            const stockDrinkGrid = document.getElementById("stockDrinkGrid");
+            const sFoodGrid = document.getElementById("stockFoodGrid");
+            const sDrinkGrid = document.getElementById("stockDrinkGrid");
             
             foodGrid.innerHTML = ""; drinkGrid.innerHTML = "";
-            stockFoodGrid.innerHTML = ""; stockDrinkGrid.innerHTML = "";
+            sFoodGrid.innerHTML = ""; sDrinkGrid.innerHTML = "";
 
             Object.keys(inventory).forEach(code => {
                 const item = inventory[code];
                 
-                // Sale Mode Buttons
-                const saleBtn = document.createElement("button");
-                saleBtn.className = `product-btn ${item.category === "food" ? "food-btn" : "drink-btn"}`;
-                saleBtn.textContent = item.name;
-                saleBtn.onclick = () => quickAddItem(code);
+                // Sale Buttons
+                const btn = document.createElement("button");
+                btn.className = `product-btn ${item.category === "food" ? "food-btn" : "drink-btn"}`;
+                btn.textContent = item.name;
+                btn.onclick = () => quickAddItem(code);
 
-                // Stock Mode Buttons
-                const stockBtn = document.createElement("button");
-                stockBtn.className = `product-btn ${item.category === "food" ? "food-btn" : "drink-btn"}`;
-                stockBtn.textContent = item.name;
-                stockBtn.onclick = () => triggerStockAdd(code);
+                // Stock Buttons
+                const sBtn = document.createElement("button");
+                sBtn.className = `product-btn ${item.category === "food" ? "food-btn" : "drink-btn"}`;
+                sBtn.textContent = item.name;
+                sBtn.onclick = () => {
+                    pendingStockCode = code;
+                    document.getElementById("popupItemName").textContent = item.name;
+                    document.getElementById("multiplierPopup").style.display = "block";
+                };
 
                 if (item.category === "food") {
-                    foodGrid.appendChild(saleBtn);
-                    stockFoodGrid.appendChild(stockBtn);
+                    foodGrid.appendChild(btn);
+                    sFoodGrid.appendChild(sBtn);
                 } else {
-                    drinkGrid.appendChild(saleBtn);
-                    stockDrinkGrid.appendChild(stockBtn);
+                    drinkGrid.appendChild(btn);
+                    sDrinkGrid.appendChild(sBtn);
                 }
             });
         }
 
-        function triggerStockAdd(code) {
-            pendingStockCode = code;
-            document.getElementById("popupItemName").textContent = inventory[code].name;
-            document.getElementById("multiplierPopup").style.display = "block";
-            document.getElementById("packsInput").value = "";
-            document.getElementById("casesInput").value = "";
-            setTimeout(() => document.getElementById("packsInput").focus(), 50);
-        }
-
         function login() {
-            const pin = document.getElementById("pin").value.trim();
+            const pinInput = document.getElementById("pin");
+            const pin = pinInput.value.trim();
             if (STAFF[pin]) {
+                currentPIN = pin;
                 currentStaffName = STAFF[pin];
                 document.getElementById("login").style.display = "none";
                 document.getElementById("pos").style.display = "block";
-                generateQuickButtons(); // Force creation on login
-                if (transactions.length === 0 || transactions[transactions.length-1].status === "paid") createNewTransaction();
-                else loadTransaction(transactions.length - 1);
-            } else alert("Invalid PIN");
+                generateQuickButtons();
+                if (transactions.length === 0 || transactions[transactions.length - 1].status === "paid") {
+                    createNewTransaction();
+                } else {
+                    loadTransaction(transactions.length - 1);
+                }
+                pinInput.value = "";
+            } else { alert("Invalid PIN"); }
         }
 
         function stockInMode() {
             document.getElementById("login").style.display = "none";
             document.getElementById("stockIn").style.display = "block";
-            generateQuickButtons(); // Force creation on stock mode enter
+            generateQuickButtons();
             document.getElementById("stockBarcode").focus();
         }
 
         function logout() {
-            location.reload(); 
+            document.getElementById("pos").style.display = "none";
+            document.getElementById("stockIn").style.display = "none";
+            document.getElementById("inventoryView").style.display = "none";
+            document.getElementById("transactionsView").style.display = "none";
+            document.getElementById("login").style.display = "block";
+        }
+
+        function createNewTransaction() {
+            const newTrans = {
+                id: transactions.length + 1,
+                items: [],
+                total: 0,
+                status: "active",
+                timestamp: new Date().toLocaleString(),
+                staff: currentStaffName
+            };
+            transactions.push(newTrans);
+            currentTransIndex = transactions.length - 1;
+            cart = newTrans.items;
+            saveAll();
+            updateUI();
+        }
+
+        function loadTransaction(index) {
+            currentTransIndex = index;
+            cart = transactions[index].items;
+            updateUI();
+        }
+
+        function addItem() {
+            const code = document.getElementById("barcode").value.trim();
+            const item = inventory[code];
+            if (item) {
+                if (item.stock <= 0) {
+                    alert("OUT OF STOCK: " + item.name);
+                } else {
+                    cart.push({ name: item.name, price: item.price, code: code });
+                    item.stock--;
+                    item.sold++;
+                    playEat();
+                    saveAll();
+                    updateCart();
+                    updateStockStatus(item);
+                }
+            } else { alert("Item not found"); }
+            document.getElementById("barcode").value = "";
         }
 
         function quickAddItem(code) {
             const item = inventory[code];
-            if (item.stock <= 0) return alert("Out of Stock!");
-            cart.push({ name: item.name, price: item.price, code: code });
-            item.stock--; item.sold++;
-            playEat(); saveAll(); updateCart();
-        }
-
-        function createNewTransaction() {
-            const trans = { id: transactions.length + 1, items: [], total: 0, status: "active", staff: currentStaffName };
-            transactions.push(trans);
-            currentTransIndex = transactions.length - 1;
-            cart = trans.items;
-            saveAll(); updateUI();
+            if (item.stock <= 0) {
+                alert("OUT OF STOCK: " + item.name);
+            } else {
+                cart.push({ name: item.name, price: item.price, code: code });
+                item.stock--;
+                item.sold++;
+                playEat();
+                saveAll();
+                updateCart();
+                updateStockStatus(item);
+            }
         }
 
         function updateCart() {
             const list = document.getElementById("items");
             list.innerHTML = "";
             let total = 0;
-            cart.forEach(it => {
+            cart.forEach((it, index) => {
                 total += it.price;
                 const li = document.createElement("li");
-                li.textContent = `${it.name} - R${it.price.toFixed(2)}`;
+                li.style.display = "flex";
+                li.style.justifyContent = "space-between";
+                li.innerHTML = `<span>${it.name}</span> <span>R${it.price.toFixed(2)} <button onclick="removeItem(${index})" style="width:auto; padding:5px 10px; margin:0; font-size:1rem; background:#ff4444; color:white;">X</button></span>`;
                 list.appendChild(li);
             });
             document.getElementById("total").textContent = `Total: R${total.toFixed(2)}`;
+            transactions[currentTransIndex].items = cart;
+            transactions[currentTransIndex].total = total;
+            saveAll();
+        }
+
+        function removeItem(index) {
+            const item = cart[index];
+            inventory[item.code].stock++;
+            inventory[item.code].sold--;
+            cart.splice(index, 1);
+            saveAll();
+            updateCart();
+        }
+
+        function clearCart() {
+            if (confirm("Clear current items?")) {
+                cart.forEach(it => {
+                    inventory[it.code].stock++;
+                    inventory[it.code].sold--;
+                });
+                cart = [];
+                saveAll();
+                updateCart();
+            }
+        }
+
+        function updateStockStatus(item) {
+            const status = document.getElementById("stockStatus");
+            status.textContent = `${item.name} — Remaining Stock: ${item.stock}`;
+            if (item.stock < 5) status.classList.add("low-stock");
+            else status.classList.remove("low-stock");
+        }
+
+        function processStockInput() {
+            const code = document.getElementById("stockBarcode").value.trim();
+            if (inventory[code]) {
+                pendingStockCode = code;
+                document.getElementById("popupItemName").textContent = inventory[code].name;
+                document.getElementById("multiplierPopup").style.display = "block";
+            } else { alert("Unknown barcode"); }
+            document.getElementById("stockBarcode").value = "";
         }
 
         function confirmMultiplier() {
-            const p = parseInt(document.getElementById("packsInput").value) || 0;
-            const c = parseInt(document.getElementById("casesInput").value) || 0;
-            let qty = (p * 6) + (c * 24);
+            const packs = parseInt(document.getElementById("packsInput").value) || 0;
+            const cases = parseInt(document.getElementById("casesInput").value) || 0;
+            let qty = (packs * 6) + (cases * 24);
             if (qty === 0) qty = 1;
             inventory[pendingStockCode].stock += qty;
-            document.getElementById("stockInStatus").textContent = `ADDED: ${inventory[pendingStockCode].name} x${qty}`;
-            playSparkle(); saveAll();
+            playSparkle();
+            saveAll();
+            document.getElementById("stockInStatus").textContent = `Successfully added ${qty} units to ${inventory[pendingStockCode].name}`;
             document.getElementById("multiplierPopup").style.display = "none";
+            document.getElementById("packsInput").value = "";
+            document.getElementById("casesInput").value = "";
         }
 
         function cancelMultiplier() {
@@ -326,51 +432,156 @@
             document.getElementById("multiplierPopup").style.display = "none";
         }
 
+        function payCash() {
+            if (cart.length === 0) return;
+            const total = cart.reduce((sum, it) => sum + it.price, 0);
+            window.pendingTotal = total;
+            document.getElementById("tenderTotal").textContent = total.toFixed(2);
+            document.getElementById("tenderPopup").style.display = "block";
+            document.getElementById("tenderAmount").focus();
+        }
+
+        document.getElementById("tenderAmount").addEventListener("input", function() {
+            const amount = parseFloat(this.value) || 0;
+            const change = amount - window.pendingTotal;
+            document.getElementById("tenderResult").textContent = change >= 0 ? `Change: R${change.toFixed(2)}` : "";
+        });
+
+        function confirmTender() {
+            const total = window.pendingTotal;
+            dailySales.cash += total;
+            finalizeSale("Cash", total);
+            document.getElementById("tenderPopup").style.display = "none";
+            document.getElementById("tenderAmount").value = "";
+            document.getElementById("tenderResult").textContent = "";
+        }
+
+        function cancelTender() {
+            document.getElementById("tenderPopup").style.display = "none";
+        }
+
+        function payCard() {
+            if (cart.length === 0) return;
+            const total = cart.reduce((sum, it) => sum + it.price, 0);
+            dailySales.card += total;
+            finalizeSale("Card", total);
+        }
+
+        function finalizeSale(method, total) {
+            const trans = transactions[currentTransIndex];
+            trans.status = "paid";
+            trans.paymentMethod = method;
+            saveAll();
+            generateReceipt(total, method);
+            document.getElementById("printReceiptBtn").style.display = "block";
+            updateUI();
+        }
+
+        function generateReceipt(total, method) {
+            const itemsList = cart.map(i => `${i.name.padEnd(20)} R${i.price.toFixed(2)}`).join('\n');
+            lastReceiptContent = `
+PAPA RON'S COFFEE BAY
+----------------------------
+Date: ${new Date().toLocaleString()}
+Staff: ${currentStaffName}
+Trans #: ${transactions[currentTransIndex].id}
+----------------------------
+${itemsList}
+----------------------------
+TOTAL: R${total.toFixed(2)}
+Payment: ${method}
+----------------------------
+Thank you!
+            `;
+        }
+
+        function printLastReceipt() {
+            const win = window.open('', '_blank');
+            win.document.write('<pre>' + lastReceiptContent + '</pre>');
+            win.document.close();
+            win.print();
+            createNewTransaction();
+            document.getElementById("printReceiptBtn").style.display = "none";
+        }
+
+        function printPreview() {
+            const food = cart.filter(i => inventory[i.code].category === "food");
+            const drinks = cart.filter(i => inventory[i.code].category === "drink");
+            let output = "--- KITCHEN TAB ---\n";
+            food.forEach(i => output += `${i.name}\n`);
+            output += "\n--- BAR TAB ---\n";
+            drinks.forEach(i => output += `${i.name}\n`);
+            const win = window.open('', '_blank');
+            win.document.write('<pre>' + output + '</pre>');
+            win.document.close();
+        }
+
         function showInventory() {
             document.getElementById("pos").style.display = "none";
             document.getElementById("inventoryView").style.display = "block";
-            const list = document.getElementById("inventoryList"); list.innerHTML = "";
-            Object.keys(inventory).forEach(c => {
+            const list = document.getElementById("inventoryList");
+            list.innerHTML = "";
+            Object.keys(inventory).sort((a,b) => inventory[a].name.localeCompare(inventory[b].name)).forEach(code => {
+                const item = inventory[code];
                 const li = document.createElement("li");
-                li.textContent = `${inventory[c].name}: ${inventory[c].stock} in stock`;
+                li.className = item.stock < 5 ? "low-stock-item" : "in-stock";
+                li.textContent = `${item.name}: ${item.stock} in stock (Sold: ${item.sold})`;
                 list.appendChild(li);
+            });
+        }
+
+        function showZReading() {
+            const total = dailySales.cash + dailySales.card;
+            let report = `
+PAPA RON'S - Z READING
+Date: ${dailySales.date}
+-----------------------
+Cash: R${dailySales.cash.toFixed(2)}
+Card: R${dailySales.card.toFixed(2)}
+-----------------------
+TOTAL: R${total.toFixed(2)}
+-----------------------
+Inventory Sold Today:
+`;
+            Object.keys(inventory).forEach(c => {
+                if (inventory[c].sold > 0) report += `${inventory[c].name}: ${inventory[c].sold}\n`;
+            });
+            const win = window.open('', '_blank');
+            win.document.write('<pre>' + report + '</pre>');
+            win.document.close();
+        }
+
+        function showTransactions() {
+            document.getElementById("pos").style.display = "none";
+            document.getElementById("transactionsView").style.display = "block";
+            const list = document.getElementById("transList");
+            list.innerHTML = "";
+            transactions.forEach((t, i) => {
+                const btn = document.createElement("button");
+                btn.className = `transaction-btn ${t.status === 'active' ? 'active-trans' : 'paid-trans'}`;
+                btn.textContent = `Trans ${t.id} - R${t.total.toFixed(2)} (${t.status})`;
+                btn.onclick = () => { loadTransaction(i); backToPOS(); };
+                list.appendChild(btn);
             });
         }
 
         function backToPOS() {
             document.getElementById("inventoryView").style.display = "none";
+            document.getElementById("transactionsView").style.display = "none";
             document.getElementById("pos").style.display = "block";
+            updateUI();
         }
 
-        function payCash() {
-            if (cart.length === 0) return;
-            const total = cart.reduce((s, i) => s + i.price, 0);
-            document.getElementById("tenderTotal").textContent = total.toFixed(2);
-            document.getElementById("tenderPopup").style.display = "block";
+        function updateUI() {
+            const t = transactions[currentTransIndex];
+            document.getElementById("currentTransNum").textContent = t ? t.id : "1";
+            document.getElementById("transStatus").textContent = t && t.status === "active" ? "(Active)" : "(Paid)";
+            updateCart();
         }
 
-        function confirmTender() {
-            const total = cart.reduce((s, i) => s + i.price, 0);
-            dailySales.cash += total;
-            finalize("Cash", total);
-            document.getElementById("tenderPopup").style.display = "none";
-        }
-
-        function finalize(method, total) {
-            transactions[currentTransIndex].status = "paid";
-            lastReceiptContent = `PAPA RON'S\n${method} Sale\nTotal: R${total.toFixed(2)}`;
-            saveAll();
-            document.getElementById("printReceiptBtn").style.display = "block";
-        }
-
-        function printLastReceipt() {
-            const w = window.open(); w.document.write(`<pre>${lastReceiptContent}</pre>`); w.close();
-            createNewTransaction();
-            document.getElementById("printReceiptBtn").style.display = "none";
-        }
-
-        // Barcode Listeners
-        document.getElementById("stockBarcode").onkeyup = (e) => { if(e.key==="Enter") triggerStockAdd(e.target.value); e.target.value=""; };
+        document.getElementById("barcode").addEventListener("keyup", e => { if (e.key === "Enter") addItem(); });
+        document.getElementById("pin").addEventListener("keyup", e => { if (e.key === "Enter") login(); });
+        document.getElementById("stockBarcode").addEventListener("keyup", e => { if (e.key === "Enter") processStockInput(); });
     </script>
 </body>
 </html>
