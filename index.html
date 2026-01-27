@@ -3,32 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAPA RON'S POS - COFFEE BAY - FULL SYSTEM</title>
+    <title>PAPA RON'S POS - PRODUCTION SYSTEM</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #000; color: #fff; margin: 0; padding: 10px; overflow-x: hidden; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #000; color: #fff; margin: 0; padding: 10px; overflow-x: hidden; }
         
-        /* Banner Logic - Matching Website Proportions */
-        .banner-wrap { width: 100%; display: flex; justify-content: center; margin-bottom: 15px; }
-        #main-banner { width: 100%; max-width: 900px; height: auto; border-bottom: 3px solid #d4a373; }
+        /* Banner sizing to match product photo width exactly */
+        .banner-container { width: 100%; display: flex; justify-content: center; margin-bottom: 20px; }
+        #top-banner { width: 100%; max-width: 800px; height: auto; border-bottom: 2px solid #d4a373; }
 
-        h1 { text-align: center; color: #d4a373; font-size: 2.5rem; margin: 10px 0; text-transform: uppercase; }
+        h1 { text-align: center; color: #d4a373; font-size: 2.2rem; margin: 10px 0; text-transform: uppercase; letter-spacing: 2px; }
         
-        /* Navigation Controls */
-        #login, #pos, #stockIn, #inventoryView, #transactionsView { display: none; }
-        .active-view { display: block !important; }
+        /* Navigation & Screens */
+        #login-screen, #pos-screen, #stock-screen, #inventory-view, #history-view { display: none; }
+        .active { display: block !important; }
 
-        .top-nav { display: flex; gap: 10px; margin-bottom: 15px; }
-        .nav-btn { flex: 1; padding: 15px; font-size: 1.2rem; font-weight: bold; border-radius: 10px; border: none; cursor: pointer; text-transform: uppercase; }
-        .btn-logout { background: #c62828; color: white; }
-        .btn-stock { background: #455a64; color: white; }
-        .btn-history { background: #455a64; color: white; }
+        .nav-bar { display: flex; gap: 10px; margin-bottom: 15px; }
+        .nav-btn { flex: 1; padding: 15px; font-size: 1.1rem; font-weight: bold; border-radius: 10px; border: none; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
+        .logout { background: #c62828; color: white; }
+        .stock-view-btn { background: #455a64; color: white; }
+        .history-btn { background: #455a64; color: white; }
 
-        /* Grid System for Products */
-        .pos-container { display: flex; gap: 15px; height: 55vh; margin-bottom: 15px; }
-        .grid-column { flex: 1; display: flex; flex-direction: column; }
-        .grid-header { text-align: center; color: #d4a373; font-weight: bold; font-size: 1.3rem; margin-bottom: 8px; padding: 5px; background: #1a1a1a; border-radius: 5px; }
+        /* Grid Layout */
+        .main-layout { display: flex; gap: 15px; height: 52vh; margin-bottom: 15px; }
+        .grid-box { flex: 1; display: flex; flex-direction: column; }
+        .grid-label { text-align: center; color: #d4a373; font-weight: bold; padding: 8px; background: #1a1a1a; border-radius: 8px 8px 0 0; border-bottom: 1px solid #333; }
         
-        .product-grid { 
+        .button-grid { 
             display: grid; 
             grid-template-columns: repeat(2, 1fr); 
             gap: 10px; 
@@ -36,148 +36,159 @@
             background: #080808; 
             padding: 10px; 
             border: 1px solid #333; 
-            border-radius: 15px;
+            border-radius: 0 0 15px 15px;
             flex-grow: 1;
         }
 
-        /* Product Buttons Style */
-        .p-btn { 
-            min-height: 90px; 
+        /* Product Buttons */
+        .item-btn { 
+            min-height: 85px; 
             color: white; 
-            border-radius: 10px; 
+            border-radius: 12px; 
             border: none; 
             font-weight: bold; 
             text-transform: uppercase; 
-            font-size: 0.85rem; 
+            font-size: 0.8rem; 
             cursor: pointer; 
-            transition: 0.2s; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             text-align: center;
             padding: 10px;
+            line-height: 1.2;
+            box-shadow: 0 4px #000;
         }
-        .food-item { background: #5d4037; border-bottom: 5px solid #3e2723; }
-        .drink-item { background: #1565c0; border-bottom: 5px solid #0d47a1; }
-        .p-btn:active { transform: translateY(4px); border-bottom-width: 1px; }
+        .food { background: #5d4037; border-bottom: 4px solid #3e2723; }
+        .drink { background: #1565c0; border-bottom: 4px solid #0d47a1; }
+        .item-btn:active { transform: translateY(3px); box-shadow: 0 1px #000; }
 
-        /* Checkout & Cart Area */
-        .cart-section { background: #111; border: 2px solid #222; border-radius: 15px; padding: 20px; }
-        #total-amount { font-size: 3.5rem; text-align: center; color: #44ff44; font-weight: bold; margin: 10px 0; font-family: 'Courier New', Courier, monospace; }
-        .pay-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .btn-pay { height: 80px; font-size: 1.8rem; font-weight: bold; color: white; border-radius: 12px; border: none; cursor: pointer; }
-        .btn-cash { background: #43a047; }
-        .btn-card { background: #1e88e5; }
+        /* Transaction / Cart Area */
+        .cart-box { background: #111; border: 1px solid #222; border-radius: 15px; padding: 15px; }
+        #display-total { font-size: 3.2rem; text-align: center; color: #44ff44; font-weight: bold; margin-bottom: 15px; font-family: monospace; }
+        .checkout-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .pay-btn { height: 75px; font-size: 1.6rem; font-weight: bold; color: white; border-radius: 12px; border: none; cursor: pointer; }
+        .cash { background: #43a047; }
+        .card { background: #1e88e5; }
         
-        #order-list { list-style: none; padding: 0; margin-top: 15px; max-height: 200px; overflow-y: auto; }
-        .cart-item { display: flex; justify-content: space-between; padding: 12px; border-bottom: 1px solid #333; font-size: 1.2rem; }
-        .remove-btn { background: #ff5252; color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.9rem; }
+        #receipt-list { list-style: none; padding: 0; margin-top: 15px; max-height: 180px; overflow-y: auto; border-top: 1px solid #333; }
+        .receipt-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #222; font-size: 1.1rem; }
+        .del-item { background: #ff5252; color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; }
 
-        /* Multiplier & Modal Popups */
-        .overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.85); display: none; z-index: 2000; 
-        }
-        .modal { 
+        /* Modals */
+        .modal-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 2000; }
+        .modal-content { 
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            background: #1a1a1a; padding: 30px; border: 3px solid #d4a373; 
-            width: 90%; max-width: 480px; z-index: 2001; border-radius: 25px;
-            display: none;
+            background: #1a1a1a; padding: 30px; border: 2px solid #d4a373; 
+            width: 85%; max-width: 450px; z-index: 2001; border-radius: 20px; display: none;
         }
-        input[type="number"], input[type="password"], input[type="text"] { 
-            width: 100%; padding: 18px; font-size: 1.6rem; margin: 10px 0; 
-            background: #000; color: #fff; border: 1px solid #444; border-radius: 12px; 
-            box-sizing: border-box; text-align: center;
-        }
+        input { width: 100%; padding: 15px; font-size: 1.5rem; margin: 10px 0; background: #000; color: #fff; border: 1px solid #444; border-radius: 10px; box-sizing: border-box; text-align: center; }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="banner-wrap">
-        <img id="main-banner" src="https://tiffyai-usd.github.io/Papa_Ron_Point_of_Sale/banner.png" alt="PAPA RON'S">
+    <div class="banner-container">
+        <img id="top-banner" src="https://tiffyai-usd.github.io/Papa_Ron_Point_of_Sale/banner.png" alt="PAPA RON'S">
     </div>
 
-    <div id="login" class="active-view">
-        <h1>PAPA RON'S LOGIN</h1>
-        <div style="max-width: 400px; margin: 0 auto;">
-            <input type="password" id="staff-pin" placeholder="ENTER PIN" autofocus />
-            <button class="nav-btn" onclick="authenticate('sale')" style="background:#d4a373; color:black; width:100%; margin-top:10px;">SALE MODE</button>
-            <button class="nav-btn" onclick="authenticate('stock')" style="background:#2e7d32; color:white; width:100%; margin-top:15px;">REPLENISH STOCK</button>
-        </div>
-    </div>
-
-    <div id="pos">
-        <div class="top-nav">
-            <button class="nav-btn btn-logout" onclick="location.reload()">LOGOUT</button>
-            <button class="nav-btn btn-stock" onclick="showInventoryView()">VIEW STOCK</button>
-            <button class="nav-btn btn-history" onclick="showHistory()">HISTORY</button>
-        </div>
-
-        <div class="pos-container">
-            <div class="grid-column">
-                <div class="grid-header">FOOD MENU</div>
-                <div id="saleFoodGrid" class="product-grid"></div>
-            </div>
-            <div class="grid-column">
-                <div class="grid-header">DRINK MENU</div>
-                <div id="saleDrinkGrid" class="product-grid"></div>
-            </div>
-        </div>
-
-        <div class="cart-section">
-            <div id="total-amount">R0.00</div>
-            <div class="pay-row">
-                <button class="btn-pay btn-cash" onclick="processPayment('CASH')">CASH</button>
-                <button class="btn-pay btn-card" onclick="processPayment('CARD')">CARD</button>
-            </div>
-            <ul id="order-list"></ul>
-            <input type="text" id="manual-barcode" placeholder="OR SCAN BARCODE..." style="margin-top:15px; font-size:1.1rem; padding:10px;">
+    <div id="login-screen" class="active">
+        <h1>STAFF LOGIN</h1>
+        <div style="max-width: 400px; margin: 0 auto; text-align: center;">
+            <input type="password" id="pin-input" placeholder="ENTER PIN" autofocus />
+            <button class="nav-btn" onclick="handleAuth('sale')" style="background:#d4a373; color:black; width:100%; margin-top:10px;">OPEN POS</button>
+            <button class="nav-btn" onclick="handleAuth('stock')" style="background:#2e7d32; color:white; width:100%; margin-top:15px;">ADD STOCK</button>
         </div>
     </div>
 
-    <div id="stockIn">
-        <h1>REPLENISH STOCK</h1>
+    <div id="pos-screen">
+        <div class="nav-bar">
+            <button class="nav-btn logout" onclick="location.reload()">LOGOUT</button>
+            <button class="nav-btn stock-view-btn" onclick="openInventory()">INVENTORY</button>
+            <button class="nav-btn history-btn" onclick="openHistory()">HISTORY</button>
+        </div>
+
+        <div class="main-layout">
+            <div class="grid-box">
+                <div class="grid-label">KITCHEN MENU</div>
+                <div id="saleFoodGrid" class="button-grid"></div>
+            </div>
+            <div class="grid-box">
+                <div class="grid-label">BAR MENU</div>
+                <div id="saleDrinkGrid" class="button-grid"></div>
+            </div>
+        </div>
+
+        <div class="cart-box">
+            <div id="display-total">R0.00</div>
+            <div class="checkout-row">
+                <button class="pay-btn cash" onclick="finalizeSale('CASH')">CASH</button>
+                <button class="pay-btn card" onclick="finalizeSale('CARD')">CARD</button>
+            </div>
+            <input type="text" id="scanner-input" placeholder="SCAN BARCODE..." style="font-size: 1rem; padding: 10px; margin-top: 10px;">
+            <ul id="receipt-list"></ul>
+        </div>
+    </div>
+
+    <div id="stock-screen">
+        <h1>REPLENISHMENT MODE</h1>
         <button class="nav-btn" onclick="location.reload()" style="background:#333; color:white; margin-bottom:15px;">BACK TO LOGIN</button>
         
-        <div class="pos-container">
-            <div class="grid-column">
-                <div class="grid-header">ADD FOOD STOCK</div>
-                <div id="stockFoodGrid" class="product-grid"></div>
+        <div class="main-layout">
+            <div class="grid-box">
+                <div class="grid-label">TAP FOOD TO ADD</div>
+                <div id="stockFoodGrid" class="button-grid"></div>
             </div>
-            <div class="grid-column">
-                <div class="grid-header">ADD DRINK STOCK</div>
-                <div id="stockDrinkGrid" class="product-grid"></div>
+            <div class="grid-box">
+                <div class="grid-label">TAP DRINK TO ADD</div>
+                <div id="stockDrinkGrid" class="button-grid"></div>
             </div>
         </div>
-        <div id="replenish-status" style="text-align:center; font-size:1.5rem; color:#44ff44; font-weight:bold; margin-top:15px;"></div>
+        <div id="stock-msg" style="text-align:center; font-size:1.5rem; color:#44ff44; font-weight:bold; margin-top:10px; height: 30px;"></div>
     </div>
 
-    <div id="modal-overlay" class="overlay"></div>
-    <div id="multiplierModal" class="modal">
-        <h2 id="modal-item-name" style="text-align:center; color:#d4a373;"></h2>
+    <div id="modal-overlay" class="modal-bg"></div>
+    
+    <div id="stock-modal" class="modal-content">
+        <h2 id="modal-title" style="text-align:center; color:#d4a373;"></h2>
         <div style="display:flex; gap:10px;">
             <div style="flex:1;">
                 <label>Packs (x6)</label>
-                <input type="number" id="p-qty" value="0">
+                <input type="number" id="in-packs" value="0">
             </div>
             <div style="flex:1;">
                 <label>Cases (x24)</label>
-                <input type="number" id="c-qty" value="0">
+                <input type="number" id="in-cases" value="0">
             </div>
         </div>
-        <label>Single Units</label>
-        <input type="number" id="s-qty" placeholder="0">
-        <button onclick="saveNewStock()" style="background:#44ff44; color:black; width:100%; padding:20px; font-size:1.5rem; font-weight:bold; border-radius:15px; margin-top:10px;">UPDATE STOCK</button>
-        <button onclick="closePopups()" style="background:#333; color:white; width:100%; padding:10px; margin-top:10px; border-radius:10px;">CANCEL</button>
+        <label>Singles</label>
+        <input type="number" id="in-singles" placeholder="0">
+        <button onclick="confirmStockAdd()" style="background:#44ff44; color:black; width:100%; padding:20px; font-size:1.5rem; font-weight:bold; border-radius:12px; margin-top:10px;">SAVE STOCK</button>
+        <button onclick="closeModals()" style="background:#333; color:white; width:100%; padding:10px; margin-top:10px; border-radius:8px;">CANCEL</button>
     </div>
 
-    <audio id="snd-click" src="https://tiffyai-usd.github.io/Papa_Ron_Point_of_Sale/click.wav" preload="auto"></audio>
-    <audio id="snd-sell" src="https://tiffyai-usd.github.io/Papa_Ron_Point_of_Sale/eat.wav" preload="auto"></audio>
-    <audio id="snd-stock" src="https://tiffyai-usd.github.io/Papa_Ron_Point_of_Sale/sparcle.wav" preload="auto"></audio>
+    <div id="history-modal" class="modal-content" style="max-width: 600px; max-height: 80vh; overflow-y: auto;">
+        <h2>TRANSACTION HISTORY</h2>
+        <div id="history-content"></div>
+        <button onclick="closeModals()" class="nav-btn" style="background:#d4a373; color:black;">CLOSE</button>
+    </div>
+
+    <div id="inv-modal" class="modal-content" style="max-width: 500px; max-height: 80vh; overflow-y: auto;">
+        <h2>CURRENT STOCK LEVELS</h2>
+        <div id="inv-content"></div>
+        <button onclick="closeModals()" class="nav-btn" style="background:#d4a373; color:black;">CLOSE</button>
+    </div>
+
+    <audio id="sound-click" src="https://tiffyai-usd.github.io/Papa_Ron_Point_of_Sale/click.wav"></audio>
+    <audio id="sound-cash" src="https://tiffyai-usd.github.io/Papa_Ron_Point_of_Sale/eat.wav"></audio>
+    <audio id="sound-sparkle" src="https://tiffyai-usd.github.io/Papa_Ron_Point_of_Sale/sparcle.wav"></audio>
 
     <script>
-        // THE FULL INVENTORY OBJECT
-        const inventory = JSON.parse(localStorage.getItem('posInventory')) || {
+        // FULL INVENTORY DATABASE
+        const DB = JSON.parse(localStorage.getItem('papa_rons_inv')) || {
             "1001": { name: "SOMETHING MEATY PIZZA", price: 135, stock: 0, cat: "food" },
             "1002": { name: "HAWAIIAN PIZZA", price: 135, stock: 0, cat: "food" },
             "1003": { name: "FLAMING SPARE RIB PIZZA", price: 150, stock: 0, cat: "food" },
@@ -236,138 +247,168 @@
             "2210": { name: "LUCKY CLUB 250ML", price: 70, stock: 0, cat: "drink" }
         };
 
-        let cart = [];
-        let currentStockItem = "";
+        let activeCart = [];
+        let history = JSON.parse(localStorage.getItem('papa_rons_history')) || [];
+        let pendingItemCode = "";
 
-        // AUTHENTICATION
-        function authenticate(mode) {
-            const pin = document.getElementById('staff-pin').value;
+        // 1. AUTHENTICATION & INITIALIZATION
+        function handleAuth(mode) {
+            const pin = document.getElementById('pin-input').value;
             if(pin === "1234") {
-                document.getElementById('login').classList.remove('active-view');
+                document.getElementById('login-screen').classList.remove('active');
                 if(mode === 'sale') {
-                    document.getElementById('pos').classList.add('active-view');
-                    initGrids('sale');
+                    document.getElementById('pos-screen').classList.add('active');
+                    renderGrids('sale');
                 } else {
-                    document.getElementById('stockIn').classList.add('active-view');
-                    initGrids('stock');
+                    document.getElementById('stock-screen').classList.add('active');
+                    renderGrids('stock');
                 }
             } else { alert("ACCESS DENIED"); }
         }
 
-        // GRID INITIALIZATION (FOR BOTH MODES)
-        function initGrids(mode) {
-            const foodGridId = mode === 'sale' ? 'saleFoodGrid' : 'stockFoodGrid';
-            const drinkGridId = mode === 'sale' ? 'saleDrinkGrid' : 'stockDrinkGrid';
+        // 2. GRID RENDERING (SALE AND STOCK MODES)
+        function renderGrids(view) {
+            const fGridId = view === 'sale' ? 'saleFoodGrid' : 'stockFoodGrid';
+            const dGridId = view === 'sale' ? 'saleDrinkGrid' : 'stockDrinkGrid';
+            const fContainer = document.getElementById(fGridId);
+            const dContainer = document.getElementById(dGridId);
             
-            const fGrid = document.getElementById(foodGridId);
-            const dGrid = document.getElementById(drinkGridId);
-            
-            fGrid.innerHTML = "";
-            dGrid.innerHTML = "";
+            fContainer.innerHTML = "";
+            dContainer.innerHTML = "";
 
-            Object.keys(inventory).forEach(code => {
-                const item = inventory[code];
+            Object.keys(DB).forEach(barcode => {
+                const product = DB[barcode];
                 const btn = document.createElement('button');
-                btn.className = `p-btn ${item.cat === 'food' ? 'food-item' : 'drink-item'}`;
-                btn.textContent = item.name;
+                btn.className = `item-btn ${product.cat}`;
+                btn.textContent = product.name;
 
-                if(mode === 'sale') {
-                    btn.onclick = () => { playSound('snd-click'); addToCart(code); };
+                if(view === 'sale') {
+                    btn.onclick = () => { play('sound-click'); addToCart(barcode); };
                 } else {
-                    btn.onclick = () => { playSound('snd-click'); triggerMultiplier(code); };
+                    btn.onclick = () => { play('sound-click'); openStockMultiplier(barcode); };
                 }
 
-                if(item.cat === 'food') fGrid.appendChild(btn);
-                else dGrid.appendChild(btn);
+                if(product.cat === 'food') fContainer.appendChild(btn);
+                else dContainer.appendChild(btn);
             });
         }
 
-        // CART LOGIC
+        // 3. CART / SALE LOGIC
         function addToCart(code) {
-            const item = inventory[code];
-            if(item.cat === 'drink' && item.stock <= 0) return alert("ITEM OUT OF STOCK");
-            
-            cart.push({...item, barcode: code});
+            const item = DB[code];
+            if(item.cat === 'drink' && item.stock <= 0) {
+                alert("OUT OF STOCK!");
+                return;
+            }
+            activeCart.push({...item, code: code});
             if(item.cat === 'drink') item.stock--;
-            playSound('snd-sell');
-            refreshCartDisplay();
+            play('sound-cash');
+            updateCartUI();
         }
 
-        function refreshCartDisplay() {
-            const list = document.getElementById('order-list');
+        function updateCartUI() {
+            const list = document.getElementById('receipt-list');
             list.innerHTML = "";
             let total = 0;
-            
-            cart.forEach((it, idx) => {
+            activeCart.forEach((it, idx) => {
                 total += it.price;
-                const li = document.createElement('li');
-                li.className = 'cart-item';
-                li.innerHTML = `<span>${it.name}</span> <span>R${it.price.toFixed(2)} <button class="remove-btn" onclick="voidCartItem(${idx})">X</button></span>`;
-                list.appendChild(li);
+                list.innerHTML += `<li class="receipt-item">${it.name} <span>R${it.price.toFixed(2)} <button class="del-item" onclick="voidItem(${idx})">X</button></span></li>`;
             });
-            
-            document.getElementById('total-amount').textContent = "R" + total.toFixed(2);
-            localStorage.setItem('posInventory', JSON.stringify(inventory));
+            document.getElementById('display-total').textContent = "R" + total.toFixed(2);
+            localStorage.setItem('papa_rons_inv', JSON.stringify(DB));
         }
 
-        function voidCartItem(index) {
-            const item = cart[index];
-            if(inventory[item.barcode].cat === 'drink') inventory[item.barcode].stock++;
-            cart.splice(index, 1);
-            refreshCartDisplay();
+        function voidItem(idx) {
+            const item = activeCart[idx];
+            if(DB[item.code].cat === 'drink') DB[item.code].stock++;
+            activeCart.splice(idx, 1);
+            updateCartUI();
         }
 
-        // STOCK REPLENISHMENT
-        function triggerMultiplier(code) {
-            currentStockItem = code;
-            document.getElementById('modal-item-name').textContent = inventory[code].name;
-            document.getElementById('p-qty').value = 0;
-            document.getElementById('c-qty').value = 0;
-            document.getElementById('s-qty').value = "";
+        function finalizeSale(method) {
+            if(activeCart.length === 0) return;
+            const total = activeCart.reduce((sum, i) => sum + i.price, 0);
+            history.push({
+                date: new Date().toLocaleString(),
+                total: total,
+                method: method,
+                items: activeCart.map(i => i.name)
+            });
+            localStorage.setItem('papa_rons_history', JSON.stringify(history));
+            alert("SALE COMPLETE. R" + total.toFixed(2) + " via " + method);
+            activeCart = [];
+            updateCartUI();
+        }
+
+        // 4. STOCK REPLENISHMENT
+        function openStockMultiplier(code) {
+            pendingItemCode = code;
+            document.getElementById('modal-title').textContent = DB[code].name;
+            document.getElementById('in-packs').value = 0;
+            document.getElementById('in-cases').value = 0;
+            document.getElementById('in-singles').value = "";
             
             document.getElementById('modal-overlay').style.display = 'block';
-            document.getElementById('multiplierModal').style.display = 'block';
+            document.getElementById('stock-modal').style.display = 'block';
         }
 
-        function saveNewStock() {
-            const p = parseInt(document.getElementById('p-qty').value) || 0;
-            const c = parseInt(document.getElementById('c-qty').value) || 0;
-            const s = parseInt(document.getElementById('s-qty').value) || 0;
-            
-            let addedTotal = (p * 6) + (c * 24) + s;
-            if(addedTotal === 0) addedTotal = 1;
+        function confirmStockAdd() {
+            const p = parseInt(document.getElementById('in-packs').value) || 0;
+            const c = parseInt(document.getElementById('in-cases').value) || 0;
+            const s = parseInt(document.getElementById('in-singles').value) || 0;
+            let totalAdded = (p * 6) + (c * 24) + s;
+            if(totalAdded === 0) totalAdded = 1;
 
-            inventory[currentStockItem].stock += addedTotal;
-            playSound('snd-stock');
+            DB[pendingItemCode].stock += totalAdded;
+            localStorage.setItem('papa_rons_inv', JSON.stringify(DB));
+            play('sound-sparkle');
             
-            document.getElementById('replenish-status').textContent = `ADDED ${addedTotal} TO ${inventory[currentStockItem].name}`;
-            localStorage.setItem('posInventory', JSON.stringify(inventory));
-            closePopups();
-            
-            setTimeout(() => { document.getElementById('replenish-status').textContent = ""; }, 3000);
+            document.getElementById('stock-msg').textContent = "ADDED " + totalAdded + " TO " + DB[pendingItemCode].name;
+            closeModals();
+            setTimeout(() => { document.getElementById('stock-msg').textContent = ""; }, 3000);
         }
 
-        function closePopups() {
+        // 5. MODAL MANAGEMENT
+        function openInventory() {
+            const target = document.getElementById('inv-content');
+            target.innerHTML = "";
+            Object.keys(DB).forEach(c => {
+                const item = DB[c];
+                target.innerHTML += `<div style="padding:10px; border-bottom:1px solid #333;">
+                    <strong>${item.name}</strong><br>
+                    Stock: <span style="color:${item.stock < 5 ? 'red' : '#44ff44'}">${item.stock}</span>
+                </div>`;
+            });
+            document.getElementById('modal-overlay').style.display = 'block';
+            document.getElementById('inv-modal').style.display = 'block';
+        }
+
+        function openHistory() {
+            const target = document.getElementById('history-content');
+            target.innerHTML = "";
+            history.slice().reverse().forEach(h => {
+                target.innerHTML += `<div style="padding:10px; border-bottom:1px solid #333; font-size: 0.9rem;">
+                    <b>${h.date}</b> | R${h.total.toFixed(2)} (${h.method})<br>
+                    <small>${h.items.join(', ')}</small>
+                </div>`;
+            });
+            document.getElementById('modal-overlay').style.display = 'block';
+            document.getElementById('history-modal').style.display = 'block';
+        }
+
+        function closeModals() {
             document.getElementById('modal-overlay').style.display = 'none';
-            document.getElementById('multiplierModal').style.display = 'none';
+            document.querySelectorAll('.modal-content').forEach(m => m.style.display = 'none');
         }
 
-        function processPayment(method) {
-            if(cart.length === 0) return;
-            const total = document.getElementById('total-amount').textContent;
-            alert(`SALE FINALIZED: ${total} via ${method}`);
-            cart = [];
-            refreshCartDisplay();
-        }
+        function play(id) { document.getElementById(id).play().catch(()=>{}); }
 
-        function playSound(id) { document.getElementById(id).play().catch(()=>{}); }
-
-        // BARCODE SCANNER EMULATION
-        document.getElementById('manual-barcode').addEventListener('keyup', (e) => {
+        // Barcode Listener
+        document.getElementById('scanner-input').addEventListener('keyup', (e) => {
             if(e.key === "Enter") {
-                const code = e.target.value.trim();
-                if(inventory[code]) addToCart(code);
-                else alert("BARCODE NOT FOUND");
+                const val = e.target.value.trim();
+                if(DB[val]) addToCart(val);
+                else alert("NOT FOUND");
                 e.target.value = "";
             }
         });
